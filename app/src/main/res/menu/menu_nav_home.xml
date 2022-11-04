@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Home"
+        android:id="@+id/id_nav_home"
+        android:icon="@drawable/ic_food"
+
+        >
+    </item>
+    <item
+        android:title="Informasi"
+        android:id="@+id/id_nav_informas"
+        android:icon="@drawable/ic_informasi">
+    </item>
+
+
+    <item
+        android:title="Keranjang"
+        android:id="@+id/id_nav_keranjang"
+        android:icon="@drawable/ic_shopping_cart">
+    </item>
+    <item
+        android:title="Pengaturan"
+        android:id="@+id/id_nav_pengaturan"
+        android:icon="@drawable/ic_baseline_settings_24">
+    </item>
+
+
+
+</menu>

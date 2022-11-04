@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".Fragment.FragmentSuccesfullLogin"
+        android:background="@color/color_card"
+        >
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/id_lottie_login_succes"
+            android:layout_width="@dimen/_270sdp"
+            android:layout_height="@dimen/_270sdp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.326"
+
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/loading_succes" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login Berhasil"
+            android:textStyle="bold"
+            android:fontFamily="@font/sfprodisplaybold"
+            android:textSize="@dimen/_35ssp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/id_lottie_login_succes"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/id_tv_BerhasilMenambahkanKeKeranjang"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Harap amankan data pribadi mu"
+            android:textColor="@color/color_gray"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_tv_BerhasilMenambahkanKeKeranjang" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

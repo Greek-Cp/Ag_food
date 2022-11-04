@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Fragment.HomeFragment"
+        android:background="@color/color_card">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/base_layout"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginLeft="30dp"
+                    >
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/id_tv_gretting_home"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:width="@dimen/_135sdp"
+                            android:fontFamily="@font/sfprodisplaybold"
+                            android:text="Good Morning Diana"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_35ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="30dp"
+                            />
+                        <ImageView
+                            android:layout_width="@dimen/_245sdp"
+                            android:layout_height="@dimen/_220sdp"
+                            android:src="@drawable/drw_seblak_home"
+                            android:scaleType="fitXY"
+                            app:layout_constraintStart_toEndOf="@+id/id_tv_gretting_home"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:translationX="-20dp"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kategori"
+                        android:textSize="@dimen/_20ssp"
+                        android:fontFamily="@font/sfprodisplaybold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="20dp"
+                        />
+                </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_kategory_layout_adapter"
+            android:layout_marginTop="0dp"
+            android:id="@+id/id_rec_kategory_food"
+            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginLeft="30dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Popular Food"
+                    android:textSize="@dimen/_20ssp"
+                    android:fontFamily="@font/sfprodisplaybold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="20dp"
+                    />
+            </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/id_rec_popular_food"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:orientation="vertical"
+                    app:spanCount="2"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/item_food_layout_adapter" />
+
+                <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Food"
+            android:textSize="@dimen/_26ssp"
+            android:fontFamily="@font/sfprodisplaybold"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_food_layout_adapter"
+            android:layout_marginTop="30dp"
+            android:id="@+id/id_rec_new_food"
+            android:layout_marginBottom="40dp"
+            />
+
+    </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:menu="@menu/menu_nav_home"
+        android:background="@color/green_background"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
+        android:id="@+id/id_nav_bar"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
