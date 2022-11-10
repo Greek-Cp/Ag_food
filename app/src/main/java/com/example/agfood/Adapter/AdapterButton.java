@@ -24,36 +24,29 @@ public class AdapterButton extends RecyclerView.Adapter<AdapterButton.ViewHolder
         this.listButtonName = listButtonName;
         this.adapterButtonClickListener = adapterButtonClickListener;
     }
-
     public interface AdapterButtonClickListener{
         void clickButtonListener(int positionOfButton);
     }
-
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_adapter_button, parent,false);
         return new ViewHolder(v);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.nameButton.setText(listButtonName.get(position).getNameButton());
         if(listButtonName.get(position).isClicked()){
-            holder.cardViewButton.setCardBackgroundColor(Color.parseColor("#e41277"));
+            holder.cardViewButton.setCardBackgroundColor(Color.parseColor("#FFA724"));
             holder.nameButton.setTextColor(Color.parseColor("#ffffff"));
         } else{
             holder.cardViewButton.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
             holder.nameButton.setTextColor(Color.parseColor("#000000"));
         }
     }
-
     @Override
     public int getItemCount() {
         return listButtonName.size();
     }
-
-
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         PressEffectCardView cardViewButton;
         TextView nameButton;

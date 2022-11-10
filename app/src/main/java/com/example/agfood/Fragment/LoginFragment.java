@@ -1,5 +1,7 @@
 package com.example.agfood.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -9,11 +11,22 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.agfood.API.APIRequestData;
+import com.example.agfood.API.BaseServerApp;
+import com.example.agfood.Model.ModelAccount;
+import com.example.agfood.Model.ModelResponseAccount;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentLoginBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import www.sanju.motiontoast.MotionToast;
 import www.sanju.motiontoast.MotionToastStyle;
 
@@ -66,19 +79,54 @@ public class LoginFragment extends Fragment {
 
     }
 
+    List<ModelAccount> listDataAccount = new ArrayList<>();
+    public void retrieveData(){
+        APIRequestData ardData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+        Call<ModelResponseAccount> displayData = ardData.ardRetriveDataAccount();
+        displayData.enqueue(new Callback<ModelResponseAccount>() {
+            @Override
+            public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                int kode = response.body().getKode();
+                String pesan = response.body().getPesan();
+                listDataAccount = response.body().getData();
+                System.out.println("Kode : " + kode + " Pesan : " + pesan);
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+                System.out.println("Failed !!" + t.getMessage() );
+            }
+        });
+    }
+
 
     void recolorTextView(){
-        Util.setCustomColorText(fragmentLoginBinding.idTvTittleApp,"AG", " FOOD","D2F81A");
-        Util.setCustomColorText(fragmentLoginBinding.idTvDoesntHaveAcc, "Don't have an account?",  " Sign Up","D2F81A");
+        Util.setCustomColorText(fragmentLoginBinding.idTvTittleApp,"AG", " FOOD","FFA724");
+        Util.setCustomColorText(fragmentLoginBinding.idTvDoesntHaveAcc, "Don't have an account?",  " Sign Up","FFA724");
     }
     void loginApp(){
         fragmentLoginBinding.idBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MotionToast.Companion.createColorToast(getActivity(), "Login Berhasil",
-                        "Login Telah Berhasl", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
-                        ));
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullLogin()).commit();
+                retrieveData();
+                for(ModelAccount modelAccount : listDataAccount){
+                    System.out.println("Data = " + modelAccount.getEmail());
+                    System.out.println("Password = " +modelAccount.getPassword());
+                    if(modelAccount.getEmail().equals(fragmentLoginBinding.idEditTextEmail.getText().toString())
+                            && modelAccount.getPassword().equals(fragmentLoginBinding.idEditTextPassword.getText().toString())){
+                        MotionToast.Companion.createColorToast(getActivity(), "Login Berhasil",
+                                "Login Telah Berhasl", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
+                                ));
+                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullLogin(modelAccount.getModelDetailAccount().getNamaLengkap())).commit();
+                        break;
+                    } else{
+                        MotionToast.Companion.createColorToast(getActivity(), "Login Gagal",
+                                "Harap Cek Email Dan Password Anda !", MotionToastStyle.ERROR,MotionToast.GRAVITY_CENTER,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
+                                ));
+                    }
+
+                }
+
             }
         });
         }

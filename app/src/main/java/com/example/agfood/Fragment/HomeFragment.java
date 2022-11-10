@@ -42,10 +42,16 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public HomeFragment() {
+    private String username;
+
+    public HomeFragment(String username) {
         // Required empty public constructor
+        this.username = username;
     }
 
+    public HomeFragment(){
+
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -56,7 +62,7 @@ public class HomeFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+        HomeFragment fragment = new HomeFragment("");
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,10 +70,8 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
     List<ModelFood> mListModelFood = UtilFood.getListFood();
-
     List<ModelButton> listButtonName = UtilFood.getListKategoriMenuMakanan();
     AdapterButton adapterButton;
-
     AdapterFoodPopular adapterFoodPopular;
     SharedPreferences sharedPreferences;
     void initializeDataKategory(){
@@ -85,23 +89,13 @@ public class HomeFragment extends Fragment {
                         initalizeAdapter();
                         adapterFoodPopular.notifyDataSetChanged();
                         break;
-                    case "Menu Reguler":
-                        break;
-                    case "Menu Medium":
-                        break;
-                    case "Menu Large":
-                        break;
-                    case "Menu Cemilan":
-                        mListModelFood = UtilFood.getListCemilan();
-                        initalizeAdapter();
-
-                        adapterFoodPopular.notifyDataSetChanged();
+                    case "Menu Makanan":
+                        mListModelFood = UtilFood.getListFood();
+                        Util.switchFragment(new FragmentViewMenuSelected("Makanan"),getActivity());
                         break;
                     case "Menu Minuman":
-                        mListModelFood = UtilFood.getListMinuman();
-                        initalizeAdapter();
-
-                        adapterFoodPopular.notifyDataSetChanged();
+                        mListModelFood = UtilFood.getListFood();
+                        Util.switchFragment(new FragmentViewMenuSelected("Minuman"),getActivity());
                         break;
                 }
                 if(listButtonName.get(positionOfButton).isClicked()){
@@ -134,7 +128,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void clickItemSelectedListener(int positionOfItemFoodSelected) {
                 ModelFood foodSelected = mListModelFood.get(positionOfItemFoodSelected);
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_out,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(foodSelected)).commit();
+                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(foodSelected,"HOME")).commit();
             }
         };
         adapterFoodPopular = new AdapterFoodPopular(mListModelFood,getActivity().getApplicationContext(),mAdapterFoodInterface);
@@ -147,7 +141,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragme
         mFragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false);
-        Util.setCustomColorText(mFragmentHomeBinding.idTvGrettingHome, "Good", "Morning","Diana" , "ffffff", "E41277");
+        Util.setCustomColorText(mFragmentHomeBinding.idTvGrettingHome, "Good", "Morning",this.username , "ffffff", "FFA724");
         initalizeAdapter();
         initializeDataKategory();
         mFragmentHomeBinding.idNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -159,6 +153,9 @@ public class HomeFragment extends Fragment {
                         break;
                     case R.id.id_nav_home:
                         Util.switchFragment(new HomeFragment(), getActivity());
+                        break;
+                    case R.id.id_nav_informas:
+                        Util.switchFragment(new FragmentViewInformasi(),  getActivity());
                         break;
                 }
                 return true;

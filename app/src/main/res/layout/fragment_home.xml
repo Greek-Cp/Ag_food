@@ -3,9 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +13,6 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,12 +47,12 @@
                             />
                         <ImageView
                             android:layout_width="@dimen/_245sdp"
-                            android:layout_height="@dimen/_220sdp"
+                            android:layout_height="@dimen/_210sdp"
                             android:src="@drawable/drw_seblak_home"
                             android:scaleType="fitXY"
                             app:layout_constraintStart_toEndOf="@+id/id_tv_gretting_home"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:translationX="-20dp"
+                            android:translationX="-0dp"
                             />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

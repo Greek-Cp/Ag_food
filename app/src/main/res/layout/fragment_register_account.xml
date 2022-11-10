@@ -55,92 +55,26 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="@dimen/_13sdp"
                 android:layout_marginRight="20dp"
-                android:hint="Username"
+                android:hint="Nama"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
+                app:counterMaxLength="20"
+                app:counterEnabled="true"
 
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
+                    android:maxLength="20"
                     android:textSize="@dimen/_10ssp"
-                    android:id="@+id/id_edit_text_username"
+                    android:id="@+id/id_edit_text_register_nama"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="@dimen/_13sdp"
-                android:layout_marginRight="20dp"
-                android:hint="Password"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-
-                >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:textSize="@dimen/_10ssp"
-                    android:id="@+id/id_edit_text_pasword"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="@dimen/_13sdp"
-                android:layout_marginRight="20dp"
-                android:hint="Nomor Handphone"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-
-                >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:textSize="@dimen/_10ssp"
-                    android:id="@+id/id_edit_text_nohp"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="@dimen/_13sdp"
-                android:layout_marginRight="20dp"
-                android:hint="Tanggal Lahir"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-
-                >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:textSize="@dimen/_10ssp"
-                    android:id="@+id/id_edit_text_tanggal_lahir"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -155,42 +89,61 @@
                 app:boxCornerRadiusTopStart="20dp"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
-
+                app:counterMaxLength="20"
+                app:counterEnabled="true"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:textSize="@dimen/_10ssp"
-                    android:id="@+id/id_edit_text_email"
+                    android:maxLength="20"
+
+                    android:id="@+id/id_edit_text_register_email"
                     />
             </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:layout_marginRight="20dp"
+                android:hint="Kata Sandi"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:counterMaxLength="20"
+                app:counterEnabled="true"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:textSize="@dimen/_10ssp"
+                    android:maxLength="20"
+
+                    android:id="@+id/id_edit_text_register_password"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="30dp"
-
                 android:backgroundTint="@color/green_background"
                 android:padding="@dimen/_15sdp"
-
-                android:text="Daftar"
+                android:text="Selanjutnya"
                 android:textAllCaps="false"
                 app:cornerRadius="20dp"
-                android:id="@+id/id_btn_login"
+                android:id="@+id/id_btn_selanjutnya"
                 />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dengan menekan tombol Daftar kamu setuju terhadap kebijakan privasi "
-                android:textColor="@color/color_gray"
-                android:textAlignment="center"
-                android:textSize="@dimen/_15ssp"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
 
-                />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

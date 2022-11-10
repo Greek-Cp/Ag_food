@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <com.animation.animpresseffect.PressEffectCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="@dimen/_130sdp"
             android:layout_height="match_parent"
@@ -21,8 +21,6 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_10sdp"
-            app:button_duration="100"
-            app:button_scale="0.3"
             app:cardCornerRadius="10dp"
             app:cardElevation="15dp"
             android:layout_marginTop="10dp"
@@ -155,7 +153,7 @@ app:cardCornerRadius="20dp"
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </com.animation.animpresseffect.PressEffectCardView>
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

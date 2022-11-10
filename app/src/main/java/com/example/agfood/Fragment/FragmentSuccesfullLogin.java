@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.airbnb.lottie.Lottie;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
@@ -33,9 +32,15 @@ public class FragmentSuccesfullLogin extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FragmentSuccesfullLogin() {
+    private String username;
+    public FragmentSuccesfullLogin(String username) {
         // Required empty public constructor
+        this.username = username;
     }
+    public FragmentSuccesfullLogin(){
+
+    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -75,7 +80,7 @@ public class FragmentSuccesfullLogin extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                Util.switchFragment(new HomeFragment(),getActivity());
+                Util.switchFragment(new HomeFragment(username),getActivity());
             }
             @Override
             public void onAnimationStart(Animator animation) {

@@ -10,7 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.R;
+import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentRegisterAccountBinding;
 
 public class FragmentRegisterAccount extends Fragment {
@@ -21,7 +23,29 @@ public class FragmentRegisterAccount extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new LoginFragment()).commit();
+                
             }
+        });
+        fragmentRegisterAccountBinding.idBtnSelanjutnya.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().length() == 0){
+                    fragmentRegisterAccountBinding.idEditTextRegisterEmail.setError("Email Tidak Boleh Kosong");
+                }
+                if(fragmentRegisterAccountBinding.idEditTextRegisterNama.getText().length() == 0){
+                    fragmentRegisterAccountBinding.idEditTextRegisterNama.setError("Nama Tidak Boleh Kosong !");
+                }
+                if(fragmentRegisterAccountBinding.idEditTextRegisterPassword.getText().length() == 0){
+                    fragmentRegisterAccountBinding.idEditTextRegisterPassword.setError("Password Tidak Boleh Kosong !");
+                }
+                if(fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().toString().length() > 5 && fragmentRegisterAccountBinding.idEditTextRegisterPassword.getText().toString().length()> 5 && fragmentRegisterAccountBinding.idEditTextRegisterNama.getText().length() > 5){
+                    ModelAccount modelAccount = new ModelAccount(fragmentRegisterAccountBinding.idEditTextRegisterNama.getText().toString(),
+                            fragmentRegisterAccountBinding.idEditTextRegisterPassword.getText().toString(),
+                            "User",fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().toString());
+                    Util.switchFragment(new FragmentDetailAkun(modelAccount),getActivity());
+                }
+
+                }
         });
         return fragmentRegisterAccountBinding.getRoot();
     }

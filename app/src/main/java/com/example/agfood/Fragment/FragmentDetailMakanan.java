@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.agfood.Adapter.AdapterCheckBoxTopping;
+import com.example.agfood.Adapter.AdapterTableDetailTopping;
 import com.example.agfood.Model.ModelFood;
 import com.example.agfood.Model.ModelTopping;
 import com.example.agfood.R;
@@ -42,8 +43,11 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
 
     private ModelFood mSelectedFoodModel;
 
-    public FragmentDetailMakanan(ModelFood modelFood){
+    private String fromView;
+    public FragmentDetailMakanan(ModelFood modelFood,String fromView){
         this.mSelectedFoodModel = modelFood;
+        this.fromView = fromView;
+        System.out.println("From view = " + fromView);
     }
     public FragmentDetailMakanan() {
         // Required empty public constructor
@@ -82,48 +86,58 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
     AdapterCheckBoxTopping adapterCheckBoxTopping;
     FragmentDetailMakananBinding fragmentDetailMakananBinding;
     private int totalFinalHargaTopping = 0;
+
    // static int TEST_HARGA_DEFAULT = 10000;
     void initalizeDataToppingForTest(){
-        if(listTopping == null){
-            listTopping = new ArrayList<>();
+        if(mSelectedFoodModel.getListModelTopping() == null){
+            if(listTopping == null){
+                listTopping = new ArrayList<>();
+            }
+            listTopping.add(new ModelTopping("Sosis", 2000, 1, false,R.drawable.ic_sosis));
+            listTopping.add(new ModelTopping("Telur", 2500, 1, false,R.drawable.ic_telur));
+            listTopping.add(new ModelTopping("Keju", 2500, 1, false,R.drawable.ic_keju));
+            listTopping.add(new ModelTopping("Sayuran", 3000, 1, false,R.drawable.ic_sosis));
+        } else{
+            listTopping = mSelectedFoodModel.getListModelTopping();
         }
-        listTopping.add(new ModelTopping("Sosis", 2000, 1, false));
-        listTopping.add(new ModelTopping("Telur", 2500, 1, false));
-        listTopping.add(new ModelTopping("Keju", 2500, 1, false));
-        listTopping.add(new ModelTopping("Sayuran", 3000, 1, false));
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
          fragmentDetailMakananBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.fragment_detail_makanan
         ,container, false);
         setDataDetailMakanan();
         initalizeDataToppingForTest();
+        initializeDataTopping();
         setCheckBoxForFood();
         crudOperation();
         return fragmentDetailMakananBinding.getRoot();
     }
+
+    /*
+
+     */
     void crudOperation(){
         fragmentDetailMakananBinding.idCardTambahPesanan.setOnClickListener(this);
         fragmentDetailMakananBinding.idCardKurangPesanan.setOnClickListener(this);
         fragmentDetailMakananBinding.btnDetailMakananTambahPesanan.setOnClickListener(this);
     }
-
     void setCheckBoxForFood(){
         mAdapterCheckBoxToppingInterface =  new AdapterCheckBoxTopping.AdapterToppingInteface() {
             @Override
             public void clickCheckBox(int position, boolean statusChecked) {
                 listTopping.get(position).setCheckboxCliked(statusChecked);
                 if(listTopping.get(position).isCheckboxCliked()){
-                    System.out.println("total harga topping " + listTopping.get(position).getTotalHargaTopping());
-                    totalFinalHargaTopping += listTopping.get(position).getTotalHargaTopping();
+                    System.out.println("total harga topping " + listTopping.get(position).getTotalHargaTopping()) ;
+                    totalFinalHargaTopping += listTopping.get(position).getTotalHargaTopping() * totalPesanan;
                     int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaFood();
                     updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
-                    System.out.println("Total Harga Topping Final = " + totalFinalHargaTopping);
+                    fragmentDetailMakananBinding.idTvDetailMakananHargaTopping.setText(String.valueOf(totalFinalHargaTopping));;
                 } else{
-                    totalFinalHargaTopping -= listTopping.get(position).getTotalHargaTopping();
+                    totalFinalHargaTopping -= listTopping.get(position).getTotalHargaTopping() * totalPesanan;;
                     int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaFood();
+                    fragmentDetailMakananBinding.idTvDetailMakananHargaTopping.setText(String.valueOf(totalFinalHargaTopping));
                     updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
                     System.out.println("Total Harga Topping Final = " + totalFinalHargaTopping);
                 }
@@ -141,7 +155,6 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
                     totalFinalHargaTopping += listTopping.get(position).getHargaTopping() * listTopping.get(position).getSatuanTopping();
                     System.out.println("Total Harga Topping Final = " + totalFinalHargaTopping);
                 }
-
                  */
                 System.out.println("Tambah Total Harga Topping = " + totalHargaTopping);
                 System.out.println(listTopping.get(position).getSatuanTopping()
@@ -163,6 +176,18 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
         adapterCheckBoxTopping = new AdapterCheckBoxTopping(listTopping, mAdapterCheckBoxToppingInterface);
         fragmentDetailMakananBinding.idRecCheckbox.setAdapter(adapterCheckBoxTopping);
     }
+    List<ModelTopping> listToppingSelected = new ArrayList<>();
+    void initializeDataTopping(){
+        if(listToppingSelected == null){
+            listToppingSelected = new ArrayList<>();
+        }
+        listToppingSelected.add(new ModelTopping("Nama Topping ",2000,1, false,123));
+
+        listToppingSelected.add(new ModelTopping("Sosis ",2000,1, false,123));
+        listToppingSelected.add(new ModelTopping("Tahu ",2000,1, false,123));
+        listToppingSelected.add(new ModelTopping("Martabak ",2000,1, false,123));
+
+     }
     void setDataDetailMakanan(){
         if(mSelectedFoodModel != null){
             fragmentDetailMakananBinding.idTvDetailMakananNamaMakanan.setText(mSelectedFoodModel.getNameFood());
@@ -178,6 +203,7 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
     }
 
     void updateHargaPesanan(int hargaMakanan , int hargaTopping){
+        System.out.println("Harga Topping = " + hargaTopping);
         int totalHargaPesanan = hargaMakanan + hargaTopping;
         fragmentDetailMakananBinding.idTvDetailMakananHargaPesanan.setText(String.valueOf(Util.convertToRupiah(totalHargaPesanan)));
     }
@@ -190,21 +216,31 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
         switch (view.getId()){
             case R.id.id_card_tambah_pesanan:
                 totalPesanan += 1;
-                fragmentDetailMakananBinding.idTvDetailMakananJumlahPesanan.setText(String.valueOf(totalPesanan));;
-                int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaFood();
+                fragmentDetailMakananBinding.idTvDetailMakananJumlahPesanan.setText(String.valueOf(totalPesanan));
+                int totalHargaMakanan;
+                if(totalFinalHargaTopping > 0){
+                    totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaFood() + totalFinalHargaTopping;
+                } else{
+                    totalHargaMakanan = totalPesanan* mSelectedFoodModel.getHargaFood();
+                }
+                System.out.println("total harga topping = " + totalFinalHargaTopping);
                 updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
                 break;
             case R.id.id_card_kurang_pesanan:
                 if(totalPesanan > 1){
                     totalPesanan -= 1;
-                    int totalHargaMakanans = totalPesanan * mSelectedFoodModel.getHargaFood();
+                    int totalHargaMakanans;
+                    if(totalFinalHargaTopping > 0){
+                        totalHargaMakanans = totalPesanan   * mSelectedFoodModel.getHargaFood();
+                    } else{
+                        totalHargaMakanans = totalPesanan * mSelectedFoodModel.getHargaFood();
+                    }
+                    System.out.println("total harga topping = " + totalFinalHargaTopping);
                     updateHargaPesanan(totalHargaMakanans, totalFinalHargaTopping);
                     fragmentDetailMakananBinding.idTvDetailMakananJumlahPesanan.setText(String.valueOf(totalPesanan));
                 }
                 break;
             case R.id.btn_detail_makanan_tambah_pesanan:
-
-
 /*
                 MotionToast.Companion.createColorToast(getActivity(), "Pesanan Dimasukan Kedalam Keranjang",
                         "Notifikasi Pesanan", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_CENTER,MotionToast.LONG_DURATION, ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
@@ -213,7 +249,17 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullyAddCart()).commit();
                 break;
             case R.id.id_btn_detail_makanan_back_button:
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new HomeFragment()).commit();
+                switch (fromView){
+                    case "HOME":
+                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new HomeFragment()).commit();
+                        break;
+                    case "Makanan":
+                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentViewMenuSelected(fromView)).commit();
+                        break;
+                    case "Minuman":
+                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentViewMenuSelected(fromView)).commit();
+                        break;
+                }
                 break;
             case R.id.idKeranjang:
                 Util.switchFragment(new FragmentKeranjang(), getActivity());

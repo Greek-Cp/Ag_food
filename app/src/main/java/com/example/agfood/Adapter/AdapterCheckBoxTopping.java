@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class AdapterCheckBoxTopping  extends RecyclerView.Adapter<AdapterCheckBo
     }
     @Override
     public void onBindViewHolder(@NonNull AdapterCheckBoxTopping.ViewHolder holder, int position) {
+        holder.imageViewTopping.setImageResource(listTopping.get(position).getImageTopping());
         holder.namaToping.setText(listTopping.get(position).getNamaTopping());
         holder.hargaToping.setText(String.valueOf(Util.convertToRupiah(hitungTotalHargaTopping(listTopping.get(position).getHargaTopping(), listTopping.get(position).getSatuanTopping()))));
         holder.kurang.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +72,6 @@ public class AdapterCheckBoxTopping  extends RecyclerView.Adapter<AdapterCheckBo
                 }
             }
         });
-
         holder.checkBoxTopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +80,7 @@ public class AdapterCheckBoxTopping  extends RecyclerView.Adapter<AdapterCheckBo
                     holder.cardViewAddToping.setVisibility(View.INVISIBLE);
                     holder.tambah.setVisibility(View.INVISIBLE);
                     holder.kurang.setVisibility(View.INVISIBLE);
-                    holder.cardViewRemoveTopping.setVisibility(View.INVISIBLE);
+
                     adapterToppingInteface.clickCheckBox(holder.getAdapterPosition(),true);
                 } else {
                     System.out.println("Un-Checked");
@@ -87,7 +88,6 @@ public class AdapterCheckBoxTopping  extends RecyclerView.Adapter<AdapterCheckBo
                     holder.cardViewAddToping.setVisibility(View.VISIBLE);
                     holder.tambah.setVisibility(View.VISIBLE);
                     holder.kurang.setVisibility(View.VISIBLE);
-                    holder.cardViewRemoveTopping.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -104,16 +104,18 @@ public class AdapterCheckBoxTopping  extends RecyclerView.Adapter<AdapterCheckBo
         CardView    cardViewAddToping ,cardViewRemoveTopping;
         TextView namaToping, hargaToping , tambah , kurang ,value;
         LinearLayout layoutContainerTambahToppingDanKurangToping;
+        ImageView imageViewTopping;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageViewTopping = itemView.findViewById(R.id.id_image_topping);
             checkBoxTopping = itemView.findViewById(R.id.id_check_box_topping);
             namaToping = itemView.findViewById(R.id.id_tv_nama_topping);
             hargaToping = itemView.findViewById(R.id.id_tv_harga_topping);
             tambah = itemView.findViewById(R.id.id_tv_tambah_item_keranjang);
             kurang = itemView.findViewById(R.id.id_tv_kurang_item_keranjang);
             value = itemView.findViewById(R.id.id_tv_jumlah_item_keranjang);
-            cardViewAddToping = itemView.findViewById(R.id.card_add_item);
-            cardViewRemoveTopping = itemView.findViewById(R.id.card_min_item);
+            cardViewAddToping = itemView.findViewById(R.id.id_card_container_add_min_topping);
             layoutContainerTambahToppingDanKurangToping = itemView.findViewById(R.id.id_container_button_add_topping);
             itemView.setOnClickListener(this);
         }
