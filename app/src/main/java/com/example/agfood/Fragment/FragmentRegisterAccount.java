@@ -39,10 +39,11 @@ public class FragmentRegisterAccount extends Fragment {
                     fragmentRegisterAccountBinding.idEditTextRegisterPassword.setError("Password Tidak Boleh Kosong !");
                 }
                 if(fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().toString().length() > 5 && fragmentRegisterAccountBinding.idEditTextRegisterPassword.getText().toString().length()> 5 && fragmentRegisterAccountBinding.idEditTextRegisterNama.getText().length() > 5){
+                    System.out.println("Alamat = " + fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().toString());
                     ModelAccount modelAccount = new ModelAccount(fragmentRegisterAccountBinding.idEditTextRegisterNama.getText().toString(),
-                            fragmentRegisterAccountBinding.idEditTextRegisterPassword.getText().toString(),
-                            "User",fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().toString());
-                    Util.switchFragment(new FragmentDetailAkun(modelAccount),getActivity());
+                            fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().toString(),
+                            fragmentRegisterAccountBinding.idEditTextRegisterPassword.getText().toString(),"user");
+                    Util.switchFragment(new FragmentDetailAkunRegister(modelAccount),getActivity());
                 }
 
                 }

@@ -17,6 +17,7 @@ import com.example.agfood.API.APIRequestData;
 import com.example.agfood.API.BaseServerApp;
 import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.Model.ModelResponseAccount;
+import com.example.agfood.Model.ModelRetrieveAccount;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentLoginBinding;
@@ -79,7 +80,7 @@ public class LoginFragment extends Fragment {
 
     }
 
-    List<ModelAccount> listDataAccount = new ArrayList<>();
+    List<ModelRetrieveAccount> listDataAccount = new ArrayList<>();
     public void retrieveData(){
         APIRequestData ardData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
         Call<ModelResponseAccount> displayData = ardData.ardRetriveDataAccount();
@@ -89,6 +90,7 @@ public class LoginFragment extends Fragment {
                 int kode = response.body().getKode();
                 String pesan = response.body().getPesan();
                 listDataAccount = response.body().getData();
+
                 System.out.println("Kode : " + kode + " Pesan : " + pesan);
             }
 
@@ -109,7 +111,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 retrieveData();
-                for(ModelAccount modelAccount : listDataAccount){
+                for(ModelRetrieveAccount modelAccount : listDataAccount){
                     System.out.println("Data = " + modelAccount.getEmail());
                     System.out.println("Password = " +modelAccount.getPassword());
                     if(modelAccount.getEmail().equals(fragmentLoginBinding.idEditTextEmail.getText().toString())
@@ -142,6 +144,7 @@ public class LoginFragment extends Fragment {
                  getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentRegisterAccount()).commit();
              }
          });
+
          recolorTextView();
          loginApp();
          return fragmentLoginBinding.getRoot();

@@ -144,24 +144,7 @@ public class HomeFragment extends Fragment {
         Util.setCustomColorText(mFragmentHomeBinding.idTvGrettingHome, "Good", "Morning",this.username , "ffffff", "FFA724");
         initalizeAdapter();
         initializeDataKategory();
-        mFragmentHomeBinding.idNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.id_nav_keranjang:
-                        Util.switchFragment(new FragmentKeranjang(), getActivity());
-                        break;
-                    case R.id.id_nav_home:
-                        Util.switchFragment(new HomeFragment(), getActivity());
-                        break;
-                    case R.id.id_nav_informas:
-                        Util.switchFragment(new FragmentViewInformasi(),  getActivity());
-                        break;
-                }
-                return true;
-
-            }
-        });
+        Util.showNavBottom(getActivity());
         return mFragmentHomeBinding.getRoot();
     }
 }

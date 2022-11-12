@@ -1,5 +1,7 @@
 package com.example.agfood.Fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -11,14 +13,14 @@ import android.view.ViewGroup;
 
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
-import com.example.agfood.databinding.FragmentSplashScreenBinding;
+import com.example.agfood.databinding.FragmentSuccesRegisterAlertBinding;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SplashScreenFragment#newInstance} factory method to
+ * Use the {@link FragmentSuccesRegisterAlert#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SplashScreenFragment extends Fragment implements View.OnClickListener{
+public class FragmentSuccesRegisterAlert extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +31,7 @@ public class SplashScreenFragment extends Fragment implements View.OnClickListen
     private String mParam1;
     private String mParam2;
 
-    public SplashScreenFragment() {
+    public FragmentSuccesRegisterAlert() {
         // Required empty public constructor
     }
 
@@ -39,11 +41,11 @@ public class SplashScreenFragment extends Fragment implements View.OnClickListen
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SplashScreenFragment.
+     * @return A new instance of fragment FragmentSuccesRegisterAlert.
      */
     // TODO: Rename and change types and number of parameters
-    public static SplashScreenFragment newInstance(String param1, String param2) {
-        SplashScreenFragment fragment = new SplashScreenFragment();
+    public static FragmentSuccesRegisterAlert newInstance(String param1, String param2) {
+        FragmentSuccesRegisterAlert fragment = new FragmentSuccesRegisterAlert();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -60,24 +62,19 @@ public class SplashScreenFragment extends Fragment implements View.OnClickListen
         }
     }
 
+    FragmentSuccesRegisterAlertBinding binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragmen
-        FragmentSplashScreenBinding fragmentSplashScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash_screen,container,false);
-        fragmentSplashScreenBinding.idBtnNext.setOnClickListener(this);
-        Util.setCustomColorText(fragmentSplashScreenBinding.idTvIntro, "AG ", "FOOD", "e41277");
-        Util.hiddenNavBottom(getActivity());
-        return fragmentSplashScreenBinding.getRoot();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.id_btn_next:
+        // Inflate the layout for this fragment
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_succes_register_alert,container,false);
+        binding.idLottieRegisterSuccess.addAnimatorListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
                 Util.switchFragment(new LoginFragment(), getActivity());
-                break;
-
-        }
+            }
+        });
+        return binding.getRoot();
     }
 }

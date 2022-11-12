@@ -15,7 +15,9 @@ import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.Model.ModelDetailAccount;
 import com.example.agfood.Model.ModelResponseAccount;
 import com.example.agfood.R;
+import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentDetailAkunBinding;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,10 +25,10 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentDetailAkun#newInstance} factory method to
+ * Use the {@link FragmentDetailAkunRegister#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentDetailAkun extends Fragment {
+public class FragmentDetailAkunRegister extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,11 +40,11 @@ public class FragmentDetailAkun extends Fragment {
     private String mParam2;
 
     ModelAccount modelAccount;
-    public FragmentDetailAkun(ModelAccount modelAccount) {
+    public FragmentDetailAkunRegister(ModelAccount modelAccount) {
         // Required empty public constructor
         this.modelAccount = modelAccount;
     }
-    public FragmentDetailAkun(){
+    public FragmentDetailAkunRegister(){
 
     }
 
@@ -55,8 +57,8 @@ public class FragmentDetailAkun extends Fragment {
      * @return A new instance of fragment FragmentDetailAkun.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentDetailAkun newInstance(String param1, String param2) {
-        FragmentDetailAkun fragment = new FragmentDetailAkun();
+    public static FragmentDetailAkunRegister newInstance(String param1, String param2) {
+        FragmentDetailAkunRegister fragment = new FragmentDetailAkunRegister();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -79,28 +81,46 @@ public class FragmentDetailAkun extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragmentDetailAkunBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_akun, container, false);
-        ModelDetailAccount modelDetailAccount = new ModelDetailAccount(fragmentDetailAkunBinding.idEditTextDetailRegisterNamaLengkap.getText().toString(),fragmentDetailAkunBinding.idEditTextDetailRegisterNomorHandphone.getText().toString(), fragmentDetailAkunBinding.idEditTextDetailRegisterNomorHandphone.getText().toString());
-        modelAccount.setModelDetailAccount(modelDetailAccount);
-        APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
-        Call<ModelResponseAccount> simpanData = apiRequestData.arcReateData(modelAccount.getUsername(),modelAccount.getPassword(),"user", modelDetailAccount.getAlamat(), modelDetailAccount.getNamaLengkap(),modelDetailAccount.getNoHp(),modelAccount.getEmail());
+              Gson gson1 = new Gson();
         fragmentDetailAkunBinding.idBtnDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ModelDetailAccount modelDetailAccount =
+                        new ModelDetailAccount(
+                                fragmentDetailAkunBinding.idEditTextDetailRegisterNamaLengkap.getText().toString(),
+                                fragmentDetailAkunBinding.idEditTextDetailRegisterNomorHandphone.getText().toString(),
+                                fragmentDetailAkunBinding.idEditTextDetailRegisterAlamat.getText().toString());
+
+                APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+                modelAccount.setNamaLengkap(modelDetailAccount.getNamaLengkap());
+                modelAccount.setNoHP(modelDetailAccount.getNoHp());
+                modelAccount.setAlamat(modelDetailAccount.getAlamat());
+                Call<ModelResponseAccount> simpanData = apiRequestData
+                        .arcReateData(modelAccount.getUsername(),
+                                modelAccount.getEmail(),
+                                modelAccount.getPassword(),"user",
+                                modelDetailAccount.getNamaLengkap(),modelDetailAccount.getNoHp(),modelAccount.getAlamat());
+                Gson gson = new Gson();
+                System.out.println(gson.toJson(modelAccount) + "========");
                 simpanData.enqueue(new Callback<ModelResponseAccount>() {
                     @Override
                     public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
                         System.out.println("Kode " + response.body().getKode());
-
+                        if(response.body().getKode() == 1){
+                            Util.switchFragment(new FragmentSuccesRegisterAlert(), getActivity());
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+                            System.out.println(t.getMessage() + " t" + t.getLocalizedMessage());
                         System.out.println("Failed !!" + t.getMessage() );
+
                     }
                 });
+
             }
         });
-
         return fragmentDetailAkunBinding.getRoot();
     }
 }

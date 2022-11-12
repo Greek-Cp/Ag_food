@@ -72,6 +72,8 @@
                     android:maxLength="20"
                     android:textSize="@dimen/_10ssp"
                     android:id="@+id/id_edit_text_register_nama"
+                    android:text="aowakwokaw t"
+
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +99,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:textSize="@dimen/_10ssp"
                     android:maxLength="20"
-
+                    android:text="ini email c"
                     android:id="@+id/id_edit_text_register_email"
                     />
             </com.google.android.material.textfield.TextInputLayout>
@@ -122,7 +124,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:textSize="@dimen/_10ssp"
                     android:maxLength="20"
-
+                    android:text="wuilah ini password"
                     android:id="@+id/id_edit_text_register_password"
                     />
             </com.google.android.material.textfield.TextInputLayout>

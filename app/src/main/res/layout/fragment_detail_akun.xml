@@ -71,7 +71,7 @@
                         android:textSize="@dimen/_10ssp"
                         android:id="@+id/id_edit_text_detail_register_nama_lengkap"
                         android:maxLength="20"
-
+                        android:text="Ruten BUrg full nama"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,6 +95,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:textSize="@dimen/_10ssp"
+                        android:text="69696969"
                         android:id="@+id/id_edit_text_detail_register_nomor_handphone"
                         android:maxLength="20"
 
@@ -109,6 +110,7 @@
                     android:layout_marginTop="@dimen/_13sdp"
                     android:layout_marginRight="20dp"
                     android:hint="Alamat"
+
                     app:boxCornerRadiusBottomEnd="20dp"
                     app:boxCornerRadiusBottomStart="20dp"
                     app:boxCornerRadiusTopEnd="20dp"
@@ -123,7 +125,8 @@
                         android:layout_height="@dimen/_40sdp"
                         android:textSize="@dimen/_10ssp"
                         android:maxLength="20"
-                        android:id="@+id/id_edit_text_detail_register_email"
+                        android:id="@+id/id_edit_text_detail_register_alamat"
+                        android:text="ii lokasi alamat luh "
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 

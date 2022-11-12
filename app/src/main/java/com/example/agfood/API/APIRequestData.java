@@ -1,5 +1,6 @@
 package com.example.agfood.API;
 
+import com.example.agfood.Model.ModelDetailAccount;
 import com.example.agfood.Model.ModelResponseAccount;
 
 import retrofit2.Call;
@@ -12,17 +13,14 @@ public interface APIRequestData {
 
     @GET("retrieve.php")
     Call<ModelResponseAccount> ardRetriveDataAccount();
-
     @FormUrlEncoded
     @POST("create.php")
-
     Call<ModelResponseAccount> arcReateData(
             @Field("username") String username
-            ,@Field("password") String password ,
+            , @Field("email") String email
+            ,@Field("password_akun") String password ,
             @Field("kedudukan") String kedudukan ,
-            @Field("alamat") String alamat,
-            @Field("nama_user") String namaUser,
+            @Field("namaLengkap") String namaLengkap,
             @Field("noHp") String noHp ,
-            @Field("email") String email);
-
+            @Field("alamat") String alamat);
 }
