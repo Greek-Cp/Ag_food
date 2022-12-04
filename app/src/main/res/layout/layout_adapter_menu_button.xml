@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/id_container_menu_view_account"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        app:cardBackgroundColor="@color/red_color"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/id_adapter_profile_menu_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_menu_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Akun Saya"
+        app:layout_constraintLeft_toRightOf="@id/id_container_menu_view_account"
+        app:layout_constraintTop_toTopOf="@id/id_container_menu_view_account"
+        app:layout_constraintBottom_toBottomOf="@id/id_container_menu_view_account"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sfprodisplayregular"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/black"
+        android:id="@+id/id_adapter_profile_menu_name"
+        />
+
+    <ImageView
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:src="@drawable/ic_menu_right_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/id_adapter_profile_menu_name"
+        android:layout_marginRight="20dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/id_adapter_profile_menu_name"
+        app:layout_constraintTop_toTopOf="@+id/id_adapter_profile_menu_name" />
+</androidx.constraintlayout.widget.ConstraintLayout>
