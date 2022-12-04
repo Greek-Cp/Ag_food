@@ -1,13 +1,17 @@
 package com.example.agfood.Util;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.Display;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,12 +21,22 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.agfood.API.APIRequestData;
+import com.example.agfood.API.BaseServerApp;
+import com.example.agfood.Model.ModelAccount;
+import com.example.agfood.Model.ModelBarang;
+import com.example.agfood.Model.ModelRetrieveAccount;
 import com.example.agfood.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
+
 
 public class Util {
 
@@ -55,5 +69,35 @@ public class Util {
             Locale myIndonesianLocale = new Locale("in", "ID");
             NumberFormat formater = NumberFormat.getCurrencyInstance(myIndonesianLocale);
         return formater.format(totalRupiah).replace(",00" ,"");
+    }
+    public static void saveDataListPrefences(SharedPrefDetail sharedPrefDetail,Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefDetail.getNameSharedPref(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        System.out.println(sharedPrefDetail.getSerializeDataList() + "save list");
+        editor.putString(sharedPrefDetail.getNameKey(), sharedPrefDetail.getSerializeDataList());
+        editor.commit();
+        System.out.println("Pref name = " + sharedPrefDetail.getNameSharedPref());
+        System.out.println("Key name = " + sharedPrefDetail.getNameKey());
+        System.out.println("get pref = " + sharedPreferences.getString(sharedPrefDetail.getNameKey(), ""));
+    }
+    public static ModelAccount getCurrentAccount(SharedPrefDetail sharedPrefDetail,Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefDetail.getNameSharedPref(), Context.MODE_PRIVATE);
+        Type typeAccount = new TypeToken<ModelAccount>(){}.getType();
+        Gson gson = new Gson();
+        System.out.println("account = " + sharedPrefDetail.getNameSharedPref());
+        System.out.println("account key = " + sharedPrefDetail.getNameKey());
+        ModelAccount account =gson.fromJson(sharedPreferences.getString(sharedPrefDetail.getNameKey(), ""),typeAccount);
+        return account;
+    }
+    public static APIRequestData getApiRequetData(){
+        APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+        return apiRequestData;
+    }
+    public static List<ModelBarang> getListMenuMakanDariPref(SharedPrefDetail sharedPrefDetail, Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefDetail.getNameSharedPref(), Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Type typeMenuMakanan = new TypeToken<List<ModelBarang>>(){}.getType();
+        List<ModelBarang> listBarang = gson.fromJson(sharedPreferences.getString(sharedPrefDetail.getNameKey(),"" ), typeMenuMakanan);
+        return listBarang;
     }
 }

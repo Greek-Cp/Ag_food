@@ -8,13 +8,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_card">#FFFFFF</color>
-    <color name="green_background">#FFA724</color>
-    <color name="color_gray">#ADADAD</color>
+    <color name="color_gray_verification">#B9B9B9</color>
+    <color name="green_background">#FF0A36</color>
+    <color name="color_gray">#f0f0f0</color>
     <color name="background_add_button">#D9D9D9</color>
     <color name="color_line">#A9A9A9</color>
-    <color name="red_color">#F81A1A</color>
+    <color name="red_color">#ff4552</color>
     <color name="bg_card_tersedia">#e6f2ed</color>
     <color name="bg_card_tidak_tersedia">#F7D5D5</color>
     <color name="text_color_tidak_tersedia">#AD77A8</color>
     <color name="text_color_tersedia">#0ba55b</color>
+    <color name="text_color_metode_pesanan">#008FC2</color>
+    <color name="color_background_metode_pesanan">#F0FBFF</color>
+    <color name="color_stroke_metode_pesanan">#F0FBFF</color>
 </resources>

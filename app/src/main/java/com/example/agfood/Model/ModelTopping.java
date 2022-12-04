@@ -7,9 +7,18 @@ public class ModelTopping {
     private int totalHargaTopping;
     private boolean isCheckboxCliked = false;
     private int imageTopping;
-
+    private String uriImageTopping;
     public int getImageTopping() {
         return imageTopping;
+    }
+
+    public String getUriImageTopping() {
+
+        return uriImageTopping;
+    }
+
+    public void setUriImageTopping(String uriImageTopping) {
+        this.uriImageTopping = uriImageTopping;
     }
 
     public void setImageTopping(int imageTopping) {
@@ -25,6 +34,14 @@ public class ModelTopping {
         this.imageTopping = imageTopping;
     }
 
+    public ModelTopping(String namaTopping, int hargaTopping, int satuanTopping, boolean isCheckboxCliked, String uriImage) {
+        this.namaTopping = namaTopping;
+        this.hargaTopping = hargaTopping;
+        this.satuanTopping = satuanTopping;
+        this.isCheckboxCliked = isCheckboxCliked;
+        this.totalHargaTopping = satuanTopping * hargaTopping;
+        this.uriImageTopping = uriImage;
+    }
 
     public int getTotalHargaTopping() {
         return totalHargaTopping;

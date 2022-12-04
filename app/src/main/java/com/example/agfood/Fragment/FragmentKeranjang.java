@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,69 +14,137 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agfood.Adapter.AdapterCart;
+import com.example.agfood.DataModel.ModelResponseAccount;
+import com.example.agfood.Model.ModelAccount;
+import com.example.agfood.Model.ModelBarang;
 import com.example.agfood.Model.ModelFood;
 import com.example.agfood.Model.ModelKeranjang;
+import com.example.agfood.Model.ModelResponseBarang;
 import com.example.agfood.R;
+import com.example.agfood.Util.SharedPrefDetail;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentKeranjangBinding;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class FragmentKeranjang extends Fragment {
     FragmentKeranjangBinding fragmentKeranjangBinding;
-    List<ModelKeranjang> listDataKeranjang;
+    List<ModelKeranjang> listDataKeranjang = new ArrayList<>();
     AdapterCart adapterCart;
     void testDataKeranjang(){
-        listDataKeranjang = new ArrayList<>();
-        ModelFood martabakAsin = new ModelFood("Martaba Asin", 30, 3000, R.drawable.food_img_1);
-        martabakAsin.setTotalStockFood(4);
-        martabakAsin.setHargaFood(4000);
-        ModelFood nasiGorengAsin = new ModelFood("Nasi Goreng Asin", 10, 3000, R.drawable.food_img_2);
-        nasiGorengAsin.setTotalStockFood(4);
-        nasiGorengAsin.setHargaFood(4000);
-        listDataKeranjang.add(new ModelKeranjang(martabakAsin));
-        listDataKeranjang.add(new ModelKeranjang(nasiGorengAsin));
+
+}
+    ModelAccount mdl;
+    public FragmentKeranjang(ModelAccount mdlAccount){
+        this.mdl = mdlAccount;
     }
+    public FragmentKeranjang(){
+
+    }
+    UtilPref utilPref = new UtilPref();
+    int st = 1 , sr = 1;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentKeranjangBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.fragment_keranjang, container, false);
+        SharedPrefDetail sharedPrefDetailAccount = utilPref.accountPrefences;
+        Util.hiddenNavBottom(getActivity());
+        mdl = Util.getCurrentAccount(sharedPrefDetailAccount, getActivity());
         testDataKeranjang();
-        AdapterCart.AdapterCartInterface adapterCartInterface = new AdapterCart.AdapterCartInterface() {
-            @Override
-            public void tambahPesanan(int positionPesanan, int jumlah) {
-                jumlah += 1;
-                listDataKeranjang.get(positionPesanan).getSelectedFood().setTotalStockFood(jumlah);
-                adapterCart.notifyDataSetChanged();
-            }
 
+        Util.getApiRequetData().getKeranjangUser(mdl.getIdAkun()).enqueue(new Callback<ModelResponseBarang>() {
             @Override
-            public void kurangPesanan(int positionPesanan, int jumlah) {
-                jumlah -= 1;
-                listDataKeranjang.get(positionPesanan).getSelectedFood().setTotalStockFood(jumlah);
-                adapterCart.notifyDataSetChanged();
-            }
-
-            @Override
-            public void checkBoxItemSelected(int position, boolean statusCheckbox) {
-                listDataKeranjang.get(position).setStatusCheckBoxChecked(statusCheckbox);
-                if(listDataKeranjang.get(position).isStatusCheckBoxChecked()){
-                    System.out.print("Ter Klik");
-                } else{
-                    System.out.print("Tidak Di Pilih");
+            public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                List<ModelBarang> mdlBarang = response.body().getDataBarang();
+                System.out.println(new Gson().toJson(mdlBarang) + "DATA BARANG");
+                for(ModelBarang objBrg : mdlBarang){
+                    listDataKeranjang.add(new ModelKeranjang(objBrg));
                 }
-                adapterCart.notifyDataSetChanged();
+
+                AdapterCart.AdapterCartInterface adapterCartInterface = new AdapterCart.AdapterCartInterface() {
+                    @Override
+                    public void tambahPesanan(int positionPesanan) {
+                        int l = listDataKeranjang.get(positionPesanan).getSelectedFood().getHargaOriginal() * st;
+
+                                System.out.println(l + " HARGA SAAT INI TAMBAH");
+                        int curJmlh = listDataKeranjang.get(positionPesanan).getSelectedFood().getTotalItemKeranjang() + 1;
+                        int hrgFinal = l + listDataKeranjang.get(positionPesanan).getSelectedFood().getHarga();
+                        System.out.println("Test = " + hrgFinal );
+                        listDataKeranjang.get(positionPesanan).getSelectedFood().setTotalItemKeranjang(curJmlh);
+                        adapterCart.notifyDataSetChanged();
+                        st++;
+                    }
+                    @Override
+                    public void kurangPesanan(int positionPesanan) {
+                        int l = listDataKeranjang.get(positionPesanan).getSelectedFood().getHargaOriginal() * st;
+                        System.out.println(l + " HARGA SAAT INI KURANG");
+                       // int hrgFinal = l - listDataKeranjang.get(positionPesanan).getSelectedFood().getHarga();
+                        System.out.println("L kurang = " + l);
+                       // System.out.println("Test = " + hrgFinal );
+                        int curJmlh = listDataKeranjang.get(positionPesanan).getSelectedFood().getTotalItemKeranjang() - 1;
+                        System.out.println("Test = " + curJmlh);
+                        listDataKeranjang.get(positionPesanan).getSelectedFood().setTotalItemKeranjang(curJmlh);
+                        adapterCart.notifyDataSetChanged();
+                        st--;
+
+                    }
+
+                    @Override
+                    public void checkBoxItemSelected(int position, boolean statusCheckbox) {
+                        listDataKeranjang.get(position).setStatusCheckBoxChecked(statusCheckbox);
+                        if(listDataKeranjang.get(position).isStatusCheckBoxChecked()){
+                            System.out.print("Ter Klik");
+                        } else{
+                            System.out.print("Tidak Di Pilih");
+                        }
+                        adapterCart.notifyDataSetChanged();
+                    }
+                };
+                fragmentKeranjangBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Util.switchFragment(new HomeFragment(), getActivity());
+                    }
+                });
+                fragmentKeranjangBinding.idCheckBoxSemuaKeranjang.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                      for(int i = 0; i < listDataKeranjang.size(); i++){
+                            if(listDataKeranjang.get(i).isStatusCheckBoxChecked() == false){
+                                listDataKeranjang.get(i).setStatusCheckBoxChecked(true);
+                                System.out.println(new Gson().toJson(listDataKeranjang.get(i)) + " sTTS");
+                                adapterCart.notifyDataSetChanged();
+                            } else if(listDataKeranjang.get(i).isStatusCheckBoxChecked() == true){
+                                listDataKeranjang.get(i).setStatusCheckBoxChecked(false);
+                                System.out.println(new Gson().toJson(listDataKeranjang.get(i)) + " sTTS");
+                                adapterCart.notifyDataSetChanged();
+
+                            }
+
+                        }
+                        adapterCart = new AdapterCart(listDataKeranjang,adapterCartInterface);
+                        fragmentKeranjangBinding.idRecKeranjang.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), RecyclerView.VERTICAL,false));
+                        fragmentKeranjangBinding.idRecKeranjang.setAdapter(adapterCart);
+                        adapterCart.notifyDataSetChanged();
+                    }
+                });
+                adapterCart = new AdapterCart(listDataKeranjang,adapterCartInterface);
+                fragmentKeranjangBinding.idRecKeranjang.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), RecyclerView.VERTICAL,false));
+                fragmentKeranjangBinding.idRecKeranjang.setAdapter(adapterCart);
             }
-        };
-        fragmentKeranjangBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                Util.switchFragment(new HomeFragment(), getActivity());
+            public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+                Toast.makeText(getActivity().getApplicationContext(),"ERROR " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-         adapterCart = new AdapterCart(listDataKeranjang,adapterCartInterface);
-        fragmentKeranjangBinding.idRecKeranjang.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), RecyclerView.VERTICAL,false));
-        fragmentKeranjangBinding.idRecKeranjang.setAdapter(adapterCart);
+
         return  fragmentKeranjangBinding.getRoot();
     }
 }

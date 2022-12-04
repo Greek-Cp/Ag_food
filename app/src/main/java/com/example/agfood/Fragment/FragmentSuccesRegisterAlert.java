@@ -68,13 +68,19 @@ public class FragmentSuccesRegisterAlert extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_succes_register_alert,container,false);
-        binding.idLottieRegisterSuccess.addAnimatorListener(new AnimatorListenerAdapter() {
+        binding.idLottieVerifSuccess.addAnimatorListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                Util.switchFragment(new LoginFragment(), getActivity());
+                    Util.switchFragment(getActivity().getSupportFragmentManager(),new LoginFragment() , "");
             }
         });
+        Util.hiddenNavBottom(getActivity());
         return binding.getRoot();
     }
 }

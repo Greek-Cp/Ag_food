@@ -1,7 +1,5 @@
 package com.example.agfood.Fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -11,12 +9,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.agfood.API.APIRequestData;
 import com.example.agfood.API.BaseServerApp;
+import com.example.agfood.DataModel.ModelResponseAccount;
 import com.example.agfood.Model.ModelAccount;
-import com.example.agfood.Model.ModelResponseAccount;
 import com.example.agfood.Model.ModelRetrieveAccount;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
@@ -37,8 +34,6 @@ import www.sanju.motiontoast.MotionToastStyle;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -82,24 +77,7 @@ public class LoginFragment extends Fragment {
 
     List<ModelRetrieveAccount> listDataAccount = new ArrayList<>();
     public void retrieveData(){
-        APIRequestData ardData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
-        Call<ModelResponseAccount> displayData = ardData.ardRetriveDataAccount();
-        displayData.enqueue(new Callback<ModelResponseAccount>() {
-            @Override
-            public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
-                int kode = response.body().getKode();
-                String pesan = response.body().getPesan();
-                listDataAccount = response.body().getData();
-
-                System.out.println("Kode : " + kode + " Pesan : " + pesan);
-            }
-
-            @Override
-            public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
-                System.out.println("Failed !!" + t.getMessage() );
-            }
-        });
-    }
+        }
 
 
     void recolorTextView(){
@@ -111,7 +89,28 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 retrieveData();
-                for(ModelRetrieveAccount modelAccount : listDataAccount){
+                APIRequestData ardData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+                Call<ModelResponseAccount> getLoginResponse = ardData.loginAccount(fragmentLoginBinding.idEditTextEmail.getText().toString(), fragmentLoginBinding.idEditTextPassword.getText().toString());
+                getLoginResponse.enqueue(new Callback<ModelResponseAccount>() {
+                    @Override
+                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                        System.out.println(response.body().kode + " kode");
+                        if(response.body().kode == 3){
+                            Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentSendOtp(response.body().getDetail_account().get(0),2),"" );
+                        } else if (response.body().kode == 1){
+                            MotionToast.Companion.createColorToast(getActivity(), "Login Berhasil",
+                                    "Login Telah Berhasl", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
+                                    ));
+                            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullLogin(response.body().getDetail_account().get(0))).commit();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+                    }
+                });
+                /*
+                  for(ModelRetrieveAccount modelAccount : listDataAccount){
                     System.out.println("Data = " + modelAccount.getEmail());
                     System.out.println("Password = " +modelAccount.getPassword());
                     if(modelAccount.getEmail().equals(fragmentLoginBinding.idEditTextEmail.getText().toString())
@@ -119,7 +118,7 @@ public class LoginFragment extends Fragment {
                         MotionToast.Companion.createColorToast(getActivity(), "Login Berhasil",
                                 "Login Telah Berhasl", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
                                 ));
-                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullLogin(modelAccount.getModelDetailAccount().getNamaLengkap())).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullLogin(modelAccount)).commit();
                         break;
                     } else{
                         MotionToast.Companion.createColorToast(getActivity(), "Login Gagal",
@@ -128,6 +127,8 @@ public class LoginFragment extends Fragment {
                     }
 
                 }
+                 */
+
 
             }
         });
@@ -138,13 +139,20 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          fragmentLoginBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_login, container,false);
+         getActivity().findViewById(R.id.id_nav_bar).setVisibility(View.INVISIBLE);
+
          fragmentLoginBinding.idTvDoesntHaveAcc.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                  getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentRegisterAccount()).commit();
              }
          });
-
+        fragmentLoginBinding.idTextViewLupaPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentResetPassword(),"FRAGMENT_RESET_PASSWORD");
+            }
+        });
          recolorTextView();
          loginApp();
          return fragmentLoginBinding.getRoot();

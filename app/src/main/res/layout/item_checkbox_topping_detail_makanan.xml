@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+
     <CheckBox
         android:id="@+id/id_check_box_topping"
         android:layout_width="wrap_content"
@@ -13,136 +14,104 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/id_card_detail_makanan"
-        android:layout_width="0dp"
+
+    <TextView
+        android:id="@+id/id_tv_nama_topping"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="5dp"
-        android:layout_marginRight="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
+        android:fontFamily="@font/sfprodisplaybold"
+        android:maxWidth="@dimen/_87sdp"
+        android:text="Burger Chicken"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/id_check_box_topping"
         app:layout_constraintStart_toEndOf="@+id/id_check_box_topping"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/id_check_box_topping" />
+
+    <TextView
+        android:id="@+id/id_tv_harga_topping"
+        android:layout_width="52dp"
+        android:layout_height="17dp"
+        android:fontFamily="@font/sfprodisplayregular"
+        android:text="Rp.2000"
+
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/id_tv_nama_topping" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/id_card_container_add_min_topping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#f6f5f8"
+        app:cardCornerRadius="10dp"
+        android:layout_marginRight="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/id_tv_harga_topping"
+        app:layout_constraintEnd_toStartOf="@+id/id_tv_harga_topping"
+        app:layout_constraintTop_toTopOf="@+id/id_tv_harga_topping">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_marginStart="30dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/cemilan_burger_ayam"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/id_image_topping"
-
-                />
 
             <TextView
-                android:id="@+id/id_tv_nama_topping"
+                android:id="@+id/id_tv_kurang_item_keranjang"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/sfprodisplaybold"
+                android:padding="@dimen/_2sdp"
+                android:text="-"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_7ssp"
+
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/id_tv_jumlah_item_keranjang"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/id_tv_jumlah_item_keranjang" />
+
+            <TextView
+                android:id="@+id/id_tv_jumlah_item_keranjang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="42dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/sfprodisplaybold"
-                android:maxWidth="@dimen/_87sdp"
-                android:text="Burger Chicken"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="1"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_10ssp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/id_image_topping"
+
+                android:textSize="@dimen/_7ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/id_tv_tambah_item_keranjang"
+                app:layout_constraintStart_toEndOf="@+id/id_tv_kurang_item_keranjang"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/id_tv_harga_topping"
+                android:id="@+id/id_tv_tambah_item_keranjang"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/sfprodisplayregular"
-                android:text="Rp.2000"
-
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/sfprodisplaybold"
+                android:padding="@dimen/_2sdp"
+                android:text="+"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_10ssp"
-
-                app:layout_constraintStart_toStartOf="@+id/id_tv_nama_topping"
-                app:layout_constraintTop_toBottomOf="@+id/id_tv_nama_topping" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/id_card_container_add_min_topping"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:cardBackgroundColor="#f6f5f8"
-                app:cardCornerRadius="10dp"
-
-                    android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/id_tv_harga_topping"
-                app:layout_constraintTop_toBottomOf="@+id/id_tv_harga_topping">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/id_tv_kurang_item_keranjang"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:fontFamily="@font/sfprodisplaybold"
-                        android:padding="@dimen/_2sdp"
-                        android:text="-"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_7ssp"
-
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/id_tv_jumlah_item_keranjang"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/id_tv_jumlah_item_keranjang" />
-
-                    <TextView
-                        android:id="@+id/id_tv_jumlah_item_keranjang"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:text="1"
-                        android:textColor="@color/black"
-
-                        android:textSize="@dimen/_7ssp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/id_tv_tambah_item_keranjang"
-                        app:layout_constraintStart_toEndOf="@+id/id_tv_kurang_item_keranjang"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/id_tv_tambah_item_keranjang"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:fontFamily="@font/sfprodisplaybold"
-                        android:padding="@dimen/_2sdp"
-                        android:text="+"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_7ssp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/id_tv_jumlah_item_keranjang"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/id_tv_jumlah_item_keranjang" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                android:textSize="@dimen/_7ssp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/id_tv_jumlah_item_keranjang"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/id_tv_jumlah_item_keranjang" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </androidx.cardview.widget.CardView>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/color_line"
+        app:layout_constraintBottom_toBottomOf="parent"
+     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

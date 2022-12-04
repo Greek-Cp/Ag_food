@@ -1,12 +1,13 @@
 package com.example.agfood.Model;
 
 public class ModelKeranjang {
-    ModelFood selectedFood;
+    ModelBarang selectedFood;
     private boolean statusCheckBoxChecked = false;
-    public ModelKeranjang(ModelFood selectedFood) {
+
+    public ModelKeranjang(ModelBarang selectedFood) {
         this.selectedFood = selectedFood;
     }
-    public ModelFood getSelectedFood() {
+    public ModelBarang getSelectedFood() {
         return selectedFood;
     }   
 
@@ -18,7 +19,7 @@ public class ModelKeranjang {
         this.statusCheckBoxChecked = statusCheckBoxChecked;
     }
 
-    public void setSelectedFood(ModelFood selectedFood) {
+    public void setSelectedFood(ModelBarang selectedFood) {
         this.selectedFood = selectedFood;
     }
 }

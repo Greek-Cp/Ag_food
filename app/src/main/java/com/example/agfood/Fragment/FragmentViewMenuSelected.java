@@ -2,6 +2,7 @@ package com.example.agfood.Fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -142,14 +143,22 @@ public class FragmentViewMenuSelected extends Fragment {
             @Override
             public void clickItemSelectedListener(int positionOfItemFoodSelected) {
                 ModelFood foodSelected = mListModelFood.get(positionOfItemFoodSelected);
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_out,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(foodSelected,categoryName)).commit();
+             //   getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_out,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(foodSelected,categoryName)).commit();
+            }
+
+            @Override
+            public void clickLoveListener(int positionOfItemLikeByUser) {
+
             }
         };
         initializeKategoryAdapter();
-        adapterFoodPopular = new AdapterFoodPopular(mListModelFood,getActivity().getApplicationContext(),mAdapterFoodInterface);
+        //adapterFoodPopular = new AdapterFoodPopular(mListModelFood,getActivity().getApplicationContext(),mAdapterFoodInterface);
         // mFragmentHomeBinding.idRecPopularFood.setLayoutManager(new CenterZoomLayoutManager(getActivity().getApplicationContext(), RecyclerView.HORIZONTAL,false));
         fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
         fragmentViewMenuSelectedBinding.idTvDetailMakananTopName.setText(categoryName);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            fragmentViewMenuSelectedBinding.idBtnDetailMakananBackButton.setOutlineSpotShadowColor(getActivity().getResources().getColor(R.color.red_color));
+        }
         fragmentViewMenuSelectedBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

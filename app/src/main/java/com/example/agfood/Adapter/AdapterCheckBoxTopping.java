@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.agfood.Model.ModelTopping;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class AdapterCheckBoxTopping  extends RecyclerView.Adapter<AdapterCheckBo
     }
     @Override
     public void onBindViewHolder(@NonNull AdapterCheckBoxTopping.ViewHolder holder, int position) {
-        holder.imageViewTopping.setImageResource(listTopping.get(position).getImageTopping());
+
         holder.namaToping.setText(listTopping.get(position).getNamaTopping());
         holder.hargaToping.setText(String.valueOf(Util.convertToRupiah(hitungTotalHargaTopping(listTopping.get(position).getHargaTopping(), listTopping.get(position).getSatuanTopping()))));
         holder.kurang.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +109,6 @@ public class AdapterCheckBoxTopping  extends RecyclerView.Adapter<AdapterCheckBo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewTopping = itemView.findViewById(R.id.id_image_topping);
             checkBoxTopping = itemView.findViewById(R.id.id_check_box_topping);
             namaToping = itemView.findViewById(R.id.id_tv_nama_topping);
             hargaToping = itemView.findViewById(R.id.id_tv_harga_topping);

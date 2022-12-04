@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.agfood.Model.ModelAccount;
+import com.example.agfood.Model.ModelDetailAccount;
+import com.example.agfood.Model.ModelRetrieveAccount;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentSuccesfullLoginBinding;
@@ -21,7 +24,7 @@ import com.example.agfood.databinding.FragmentSuccesfullLoginBinding;
  * Use the {@link FragmentSuccesfullLogin#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentSuccesfullLogin extends Fragment {
+public class  FragmentSuccesfullLogin extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,10 +35,9 @@ public class FragmentSuccesfullLogin extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private String username;
-    public FragmentSuccesfullLogin(String username) {
-        // Required empty public constructor
-        this.username = username;
+    private ModelAccount modelAccount;
+    public FragmentSuccesfullLogin(ModelAccount modelAccount){
+        this.modelAccount = modelAccount;
     }
     public FragmentSuccesfullLogin(){
 
@@ -80,7 +82,7 @@ public class FragmentSuccesfullLogin extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                Util.switchFragment(new HomeFragment(username),getActivity());
+                Util.switchFragment(new HomeFragment(modelAccount),getActivity());
             }
             @Override
             public void onAnimationStart(Animator animation) {

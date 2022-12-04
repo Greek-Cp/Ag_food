@@ -15,29 +15,33 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.agfood.Model.ModelBarang;
+import com.example.agfood.Model.ModelFav;
 import com.example.agfood.Model.ModelFood;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.ItemFoodLayoutAdapterBinding;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class AdapterFoodPopular extends RecyclerView.Adapter {
-    List<ModelFood> listModelFood;
+    List<ModelBarang> listModelFood;
+    List<ModelFav> listFavFood;
     Context context;
     AdapterFoodPopular.AdapterFoodInterface mAdapterFoodPopularInterface;
     public interface AdapterFoodInterface{
         void clickItemSelectedListener(int positionOfItemFoodSelected);
+        void clickLoveListener(int positionOfItemLikeByUser);
     }
-    public AdapterFoodPopular(List<ModelFood> listModelFood, Context context,AdapterFoodPopular.AdapterFoodInterface adapterFoodInterface) {
+    public AdapterFoodPopular(List<ModelBarang> listModelFood,List<ModelFav> listFavFood, Context context,AdapterFoodPopular.AdapterFoodInterface adapterFoodInterface) {
         this.listModelFood = listModelFood;
+        this.listFavFood = listFavFood;
         this.context = context;
         this.mAdapterFoodPopularInterface = adapterFoodInterface;
     }
-
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,10 +53,30 @@ public class AdapterFoodPopular extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         AdapterFoodViewHolder adapterFoodViewHolder = (AdapterFoodViewHolder) holder;
-        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.adapterIdTvFoodName.setText(listModelFood.get(position).getNameFood());
-        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.adapterIdTvFoodPrice.setText(String.valueOf(Util.convertToRupiah(listModelFood.get(position).getHargaFood())));
-        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idImageItemFood.setImageResource(listModelFood.get(position).getImageFood());
-        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.setNamaFood(listModelFood.get(position).getNameFood());
+        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.adapterIdTvFoodName.setText(listModelFood.get(position).getNama_barang());
+        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.adapterIdTvFoodPrice.setText(String.valueOf(Util.convertToRupiah(listModelFood.get(position).getHargaOriginal())));
+        System.out.println("Iamge = " + listModelFood.get(position).getGambar_barang());
+        Picasso.get()
+                .load(listModelFood.get(position).getGambar_barang()).resize(512,512).centerCrop()
+                .into(adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idImageItemFood);
+        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveStatic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveStatic.setVisibility(View.INVISIBLE);
+                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveAnim.setVisibility(View.VISIBLE);
+                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveAnim.playAnimation();
+                mAdapterFoodPopularInterface.clickLoveListener(adapterFoodViewHolder.getAdapterPosition());
+            }
+        });
+        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveAnim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveStatic.setVisibility(View.VISIBLE);
+                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveAnim.setVisibility(View.INVISIBLE);
+                mAdapterFoodPopularInterface.clickLoveListener(adapterFoodViewHolder.getAdapterPosition());
+            }
+        });
+
     }
 
     @Override

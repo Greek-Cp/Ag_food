@@ -7,506 +7,603 @@
     </data>
 
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Fragment.FragmentDetailMakanan">
-        <!-- TODO: Update blank fragment layout -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/id_card_container_detail_makanan"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:elevation="30dp"
+            android:outlineAmbientShadowColor="@color/red_color"
+            android:outlineSpotShadowColor="@color/red_color"
+            android:shadowColor="@color/red_color"
+            app:cardElevation="14dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+          >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:elevation="3dp"
-                android:layout_marginTop="15dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:gravity="center"
+                android:layout_height="match_parent"
+                android:background="@color/red_color"
                 >
-                <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:src="@drawable/ic_baseline_arrow_back_24"
-                    android:id="@+id/id_btn_detail_makanan_back_button"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginLeft="20dp"
-                    />
+
 
                 <TextView
-                    android:id="@+id/id_tv_detail_makanan_top_name"
+                    android:id="@+id/id_tv_detail_makanan_text_view_total_harga"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:elevation="3dp"
-                    android:fontFamily="@font/sfprodisplaybold"
-                    android:text="Martabak Asin"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:padding="10dp"
-                    android:maxWidth="@dimen/_150sdp"
+                    android:layout_height="19dp"
+                    android:layout_marginRight="30dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Rp150.000"
+                    android:textSize="@dimen/_15ssp"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_20ssp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/idKeranjang"
-                    app:layout_constraintStart_toEndOf="@+id/id_btn_detail_makanan_back_button"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/idKeranjang"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/ic_baseline_shopping_cart_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/id_container_card_header"
-                android:translationY="-30dp"
-                >
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_250sdp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/food_img_2"
-                        android:id="@+id/id_image_detail_food"
-                       />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:cardBackgroundColor="@color/red_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/id_tv_detail_makanan_text_view_total_harga"
 
-            </androidx.cardview.widget.CardView>
+                    android:layout_marginRight="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/id_container_card_header"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:elevation="3dp"
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-
-                    >
-                    <ImageView
-                        android:id="@+id/id_img_stars"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_star_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardBackgroundColor="@color/green_background"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/id_img_stars"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:cardCornerRadius="10dp"
-                        android:layout_marginLeft="10dp"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sfprodisplaybold"
-                            android:text="4.2"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
-                            android:paddingTop="2dp"
-                            android:paddingBottom="2dp"
-
-                            android:textColor="@color/white" />
-                    </androidx.cardview.widget.CardView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/id_tv_detail_makanan_nama_makanan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:fontFamily="@font/sfprodisplaybold"
-                        android:text="Martabak Asin "
-                        android:layout_marginTop="10dp"
-                        android:maxWidth="@dimen/_120sdp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_18ssp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                    <TextView
-                        android:id="@+id/id_tv_detail_makanan_komposisi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Telur , Tepung dan Garam"
-                        app:layout_constraintStart_toStartOf="@+id/id_tv_detail_makanan_nama_makanan"
-                        app:layout_constraintTop_toBottomOf="@+id/id_tv_detail_makanan_nama_makanan"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10ssp"
-                        android:fontFamily="@font/sfprodisplayregular"
-                        />
-
-                    <TextView
-                        android:id="@+id/id_tv_detail_makanan_harga_makanan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="@font/sfprodisplayregular"
-                        android:text="Rp.24.000"
-                        android:layout_marginTop="30dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_25sdp"
-                        app:layout_constraintBottom_toTopOf="@+id/id_tv_detail_makanan_komposisi"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/id_contaner_line_1"
-                    >
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/color_line"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/container_tambah_toping"
-                    >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tambah Topping"
-                        android:textSize="@dimen/_15ssp"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:fontFamily="@font/sfprodisplaybold"
-                        android:textColor="@color/black"
-                        />
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:listitem="@layout/item_checkbox_topping_detail_makanan"
-                        tools:itemCount="2"
-
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:id="@+id/id_rec_checkbox"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_marginTop="14dp"
-                        />
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:id="@+id/id_contaner_line_2"
-                        >
-                        <View
+                        android:layout_height="50dp">
+
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="@color/color_line"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:gravity="center"
+                            android:text="Tambah Ke Keranjang"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/white"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="30dp"
+                        android:outlineAmbientShadowColor="@color/red_color"
+                        android:outlineSpotShadowColor="@color/red_color"
+                        android:shadowColor="@color/red_color"
+                        app:cardBackgroundColor="@color/green_background"
+
+                        app:cardElevation="14dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/id_btn_detail_makanan_back_button"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginLeft="20dp"
+                                android:src="@drawable/ic_baseline_arrow_back_24"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/id_tv_detail_makanan_top_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:elevation="3dp"
+                                android:ellipsize="marquee"
+                                android:fontFamily="@font/sfprodisplaybold"
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:maxWidth="@dimen/_150sdp"
+                                android:padding="10dp"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true"
+                                android:text="Martabak Asin"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_20ssp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/idKeranjang"
+                                app:layout_constraintStart_toEndOf="@+id/id_btn_detail_makanan_back_button"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/idKeranjang"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginRight="20dp"
+                                android:src="@drawable/ic_baseline_shopping_cart_24"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/id_container_card_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:translationY="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_250sdp">
+
+                        <ImageView
+                            android:id="@+id/id_image_detail_food"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/food_img_2" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="160dp"
+                    app:layout_constraintTop_toBottomOf="@id/id_container_card_header">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:elevation="3dp"
                         android:orientation="vertical"
-                        android:id="@+id/id_catatan_kecil"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Catatan Kecil"
-                            android:textSize="@dimen/_15ssp"
-                            android:textStyle="bold"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:fontFamily="@font/sfprodisplaybold"
-                            android:textColor="@color/black"
-                            />
-                        <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint=" Ketikan sesuatu untuk pesanan kamu"
-                            android:inputType="text|textNoSuggestions"
-                            android:background="@null"
-                            android:textColor="@color/color_gray"
-                            app:boxBackgroundMode="none"
-                            android:textSize="@dimen/_10sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            />
-                    </LinearLayout>
-                </LinearLayout>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:id="@+id/id_contaner_line"
-                    >
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-
-                        android:background="@color/color_line"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Jumlah"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:fontFamily="@font/sfprodisplaybold"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp"
-
-                        />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/id_layout_wraped_button_add_menu"
                         >
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@color/black"
-                            android:layout_marginLeft="@dimen/_20sdp"
-                            android:padding="@dimen/_10sdp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            app:cardCornerRadius="12dp"
-                            android:id="@+id/id_card_kurang_pesanan"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginLeft="10dp"
+
                             >
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_15sdp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginBottom="20dp"
+                                android:outlineAmbientShadowColor="@color/red_color"
+                                android:outlineSpotShadowColor="@color/green_background"
+                                android:shadowColor="@color/red_color"
+                                app:cardBackgroundColor="@color/green_background"
+                                app:cardCornerRadius="10dp"
+
+                                app:cardElevation="14dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
                                 <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="@dimen/_10sdp"
-                                    android:layout_marginRight="@dimen/_10sdp"
-                                    android:padding="@dimen/_8sdp"
-                                    android:textSize="@dimen/_10ssp"
-                                    android:text="-"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/sfprodisplaybold"
+                                    android:paddingLeft="8dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingRight="8dp"
+                                    android:paddingBottom="5dp"
+                                    android:text="Menu Reguler"
                                     android:textColor="@color/white"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </androidx.cardview.widget.CardView>
+                                    android:textSize="@dimen/_10ssp" />
+                            </androidx.cardview.widget.CardView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <TextView
-                            android:id="@+id/id_tv_detail_makanan_jumlah_pesanan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="1"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/_15ssp"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/sfprodisplaybold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/cardView"
-                            app:layout_constraintHorizontal_bias="0.496"
-                            app:layout_constraintStart_toEndOf="@+id/id_card_kurang_pesanan"
-                            app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/id_tv_detail_makanan_nama_makanan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_21sdp"
+                                android:fontFamily="@font/sfprodisplaybold"
+                                android:maxWidth="@dimen/_120sdp"
+                                android:text="Martabak Asin "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_18ssp"
+
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/id_tv_detail_makanan_deskripsi"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="10dp"
+                                android:fontFamily="@font/sfprodisplayregular"
+                                android:text="Telur , Tepung dan Garamdsadasdasd "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10ssp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/id_tv_detail_makanan_nama_makanan"
+                                app:layout_constraintTop_toBottomOf="@+id/id_tv_detail_makanan_nama_makanan" />
+
+                            <TextView
+                                android:id="@+id/id_tv_detail_makanan_harga_makanan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:fontFamily="@font/sfprodisplayregular"
+                                android:text="Rp.24.000"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_25ssp"
+
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/id_tv_detail_makanan_nama_makanan"
+                                app:layout_constraintVertical_bias="1.0" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/id_contaner_line_1"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:layout_marginRight="@dimen/_20sdp"
-                            android:padding="@dimen/_10sdp"
-                            app:cardBackgroundColor="@color/black"
-                            app:cardCornerRadius="12dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:layout_marginBottom="10dp">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/color_line"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <LinearLayout
+                            android:id="@+id/container_tambah_toping"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_20sdp"
+                                android:fontFamily="@font/sfprodisplaybold"
+                                android:text="Tambah Topping"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:textStyle="bold" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/id_rec_checkbox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="14dp"
+
+                                android:layout_marginRight="@dimen/_10sdp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                tools:itemCount="2"
+                                tools:listitem="@layout/item_checkbox_topping_detail_makanan" />
+
+                        </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/id_contaner_line_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="13dp"
+                                android:background="#f6f6f6"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <LinearLayout
+                            android:id="@+id/id_catatan_kecil"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_17sdp"
+                                android:fontFamily="@font/sfprodisplaybold"
+                                android:text="Catatan Kecil"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_17sdp"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:background="@null"
+                                android:hint=" Ketikan sesuatu untuk pesanan kamu"
+                                android:inputType="text|textNoSuggestions"
+                                android:textColor="@color/color_gray"
+                                android:textSize="@dimen/_10sdp"
+
+                                app:boxBackgroundMode="none" />
+                        </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/id_contaner_line"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="13dp"
+
+                                android:background="#f6f6f6"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_15sdp"
+                                android:fontFamily="@font/sfprodisplaybold"
+                                android:text="Jumlah"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:textStyle="bold" />
 
                             <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/id_layout_wraped_button_add_menu"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
-                                <TextView
-                                    android:id="@+id/id_card_tambah_pesanan"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="@dimen/_10sdp"
-                                    android:layout_marginRight="@dimen/_10sdp"
-                                    android:padding="@dimen/_8sdp"
-                                    android:text="+"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/_10ssp"
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/id_card_kurang_pesanan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_20sdp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:padding="@dimen/_10sdp"
+                                    app:cardBackgroundColor="@color/black"
+                                    app:cardCornerRadius="12dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="@dimen/_10sdp"
+                                            android:layout_marginRight="@dimen/_10sdp"
+                                            android:padding="@dimen/_8sdp"
+                                            android:text="-"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/_10ssp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                </androidx.cardview.widget.CardView>
+
+                                <TextView
+                                    android:id="@+id/id_tv_detail_makanan_jumlah_pesanan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/sfprodisplaybold"
+                                    android:text="1"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_15ssp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/cardView"
+                                    app:layout_constraintHorizontal_bias="0.496"
+                                    app:layout_constraintStart_toEndOf="@+id/id_card_kurang_pesanan"
                                     app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cardView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="@dimen/_20sdp"
+                                    android:padding="@dimen/_10sdp"
+                                    app:cardBackgroundColor="@color/black"
+                                    app:cardCornerRadius="12dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+                                            android:id="@+id/id_card_tambah_pesanan"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="@dimen/_10sdp"
+                                            android:layout_marginRight="@dimen/_10sdp"
+                                            android:padding="@dimen/_8sdp"
+                                            android:text="+"
+                                            android:textColor="@color/white"
+                                            android:textSize="@dimen/_10ssp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                </androidx.cardview.widget.CardView>
                             </androidx.constraintlayout.widget.ConstraintLayout>
-                        </androidx.cardview.widget.CardView>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </LinearLayout>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:id="@+id/id_contaner_line_3"
-                    >
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/color_line"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/id_contaner_line_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"
+                                android:background="#f6f6f6"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/id_tv_total_harga_topping"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:fontFamily="@font/sfprodisplaybold"
-                        android:text="Total Harga Topping"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/id_tv_total_harga_topping"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:fontFamily="@font/sfprodisplaybold"
+                                android:text="Total Harga Topping"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/id_tv_detail_makanan_harga_topping"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="44dp"
-                        android:fontFamily="@font/sfprodisplayregular"
-                        android:text="Rp.0"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_25ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/id_tv_total_harga_topping"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/id_tv_total_harga_topping"
-                        app:layout_constraintVertical_bias="0.222" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/id_tv_detail_makanan_harga_topping"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="44dp"
+                                android:fontFamily="@font/sfprodisplayregular"
+                                android:text="Rp.0"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_25ssp"
+                                app:layout_constraintBottom_toBottomOf="@+id/id_tv_total_harga_topping"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/id_tv_total_harga_topping"
+                                app:layout_constraintVertical_bias="0.222" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:id="@+id/id_tv_total_harga"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:fontFamily="@font/sfprodisplaybold"
-                        android:text="Total Harga"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="120dp"
+                            >
 
-                    <TextView
-                        android:id="@+id/id_tv_detail_makanan_harga_pesanan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="44dp"
-                        android:fontFamily="@font/sfprodisplayregular"
-                        android:text="Rp.24.000"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_25ssp"
+                            <TextView
+                                android:id="@+id/id_tv_total_harga"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:fontFamily="@font/sfprodisplaybold"
+                                android:text="Total Harga"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                        app:layout_constraintBottom_toBottomOf="@+id/id_tv_total_harga"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/id_tv_total_harga"
-                        app:layout_constraintVertical_bias="0.222" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/id_tv_detail_makanan_harga_pesanan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="44dp"
+                                android:fontFamily="@font/sfprodisplayregular"
+                                android:text="Rp.24.000"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_25ssp"
+                                app:layout_constraintBottom_toBottomOf="@+id/id_tv_total_harga"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/id_tv_total_harga"
+                                app:layout_constraintVertical_bias="0.222" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tambah Ke Keranjang"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/_15ssp"
-                    app:cornerRadius="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"
-                    android:layout_marginTop="30dp"
-                    android:backgroundTint="@color/green_background"
-                    android:fontFamily="@font/sfprodisplayregular"
-                    android:id="@+id/btn_detail_makanan_tambah_pesanan"
-                    />
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView >
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

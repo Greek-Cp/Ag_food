@@ -16,6 +16,14 @@ import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentRegisterAccountBinding;
 
 public class FragmentRegisterAccount extends Fragment {
+    ModelAccount modelAccount;
+    public FragmentRegisterAccount(ModelAccount modelAccount) {
+        this.modelAccount = modelAccount;
+    }
+
+    public FragmentRegisterAccount(){
+
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentRegisterAccountBinding fragmentRegisterAccountBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.fragment_register_account, container, false);
@@ -26,6 +34,12 @@ public class FragmentRegisterAccount extends Fragment {
                 
             }
         });
+
+        if(modelAccount != null){
+            fragmentRegisterAccountBinding.idEditTextRegisterEmail.setText(modelAccount.getEmail());
+            fragmentRegisterAccountBinding.idEditTextRegisterNama.setText(modelAccount.getUsername());
+            fragmentRegisterAccountBinding.idEditTextRegisterPassword.setText(modelAccount.getPassword());
+        }
         fragmentRegisterAccountBinding.idBtnSelanjutnya.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +57,7 @@ public class FragmentRegisterAccount extends Fragment {
                     ModelAccount modelAccount = new ModelAccount(fragmentRegisterAccountBinding.idEditTextRegisterNama.getText().toString(),
                             fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().toString(),
                             fragmentRegisterAccountBinding.idEditTextRegisterPassword.getText().toString(),"user");
-                    Util.switchFragment(new FragmentDetailAkunRegister(modelAccount),getActivity());
+                       Util.switchFragment(new FragmentDetailAkunRegister(modelAccount),getActivity());
                 }
 
                 }

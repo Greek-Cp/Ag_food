@@ -1,11 +1,18 @@
 package com.example.agfood.Model;
 
+import com.example.agfood.API.APIRequestData;
+import com.example.agfood.API.BaseServerApp;
 import com.example.agfood.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class UtilFood {
+
     public static List<ModelFood> getListCemilan(){
         List<ModelFood> modelFoodList = new ArrayList<>();
         List<ModelTopping> listModelToppingSomay = new ArrayList<>();
@@ -33,15 +40,15 @@ public class UtilFood {
     }
     public static List<ModelButton> getListKategoriMenuMakanan(){
         List<ModelButton> listButtonName = new ArrayList<>();
-        listButtonName.add(new ModelButton( "Semua", false));
-        listButtonName.add(new ModelButton("Menu Makanan", false));
+        listButtonName.add(new ModelButton( "Populer", true,R.drawable.ic_category_popular));
+        listButtonName.add(new ModelButton("Makanan", false,R.drawable.ic_category_makanan));
        /*
         listButtonName.add(new ModelButton( "Menu Reguler", false));
         listButtonName.add(new ModelButton( "Menu Mendium", false));
         listButtonName.add(new ModelButton( "Menu Large", false));
         listButtonName.add(new ModelButton( "Menu Cemilan", false));
         */
-        listButtonName.add(new ModelButton("Menu Minuman", false));
+        listButtonName.add(new ModelButton("Minuman", false,R.drawable.ic_category_minuman));
         return listButtonName;
     }
     public static List<ModelFood> getListFood(){
@@ -54,5 +61,39 @@ public class UtilFood {
         modelFoodList.add(new ModelFood("Chicken Katsu", 10, 0, R.drawable.food_img_6));
         modelFoodList.add(new ModelFood("Nasi Garam", 10, 6000, R.drawable.food_img_7));
         return modelFoodList;
+    }
+    static List<ModelFav> modelFavorits = new ArrayList<>();
+    public static List<ModelFav> getListFoodLikeByUser(int idAkun){
+        APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+        Call<ModelResponseFav> modelFavoritCall = apiRequestData.getListiFavoritAccount(idAkun);
+        modelFavoritCall.enqueue(new Callback<ModelResponseFav>() {
+            @Override
+            public void onResponse(Call<ModelResponseFav> call, Response<ModelResponseFav> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseFav> call, Throwable t) {
+               
+            }
+        });
+        return modelFavorits;
+    }
+ static List<ModelBarang> listBarang;
+    public static List<ModelBarang> getListFoodAPI(){
+        APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+        Call<ModelResponseBarang> modelResponseBarangCall  = apiRequestData.getResponseDataBarang();
+        modelResponseBarangCall.enqueue(new Callback<ModelResponseBarang>() {
+            @Override
+            public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                int kode = response.body().getKode().intValue();
+                listBarang = response.body().getDataBarang();
+            }
+            @Override
+            public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+                System.out.println("DATA"   +t.getMessage());
+            }
+        });
+        return listBarang;
     }
 }

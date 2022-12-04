@@ -79,7 +79,6 @@
                             app:boxCornerRadiusTopStart="20dp"
                             app:boxStrokeWidth="0dp"
                             app:boxStrokeWidthFocused="0dp">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/id_edit_text_email"
                                 android:layout_width="match_parent"
@@ -110,6 +109,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
+                            android:id="@+id/id_text_view_lupa_password"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"

@@ -3,13 +3,20 @@ package com.example.agfood.Model;
 import com.google.gson.annotations.SerializedName;
 
 public class ModelRetrieveAccount {
+        @SerializedName("id_akun")
+        private int id_akun;
+        @SerializedName("username")
         private String username;
+        @SerializedName("email")
         private String email;
         @SerializedName("password_akun")
         private String password;
+        @SerializedName("kedudukan")
         private String kedudukan;
         @SerializedName("detail_akun")
         private ModelDetailAccount modelDetailAccount;
+
+
         public String getUsername() {
             return username;
         }
@@ -32,7 +39,15 @@ public class ModelRetrieveAccount {
             return kedudukan;
         }
 
-        public void setKedudukan(String kedudukan) {
+    public int getId_akun() {
+        return id_akun;
+    }
+
+    public void setId_akun(int id_akun) {
+        this.id_akun = id_akun;
+    }
+
+    public void setKedudukan(String kedudukan) {
             this.kedudukan = kedudukan;
         }
 

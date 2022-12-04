@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.agfood.Model.ModelAccount;
+import com.example.agfood.Model.ModelRetrieveAccount;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentSplashScreenBinding;
@@ -64,6 +66,11 @@ public class SplashScreenFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragmen
+        UtilPref utilPref = new UtilPref();
+        ModelAccount modelRetrieveAccount = Util.getCurrentAccount(utilPref.accountPrefences,getActivity().getApplicationContext() );
+        if(modelRetrieveAccount != null){
+            Util.switchFragment(getActivity().getSupportFragmentManager(), new HomeFragment(), "");
+        }
         FragmentSplashScreenBinding fragmentSplashScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash_screen,container,false);
         fragmentSplashScreenBinding.idBtnNext.setOnClickListener(this);
         Util.setCustomColorText(fragmentSplashScreenBinding.idTvIntro, "AG ", "FOOD", "e41277");
@@ -77,6 +84,7 @@ public class SplashScreenFragment extends Fragment implements View.OnClickListen
             case R.id.id_btn_next:
                 Util.switchFragment(new LoginFragment(), getActivity());
                 break;
+
 
         }
     }

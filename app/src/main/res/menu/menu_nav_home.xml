@@ -20,9 +20,9 @@
         android:icon="@drawable/ic_shopping_cart">
     </item>
     <item
-        android:title="Pengaturan"
-        android:id="@+id/id_nav_pengaturan"
-        android:icon="@drawable/ic_baseline_settings_24">
+        android:title="Saya"
+        android:id="@+id/id_nav_akunsaya"
+        android:icon="@drawable/ic_menu_profile">
     </item>
 
 

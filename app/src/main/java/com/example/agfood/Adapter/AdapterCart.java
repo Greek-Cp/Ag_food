@@ -7,6 +7,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.agfood.Model.ModelKeranjang;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -24,10 +27,11 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
     public AdapterCart(List<ModelKeranjang> listModelKeranjang, AdapterCartInterface adapterCartInterface) {
         this.listModelKeranjang = listModelKeranjang;
         this.adapterCartInterface = adapterCartInterface;
+        System.out.println(new Gson().toJson(listModelKeranjang) + " ttt");
     }
     public interface AdapterCartInterface{
-        void tambahPesanan(int positionPesanan ,int jumlah);
-        void kurangPesanan(int positionPesanan ,int jumlah);
+        void tambahPesanan(int positionPesana);
+        void kurangPesanan(int positionPesanan);
         void checkBoxItemSelected(int position , boolean statusCheckbox);
     }
     @Override
@@ -35,31 +39,33 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_keranjang_layout_adapter,parent,false);
         return new ViewHolder(v);
     }
-
     @Override
     public void onBindViewHolder(@NonNull AdapterCart.ViewHolder holder, int position) {
         holder.kurang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int value = listModelKeranjang.get(holder.getAdapterPosition()).getSelectedFood().getTotalStockFood();
+                int value = listModelKeranjang.get(holder.getAdapterPosition()).getSelectedFood().getTotalItemKeranjang();
                 System.out.println("Satuan toping = " + value);
                 if(value >=  1){
                     System.out.println("Kurang Berhasil");
-
                     System.out.println("Value After Delete = " + value);
-                    adapterCartInterface.kurangPesanan(holder.getAdapterPosition(),value);
+                    adapterCartInterface.kurangPesanan(holder.getAdapterPosition());
                 }
             }
         });
+        if(listModelKeranjang.get(position).isStatusCheckBoxChecked() == true){
+            holder.selectedItemCheckBox.setChecked(true);
+        } else{
+            holder.selectedItemCheckBox.setChecked(false    );
+        }
         holder.tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int value = listModelKeranjang.get(holder.getAdapterPosition()).getSelectedFood().getTotalStockFood();
+                int value = listModelKeranjang.get(holder.getAdapterPosition()).getSelectedFood().getTotalItemKeranjang();
                 if(value >= 0) {
                     System.out.println("Tambah Berhasil");
-
                     System.out.println("Value After Tambah = " + value);
-                    adapterCartInterface.tambahPesanan(holder.getAdapterPosition(), value);
+                    adapterCartInterface.tambahPesanan(holder.getAdapterPosition());
                 }
             }
         });
@@ -75,10 +81,16 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
                 }
             }
         });
-        holder.imageCart.setImageResource(listModelKeranjang.get(position).getSelectedFood().getImageFood());
-        holder.jumlahPesanan.setText(String.valueOf(listModelKeranjang.get(position).getSelectedFood().getTotalStockFood()));
-        holder.hargaPesanan.setText(String.valueOf(Util.convertToRupiah(listModelKeranjang.get(position).getSelectedFood().getHargaFood())));
-        holder.namaPesanan.setText(String.valueOf(listModelKeranjang.get(position).getSelectedFood().getNameFood()));
+        Picasso.get()
+                .load(listModelKeranjang.get(position).getSelectedFood().getGambar_barang()).resize(512,512).centerCrop()
+                .into(holder.imageCart);
+        holder.jumlahPesanan.setText(String.valueOf(listModelKeranjang.get(position).getSelectedFood().getTotalItemKeranjang()));
+        holder.hargaPesanan.setText(
+                String.valueOf(
+                Util.convertToRupiah(
+                listModelKeranjang.get(position).getSelectedFood().getHarga()))
+        );
+        holder.namaPesanan.setText(String.valueOf(listModelKeranjang.get(position).getSelectedFood().getNama_barang()));
     }
 
     @Override
@@ -93,10 +105,10 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             selectedItemCheckBox = itemView.findViewById(R.id.id_check_box_keranjang_layout_adapter);
-            imageCart = itemView.findViewById(R.id.id_img_item_keranjang_adapter);
-            hargaPesanan = itemView.findViewById(R .id.id_tv_harga_item_keranjang_adapter);
+            imageCart = itemView.findViewById(R.id.id_card_wraped_layout_keranjang_adapter);
+            hargaPesanan = itemView.findViewById(R .id.id_tv_jumlah_item_checkout_adapter);
             jumlahPesanan = itemView.findViewById(R.id.id_tv_jumlah_item_keranjang);
-            namaPesanan = itemView.findViewById(R.id.id_tv_nama_item_keranjang_adapter);
+            namaPesanan = itemView.findViewById(R.id.id_tv_tittle_item_checkout_adapter);
             kurang = itemView.findViewById(R.id.id_tv_kurang_item_keranjang);
             tambah = itemView.findViewById(R.id.id_tv_tambah_item_keranjang);
         }

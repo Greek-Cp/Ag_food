@@ -1,5 +1,7 @@
 package com.example.agfood.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -9,19 +11,31 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.agfood.API.APIRequestData;
+import com.example.agfood.API.BaseServerApp;
 import com.example.agfood.Adapter.AdapterCheckBoxTopping;
 import com.example.agfood.Adapter.AdapterTableDetailTopping;
+import com.example.agfood.Model.ModelAccount;
+import com.example.agfood.Model.ModelBarang;
 import com.example.agfood.Model.ModelFood;
+import com.example.agfood.Model.ModelResponseBarang;
 import com.example.agfood.Model.ModelTopping;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentDetailMakananBinding;
+import com.google.gson.Gson;
 import com.mikhaellopez.rxanimation.RxAnimation;
+import com.squareup.picasso.Picasso;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import www.sanju.motiontoast.MotionToast;
 import www.sanju.motiontoast.MotionToastStyle;
 
@@ -41,18 +55,30 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
     private String mParam1;
     private String mParam2;
 
-    private ModelFood mSelectedFoodModel;
+    private ModelBarang mSelectedFoodModel;
+    private ModelAccount modelAccount;
 
     private String fromView;
-    public FragmentDetailMakanan(ModelFood modelFood,String fromView){
+    public FragmentDetailMakanan(ModelAccount mdlAccount , ModelBarang modelFood,String fromView){
         this.mSelectedFoodModel = modelFood;
         this.fromView = fromView;
+        this.modelAccount = mdlAccount;
+         totalHargaPesanan= mSelectedFoodModel.getHarga();
+
         System.out.println("From view = " + fromView);
     }
     public FragmentDetailMakanan() {
         // Required empty public constructor
     }
 
+    SharedPreferences sharedPreferences;
+    public void saveDataToPrefences(){
+        sharedPreferences = getActivity().getSharedPreferences("PREF_DATA_BARANG", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String jsonSerializeDataBarang = gson.toJson(mSelectedFoodModel);
+
+
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -89,23 +115,45 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
 
    // static int TEST_HARGA_DEFAULT = 10000;
     void initalizeDataToppingForTest(){
-        if(mSelectedFoodModel.getListModelTopping() == null){
+       // if(mSelectedFoodModel.getListModelTopping() == null){
             if(listTopping == null){
                 listTopping = new ArrayList<>();
             }
+            /*
             listTopping.add(new ModelTopping("Sosis", 2000, 1, false,R.drawable.ic_sosis));
             listTopping.add(new ModelTopping("Telur", 2500, 1, false,R.drawable.ic_telur));
             listTopping.add(new ModelTopping("Keju", 2500, 1, false,R.drawable.ic_keju));
             listTopping.add(new ModelTopping("Sayuran", 3000, 1, false,R.drawable.ic_sosis));
-        } else{
-            listTopping = mSelectedFoodModel.getListModelTopping();
-        }
+        */
+        //} else{
+         //   listTopping = mSelectedFoodModel.getListModelTopping();
+        //}
+        APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+        Call<ModelResponseBarang> modelResponseBarangCall  = apiRequestData.getResponseDataBarang();
+        modelResponseBarangCall.enqueue(new Callback<ModelResponseBarang>() {
+            @Override
+            public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                for(ModelBarang modelBarang : response.body().getDataBarang()){
+                   if(modelBarang.getJenis_barang().equals("Menu Tambahan")){
+                       System.out.println("Nama barang toping = " + modelBarang.getNama_barang());
+                       ModelTopping currentlyTopping = new ModelTopping(modelBarang.getNama_barang(), modelBarang.getHarga(), 1, false,modelBarang.getGambar_barang());
+                        listTopping.add(currentlyTopping);
+                    }adapterCheckBoxTopping.notifyDataSetChanged();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+                System.out.println("error = " + t.getMessage());
+            }
+        });
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-         fragmentDetailMakananBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.fragment_detail_makanan
+        getActivity().findViewById(R.id.id_nav_bar).setVisibility(View.INVISIBLE);
+
+        fragmentDetailMakananBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.fragment_detail_makanan
         ,container, false);
         setDataDetailMakanan();
         initalizeDataToppingForTest();
@@ -121,7 +169,7 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
     void crudOperation(){
         fragmentDetailMakananBinding.idCardTambahPesanan.setOnClickListener(this);
         fragmentDetailMakananBinding.idCardKurangPesanan.setOnClickListener(this);
-        fragmentDetailMakananBinding.btnDetailMakananTambahPesanan.setOnClickListener(this);
+        fragmentDetailMakananBinding.idCardContainerDetailMakanan.setOnClickListener(this);
     }
     void setCheckBoxForFood(){
         mAdapterCheckBoxToppingInterface =  new AdapterCheckBoxTopping.AdapterToppingInteface() {
@@ -129,14 +177,14 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
             public void clickCheckBox(int position, boolean statusChecked) {
                 listTopping.get(position).setCheckboxCliked(statusChecked);
                 if(listTopping.get(position).isCheckboxCliked()){
-                    System.out.println("total harga topping " + listTopping.get(position).getTotalHargaTopping()) ;
-                    totalFinalHargaTopping += listTopping.get(position).getTotalHargaTopping() * totalPesanan;
-                    int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaFood();
+                    System.out.println(MessageFormat.format("total harga topping {0}", listTopping.get(position).getTotalHargaTopping())) ;
+                    totalFinalHargaTopping += listTopping.get(position).getTotalHargaTopping();
+                    int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHarga();
                     updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
                     fragmentDetailMakananBinding.idTvDetailMakananHargaTopping.setText(String.valueOf(totalFinalHargaTopping));;
                 } else{
-                    totalFinalHargaTopping -= listTopping.get(position).getTotalHargaTopping() * totalPesanan;;
-                    int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaFood();
+                    totalFinalHargaTopping -= listTopping.get(position).getTotalHargaTopping() ;
+                    int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHarga();
                     fragmentDetailMakananBinding.idTvDetailMakananHargaTopping.setText(String.valueOf(totalFinalHargaTopping));
                     updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
                     System.out.println("Total Harga Topping Final = " + totalFinalHargaTopping);
@@ -160,7 +208,6 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
                 System.out.println(listTopping.get(position).getSatuanTopping()
                         + "  x " + listTopping.get(position).getHargaTopping() + " = " + totalHargaTopping);
             }
-
             @Override
             public void clickMinTopping(int position, int jumlahToping) {
                 System.out.println("Toping before set = " + listTopping.get(position).getSatuanTopping());
@@ -182,7 +229,6 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
             listToppingSelected = new ArrayList<>();
         }
         listToppingSelected.add(new ModelTopping("Nama Topping ",2000,1, false,123));
-
         listToppingSelected.add(new ModelTopping("Sosis ",2000,1, false,123));
         listToppingSelected.add(new ModelTopping("Tahu ",2000,1, false,123));
         listToppingSelected.add(new ModelTopping("Martabak ",2000,1, false,123));
@@ -190,22 +236,25 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
      }
     void setDataDetailMakanan(){
         if(mSelectedFoodModel != null){
-            fragmentDetailMakananBinding.idTvDetailMakananNamaMakanan.setText(mSelectedFoodModel.getNameFood());
-            fragmentDetailMakananBinding.idTvDetailMakananHargaPesanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHargaFood())));
-            fragmentDetailMakananBinding.idImageDetailFood.setImageResource(mSelectedFoodModel.getImageFood());
-            fragmentDetailMakananBinding.idBtnDetailMakananBackButton.setOnClickListener(this);
+            fragmentDetailMakananBinding.idTvDetailMakananNamaMakanan.setText(mSelectedFoodModel.getNama_barang());
+            fragmentDetailMakananBinding.idTvDetailMakananHargaPesanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHarga())));
+            Picasso.get().load(mSelectedFoodModel.getGambar_barang()).into(fragmentDetailMakananBinding.idImageDetailFood);
+              fragmentDetailMakananBinding.idBtnDetailMakananBackButton.setOnClickListener(this);
             fragmentDetailMakananBinding.idKeranjang.setOnClickListener(this);
-            fragmentDetailMakananBinding.idTvDetailMakananTopName.setText(mSelectedFoodModel.getNameFood());
+            fragmentDetailMakananBinding.idTvDetailMakananTopName.setText(mSelectedFoodModel.getNama_barang());
             fragmentDetailMakananBinding.idTvDetailMakananTopName.setSelected(true);
-            fragmentDetailMakananBinding.idTvDetailMakananHargaMakanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHargaFood())));
-            fragmentDetailMakananBinding.idTvDetailMakananHargaPesanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHargaFood())));
+            fragmentDetailMakananBinding.idTvDetailMakananDeskripsi.setText(mSelectedFoodModel.getDeskripsi_barang());
+            fragmentDetailMakananBinding.idTvDetailMakananHargaMakanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHarga())));
+
         }
     }
+    int totalHargaPesanan;
 
     void updateHargaPesanan(int hargaMakanan , int hargaTopping){
         System.out.println("Harga Topping = " + hargaTopping);
-        int totalHargaPesanan = hargaMakanan + hargaTopping;
+        totalHargaPesanan= hargaMakanan + hargaTopping;
         fragmentDetailMakananBinding.idTvDetailMakananHargaPesanan.setText(String.valueOf(Util.convertToRupiah(totalHargaPesanan)));
+        fragmentDetailMakananBinding.idTvDetailMakananTextViewTotalHarga.setText(String.valueOf(Util.convertToRupiah(totalHargaPesanan)));
     }
     /*
     Model Data Keranjang.
@@ -219,9 +268,9 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
                 fragmentDetailMakananBinding.idTvDetailMakananJumlahPesanan.setText(String.valueOf(totalPesanan));
                 int totalHargaMakanan;
                 if(totalFinalHargaTopping > 0){
-                    totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaFood() + totalFinalHargaTopping;
+                    totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHarga() + totalFinalHargaTopping;
                 } else{
-                    totalHargaMakanan = totalPesanan* mSelectedFoodModel.getHargaFood();
+                    totalHargaMakanan = totalPesanan* mSelectedFoodModel.getHarga();
                 }
                 System.out.println("total harga topping = " + totalFinalHargaTopping);
                 updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
@@ -231,22 +280,38 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
                     totalPesanan -= 1;
                     int totalHargaMakanans;
                     if(totalFinalHargaTopping > 0){
-                        totalHargaMakanans = totalPesanan   * mSelectedFoodModel.getHargaFood();
+                        totalHargaMakanans = totalPesanan   * mSelectedFoodModel.getHarga();
                     } else{
-                        totalHargaMakanans = totalPesanan * mSelectedFoodModel.getHargaFood();
+                        totalHargaMakanans = totalPesanan * mSelectedFoodModel.getHarga();
                     }
                     System.out.println("total harga topping = " + totalFinalHargaTopping);
                     updateHargaPesanan(totalHargaMakanans, totalFinalHargaTopping);
                     fragmentDetailMakananBinding.idTvDetailMakananJumlahPesanan.setText(String.valueOf(totalPesanan));
                 }
                 break;
-            case R.id.btn_detail_makanan_tambah_pesanan:
+            case R.id.id_card_container_detail_makanan:
 /*
                 MotionToast.Companion.createColorToast(getActivity(), "Pesanan Dimasukan Kedalam Keranjang",
                         "Notifikasi Pesanan", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_CENTER,MotionToast.LONG_DURATION, ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
                         ));
  */
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullyAddCart()).commit();
+                Util.getApiRequetData().savePesananKeKeranjang(modelAccount.idAkun,this.mSelectedFoodModel.getId_barang(),String.valueOf(totalHargaPesanan),fragmentDetailMakananBinding.idTvDetailMakananJumlahPesanan.getText().toString()).enqueue(new Callback<ModelResponseBarang>() {
+                    @Override
+                    public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                        int kode = response.body().getKode();
+                        if(kode == 1){
+                            Toast.makeText(getActivity().getApplicationContext(),"Masukan Keranjang Berhasil",Toast.LENGTH_LONG).show();
+                            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullyAddCart()).commit();
+                        } else{
+                            Toast.makeText(getActivity().getApplicationContext(),"Masukan Keranjang Gagal",Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+                        System.out.println(t.getCause() + ":" + t.getMessage() + " ERROR");
+                    }
+                });
                 break;
             case R.id.id_btn_detail_makanan_back_button:
                 switch (fromView){

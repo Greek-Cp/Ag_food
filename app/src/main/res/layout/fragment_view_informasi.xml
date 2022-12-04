@@ -37,16 +37,5 @@ sekian terimaksih"
             android:textSize="@dimen/_24ssp"
            />
    </LinearLayout>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:menu="@menu/menu_nav_home"
-        android:background="@color/green_background"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
-        android:id="@+id/id_nav_bar"
-        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

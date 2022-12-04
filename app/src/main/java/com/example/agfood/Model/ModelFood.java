@@ -7,7 +7,6 @@ public class ModelFood {
     private int totalStockFood;
     private int hargaFood;
     private int imageFood;
-
     private List<ModelTopping> listModelTopping;
 
     //private String uriImage;
