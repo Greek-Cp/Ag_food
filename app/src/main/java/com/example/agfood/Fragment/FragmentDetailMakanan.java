@@ -63,8 +63,7 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
         this.mSelectedFoodModel = modelFood;
         this.fromView = fromView;
         this.modelAccount = mdlAccount;
-         totalHargaPesanan= mSelectedFoodModel.getHarga();
-
+         totalHargaPesanan= mSelectedFoodModel.getHargaOriginal();
         System.out.println("From view = " + fromView);
     }
     public FragmentDetailMakanan() {
@@ -136,7 +135,7 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
                 for(ModelBarang modelBarang : response.body().getDataBarang()){
                    if(modelBarang.getJenis_barang().equals("Menu Tambahan")){
                        System.out.println("Nama barang toping = " + modelBarang.getNama_barang());
-                       ModelTopping currentlyTopping = new ModelTopping(modelBarang.getNama_barang(), modelBarang.getHarga(), 1, false,modelBarang.getGambar_barang());
+                       ModelTopping currentlyTopping = new ModelTopping(modelBarang.getNama_barang(), modelBarang.getHargaOriginal(), 1, false,modelBarang.getGambar_barang());
                         listTopping.add(currentlyTopping);
                     }adapterCheckBoxTopping.notifyDataSetChanged();
                 }
@@ -155,6 +154,7 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
 
         fragmentDetailMakananBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.fragment_detail_makanan
         ,container, false);
+        updateHargaPesanan(Integer.parseInt(String.valueOf(mSelectedFoodModel.getHargaOriginal())),0);
         setDataDetailMakanan();
         initalizeDataToppingForTest();
         initializeDataTopping();
@@ -179,13 +179,13 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
                 if(listTopping.get(position).isCheckboxCliked()){
                     System.out.println(MessageFormat.format("total harga topping {0}", listTopping.get(position).getTotalHargaTopping())) ;
                     totalFinalHargaTopping += listTopping.get(position).getTotalHargaTopping();
-                    int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHarga();
+                    int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaOriginal();
                     updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
-                    fragmentDetailMakananBinding.idTvDetailMakananHargaTopping.setText(String.valueOf(totalFinalHargaTopping));;
+                    fragmentDetailMakananBinding.idTvDetailMakananHargaTopping.setText(Util.convertToRupiah(totalFinalHargaTopping));
                 } else{
                     totalFinalHargaTopping -= listTopping.get(position).getTotalHargaTopping() ;
-                    int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHarga();
-                    fragmentDetailMakananBinding.idTvDetailMakananHargaTopping.setText(String.valueOf(totalFinalHargaTopping));
+                    int totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaOriginal();
+                    fragmentDetailMakananBinding.idTvDetailMakananHargaTopping.setText(Util.convertToRupiah(totalFinalHargaTopping));
                     updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
                     System.out.println("Total Harga Topping Final = " + totalFinalHargaTopping);
                 }
@@ -237,14 +237,14 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
     void setDataDetailMakanan(){
         if(mSelectedFoodModel != null){
             fragmentDetailMakananBinding.idTvDetailMakananNamaMakanan.setText(mSelectedFoodModel.getNama_barang());
-            fragmentDetailMakananBinding.idTvDetailMakananHargaPesanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHarga())));
+            fragmentDetailMakananBinding.idTvDetailMakananHargaPesanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHargaOriginal())));
             Picasso.get().load(mSelectedFoodModel.getGambar_barang()).into(fragmentDetailMakananBinding.idImageDetailFood);
               fragmentDetailMakananBinding.idBtnDetailMakananBackButton.setOnClickListener(this);
             fragmentDetailMakananBinding.idKeranjang.setOnClickListener(this);
             fragmentDetailMakananBinding.idTvDetailMakananTopName.setText(mSelectedFoodModel.getNama_barang());
             fragmentDetailMakananBinding.idTvDetailMakananTopName.setSelected(true);
             fragmentDetailMakananBinding.idTvDetailMakananDeskripsi.setText(mSelectedFoodModel.getDeskripsi_barang());
-            fragmentDetailMakananBinding.idTvDetailMakananHargaMakanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHarga())));
+            fragmentDetailMakananBinding.idTvDetailMakananHargaMakanan.setText(String.valueOf(Util.convertToRupiah(mSelectedFoodModel.getHargaOriginal())));
 
         }
     }
@@ -268,21 +268,22 @@ public class FragmentDetailMakanan extends Fragment implements View.OnClickListe
                 fragmentDetailMakananBinding.idTvDetailMakananJumlahPesanan.setText(String.valueOf(totalPesanan));
                 int totalHargaMakanan;
                 if(totalFinalHargaTopping > 0){
-                    totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHarga() + totalFinalHargaTopping;
+                    totalHargaMakanan = totalPesanan * mSelectedFoodModel.getHargaOriginal() + totalFinalHargaTopping;
                 } else{
-                    totalHargaMakanan = totalPesanan* mSelectedFoodModel.getHarga();
+                    totalHargaMakanan = totalPesanan* mSelectedFoodModel.getHargaOriginal();
                 }
                 System.out.println("total harga topping = " + totalFinalHargaTopping);
                 updateHargaPesanan(totalHargaMakanan, totalFinalHargaTopping);
+
                 break;
             case R.id.id_card_kurang_pesanan:
                 if(totalPesanan > 1){
                     totalPesanan -= 1;
                     int totalHargaMakanans;
                     if(totalFinalHargaTopping > 0){
-                        totalHargaMakanans = totalPesanan   * mSelectedFoodModel.getHarga();
+                        totalHargaMakanans = totalPesanan   * mSelectedFoodModel.getHargaOriginal();
                     } else{
-                        totalHargaMakanans = totalPesanan * mSelectedFoodModel.getHarga();
+                        totalHargaMakanans = totalPesanan * mSelectedFoodModel.getHargaOriginal();
                     }
                     System.out.println("total harga topping = " + totalFinalHargaTopping);
                     updateHargaPesanan(totalHargaMakanans, totalFinalHargaTopping);

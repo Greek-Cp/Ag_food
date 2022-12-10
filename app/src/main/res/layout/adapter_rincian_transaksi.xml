@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1x"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/_14ssp"
+        android:id="@+id/id_adapter_rincian_pesanan_jumlah_item"
+        />
+
+    <TextView
+        android:id="@+id/id_adapter_rincian_nama_item"
+        android:layout_width="wrap_content"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:maxLines="1"
+        android:maxWidth="100dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintEnd_toStartOf="@+id/id_adapter_rincian_harga_item"
+        app:layout_constraintStart_toEndOf="@+id/id_adapter_rincian_pesanan_jumlah_item"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/id_adapter_rincian_harga_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rp30.000"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintRight_toRightOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

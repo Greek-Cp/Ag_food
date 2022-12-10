@@ -38,8 +38,13 @@ public class FragmentCheckoutBarang extends Fragment implements View.OnClickList
     private String mParam1;
     private String mParam2;
 
-    public FragmentCheckoutBarang() {
+    List<ModelKeranjang> barangYangAkanDiOrderList;
+    public FragmentCheckoutBarang(List<ModelKeranjang> listKeranjangDariUser) {
         // Required empty public constructor
+        this.barangYangAkanDiOrderList = listKeranjangDariUser;
+    }
+    public FragmentCheckoutBarang(){
+
     }
 
     /**
@@ -75,10 +80,12 @@ public class FragmentCheckoutBarang extends Fragment implements View.OnClickList
         String tittleMetodePesanan = sharedPreferences.getString("PREF_JUDUL_PESANAN","COD");
         String contentMetodePesanan = sharedPreferences.getString("PREF_CONTENT_PESANAN","Pesananmu akan dihantarkan sesuai lokasi tujuan kamu");
         String keyPembayaranMetodePesanan = sharedPrefPembayaran.getString("PREF_OPSI_PEMBAYARAN","COD");
+        String noRekPembayaran = sharedPrefPembayaran.getString("PREF_NO_REK_PEMBAYARAN","");
         HashMap<String,String> mapPesananDetail = new HashMap<>();
         mapPesananDetail.put("KEY_JUDUL_PESANAN", tittleMetodePesanan);
         mapPesananDetail.put("KEY_CONTENT_PESANAN",contentMetodePesanan);
         mapPesananDetail.put("KEY_PEMBAYARAN",keyPembayaranMetodePesanan);
+        mapPesananDetail.put("KEY_NOREK",noRekPembayaran);
         return mapPesananDetail;
     }
     @Override
@@ -89,16 +96,36 @@ public class FragmentCheckoutBarang extends Fragment implements View.OnClickList
         fragmentCheckoutBarangBinding.idCardContainerMetodePesananCheckoutBarang.setOnClickListener(this::onClick);
         fragmentCheckoutBarangBinding.idCardContainerMetodePembayaranContaner.setOnClickListener(this::onClick);
         Map<String,String> metodePesanan = getMetodePesanan();
+        fragmentCheckoutBarangBinding.idTextViewCheckoutLeftTotalPesanan.setText("Total Pesanan (" + barangYangAkanDiOrderList.size() + ")");
+        int hargaTotal = 0;
+        for(ModelKeranjang mdLKeranjang : barangYangAkanDiOrderList){
+            hargaTotal += mdLKeranjang.getSelectedFood().getHarga();
+        }
+        fragmentCheckoutBarangBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new HomeFragment(),"FRAGMENT_HOME");
+            }
+        });
+        fragmentCheckoutBarangBinding.idTextViewCheckoutRightHargaTotalPesanan.setText(Util.convertToRupiah(hargaTotal));
         fragmentCheckoutBarangBinding.idTextViewCheckoutMetodePembayaran.setText(metodePesanan.get("KEY_PEMBAYARAN"));
         fragmentCheckoutBarangBinding.idTextViewCheckoutHeaderMetodePesanan.setText(metodePesanan.get("KEY_JUDUL_PESANAN"));
         fragmentCheckoutBarangBinding.idTextViewCheckoutBodyMetodPesanan.setText(metodePesanan.get("KEY_CONTENT_PESANAN"));
-        List<ModelKeranjang> listKeranjang = new ArrayList<>();
-
-        AdapterCheckoutItem adapterCheckoutItem = new AdapterCheckoutItem();
-
+        AdapterCheckoutItem adapterCheckoutItem = new AdapterCheckoutItem(barangYangAkanDiOrderList);
         fragmentCheckoutBarangBinding.idRecCheckoutListBarang.setAdapter(adapterCheckoutItem);
-
-
+        fragmentCheckoutBarangBinding.idBtnBuatPesanan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCekTransaksi(barangYangAkanDiOrderList,
+                        metodePesanan.get("KEY_PEMBAYARAN"),metodePesanan.get("KEY_NOREK")),"FRAGMENT_TEST");
+            }
+        });
+        fragmentCheckoutBarangBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentKeranjang(),"FRAGMENT_KERANJANG");
+            }
+        });
         return fragmentCheckoutBarangBinding.getRoot();
     }
 
@@ -106,10 +133,10 @@ public class FragmentCheckoutBarang extends Fragment implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.id_card_container_metode_pesanan_checkout_barang:
-                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentMetodePemesanan(),"METODE_PEMESANAN");
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentMetodePemesanan(barangYangAkanDiOrderList),"METODE_PEMESANAN");
                 break;
             case R.id.id_card_container_metode_pembayaran_contaner:
-                Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentMetodePembayaran(),"FRAGMENT_CHECKOUT");
+                Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentMetodePembayaran(barangYangAkanDiOrderList),"FRAGMENT_CHECKOUT");
                 break;
             default:
                 break;

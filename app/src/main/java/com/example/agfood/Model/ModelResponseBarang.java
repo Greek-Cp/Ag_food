@@ -15,11 +15,13 @@ public class ModelResponseBarang {
     private String pesan;
     @SerializedName("dataBarang")
     private List<ModelBarang> dataBarang;
+
     public ModelResponseBarang(Integer kode, String pesan, List<ModelBarang> listBarang) {
         this.kode = kode;
         this.pesan = pesan;
         this.dataBarang = listBarang;
     }
+
     public int getId_akun() {
         return id_akun;
     }
@@ -47,7 +49,6 @@ public class ModelResponseBarang {
     public List<ModelBarang> getDataBarang() {
         return dataBarang;
     }
-
     public void setDataBarang(List<ModelBarang> dataBarang) {
         this.dataBarang = dataBarang;
     }

@@ -2,6 +2,8 @@ package com.example.agfood.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class ModelBarang {
     @SerializedName("id_barang")
     private String id_barang;
@@ -28,8 +30,18 @@ public class ModelBarang {
     @SerializedName("total_item")
     private int totalItem;
     private boolean status;
+    @SerializedName("listKeranjangId")
+    private List<String> listIdKeranjang;
     public ModelBarang(){
         
+    }
+
+    public List<String> getListIdKeranjang() {
+        return listIdKeranjang;
+    }
+
+    public void setListIdKeranjang(List<String> listIdKeranjang) {
+        this.listIdKeranjang = listIdKeranjang;
     }
 
     public ModelBarang(String id_barang, String nama_barang, int rating, String jenis_barang, int harga, int hargaOriginal, String gambar_barang, String deskripsi_barang, String imageType, int totalHarga, int totalItemKeranjang, int totalItem, boolean status) {

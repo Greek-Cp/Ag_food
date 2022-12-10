@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.agfood.Adapter.AdapterMetodePemesanan;
+import com.example.agfood.Model.ModelKeranjang;
 import com.example.agfood.ModelAdapter.ModelAdapterMetodePesanan;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
@@ -42,6 +43,12 @@ public class FragmentMetodePemesanan extends Fragment {
 
     public FragmentMetodePemesanan() {
         // Required empty public constructor
+    }
+
+    List<ModelKeranjang> barangList;
+
+    public FragmentMetodePemesanan(List<ModelKeranjang> barangYangAkanDiOrderList) {
+    this.barangList = barangYangAkanDiOrderList;
     }
 
     /**
@@ -83,7 +90,7 @@ public class FragmentMetodePemesanan extends Fragment {
         bindingMetodeFragment.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(barangList),"FRAGMNT_CHECKOUTBARANG");
             }
         });
         List<ModelAdapterMetodePesanan> listMetodePesanan = new ArrayList<>();
@@ -122,7 +129,7 @@ public class FragmentMetodePemesanan extends Fragment {
                         sharedPreferencesEditors.putString("PREF_JUDUL_PESANAN",opsi);
                         sharedPreferencesEditors.putString("PREF_CONTENT_PESANAN",contentMetodePesanan);
                         sharedPreferencesEditors.commit();
-                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(),"FRAMGENT_CHECKOUT");
+                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(barangList),"FRAMGENT_CHECKOUT");
                     }
             }
         });

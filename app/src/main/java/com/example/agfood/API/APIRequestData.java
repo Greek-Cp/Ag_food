@@ -6,6 +6,7 @@ import com.example.agfood.Model.ModelFavorit;
 import com.example.agfood.DataModel.ModelResponseAccount;
 import com.example.agfood.Model.ModelResponseBarang;
 import com.example.agfood.Model.ModelResponseFav;
+import com.example.agfood.Model.ModelResponseGetCurrentIdBarang;
 
 import java.util.List;
 
@@ -18,8 +19,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface APIRequestData {
-
-
     @Headers({
             "Content-Type: application/json;charset=utf-8",
             "Accept: application/json"
@@ -40,6 +39,9 @@ public interface APIRequestData {
     })
     @GET("retrieve_barang.php")
     Call<ModelResponseBarang> getResponseDataBarang();
+
+    @GET("get_current_id_order.php")
+    Call<ModelResponseGetCurrentIdBarang> getListIdKeranjang();
 
     @FormUrlEncoded
     @POST("verify_email.php")
@@ -78,6 +80,15 @@ public interface APIRequestData {
                                                      @Field("id_barang") String id_barang,
                                                      @Field("total_harga")  String totalHarga,
                                                      @Field("total_item") String total_item);
+
+    @FormUrlEncoded
+    @POST("hapus_keranjang.php")
+    Call<ModelResponseBarang> pindahPesananKeOrderPending(@Field("id_akun") String id_akun,
+                                                          @Field("id_barang") String id_barang,
+                                                           @Field("total_harga")  String totalHarga,
+                                                          @Field("total_item") String total_item,
+                                                          @Field("id_keranjang") String id_keranjang);
+    
     @FormUrlEncoded
     @POST("login_account.php")
     Call<ModelResponseAccount> loginAccount(@Field("email") String email,

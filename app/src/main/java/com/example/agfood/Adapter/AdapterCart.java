@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,15 +70,22 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
                 }
             }
         });
+        if(listModelKeranjang.get(position).isStatusCheckBoxChecked() == true){
+            holder.linearLayoutContainerAddOrderItem.setVisibility(View.INVISIBLE);
+        } else{
+            holder.linearLayoutContainerAddOrderItem.setVisibility(View.VISIBLE);
+        }
         holder.selectedItemCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(((CompoundButton) view).isChecked()){
                     adapterCartInterface.checkBoxItemSelected(holder.getAdapterPosition(), true);
                     System.out.println("Checked");
+                    holder.linearLayoutContainerAddOrderItem.setVisibility(View.INVISIBLE);
                 } else {
                     System.out.println("UnChecked");
                     adapterCartInterface.checkBoxItemSelected(holder.getAdapterPosition(),false);
+                    holder.linearLayoutContainerAddOrderItem.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -102,6 +110,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
         ImageView imageCart;
         TextView hargaPesanan , jumlahPesanan, namaPesanan , tambah , kurang;
         CheckBox selectedItemCheckBox;
+        LinearLayout linearLayoutContainerAddOrderItem;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             selectedItemCheckBox = itemView.findViewById(R.id.id_check_box_keranjang_layout_adapter);
@@ -111,6 +120,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
             namaPesanan = itemView.findViewById(R.id.id_tv_tittle_item_checkout_adapter);
             kurang = itemView.findViewById(R.id.id_tv_kurang_item_keranjang);
             tambah = itemView.findViewById(R.id.id_tv_tambah_item_keranjang);
+            linearLayoutContainerAddOrderItem = itemView.findViewById(R.id.id_container_button_add_topping);
         }
 
         @Override

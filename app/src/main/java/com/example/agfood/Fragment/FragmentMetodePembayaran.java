@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.agfood.Adapter.AdapterMetodePembayaran;
+import com.example.agfood.Model.ModelKeranjang;
 import com.example.agfood.ModelAdapter.ModelAdapterPembayaran;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
@@ -42,6 +43,11 @@ public class FragmentMetodePembayaran extends Fragment {
         // Required empty public constructor
     }
 
+    List<ModelKeranjang> modelKeranjangList;
+    public FragmentMetodePembayaran(List<ModelKeranjang> barangYangAkanDiOrderList) {
+        this.modelKeranjangList = barangYangAkanDiOrderList;
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -68,10 +74,8 @@ public class FragmentMetodePembayaran extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-
-
     String opsiPembayaran = "";
+    String noRekPembayaran = "";
     RecyclerView recyclerViewPesanan;
     SharedPreferences sharedPreferencesPembayaran;
     AdapterMetodePembayaran adapterMetodePembayaran;
@@ -81,10 +85,9 @@ public class FragmentMetodePembayaran extends Fragment {
         // Inflate the layout for this fragment
         FragmentMetodePembayaranBinding fragmentMetodePembayaranBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_metode_pembayaran,container,false);
         List<ModelAdapterPembayaran> modelAdapterPembayaranList = new ArrayList<>();
-        modelAdapterPembayaranList.add(new ModelAdapterPembayaran("Dana",R.drawable.ic_dana,"",false));
-        modelAdapterPembayaranList.add(new ModelAdapterPembayaran("GoPay",R.drawable.ic_gopay,"",false));
-        modelAdapterPembayaranList.add(new ModelAdapterPembayaran("Link Aja",R.drawable.ic_linkaja,"",false));
-        modelAdapterPembayaranList.add(new ModelAdapterPembayaran("BRIVA",R.drawable.ic_briva,"",false));
+        modelAdapterPembayaranList.add(new ModelAdapterPembayaran("Dana",R.drawable.ic_dana,"085608150983",false));
+        modelAdapterPembayaranList.add(new ModelAdapterPembayaran("Shoppe Pay",R.drawable.ic_shoope,"085608150983",false));
+        modelAdapterPembayaranList.add(new ModelAdapterPembayaran("BNI",R.drawable.ic_bni,"1153459155",false));
         sharedPreferencesPembayaran = getActivity().getSharedPreferences("PREF_BUTTON_PEMBAYARAN", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferencesPembayaran.edit();
         AdapterMetodePembayaran.AdapterMetodePembayaranListener adapterMetodePembayaranListener = new AdapterMetodePembayaran.AdapterMetodePembayaranListener() {
@@ -108,6 +111,13 @@ public class FragmentMetodePembayaran extends Fragment {
                     editor.commit();
                 }
                 opsiPembayaran = modelAdapterPembayaranList.get(positionOfPayment).getNamaServicePayment();
+                noRekPembayaran = modelAdapterPembayaranList.get(positionOfPayment).getAkunToko();
+                fragmentMetodePembayaranBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(modelKeranjangList),"FRAGMNT_CHECKOUTBARANG");
+                    }
+                });
                 adapterMetodePembayaran.notifyDataSetChanged();
                 Toast.makeText(getActivity().getApplicationContext(),"pemayaran = " + modelAdapterPembayaranList.get(positionOfPayment).getNamaServicePayment(), Toast.LENGTH_LONG).show();
 
@@ -122,10 +132,10 @@ public class FragmentMetodePembayaran extends Fragment {
                     SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PREF_METODE_PEMBAYARAN", Context.MODE_PRIVATE);
                     SharedPreferences.Editor sharedPreferencesEditors = sharedPreferences.edit();
                     sharedPreferencesEditors.putString("PREF_OPSI_PEMBAYARAN",opsiPembayaran);
+                    sharedPreferencesEditors.putString("PREF_NO_REK_PEMBAYARAN",noRekPembayaran);
                     sharedPreferencesEditors.commit();
-                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(),"FRAGMENT_CHECKOUT ");
+                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(modelKeranjangList),"FRAGMENT_CHECKOUT ");
                 }
-
             }
         });
        adapterMetodePembayaran = new AdapterMetodePembayaran(modelAdapterPembayaranList,adapterMetodePembayaranListener);
