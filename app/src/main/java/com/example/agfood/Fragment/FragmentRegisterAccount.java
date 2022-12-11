@@ -31,7 +31,7 @@ public class FragmentRegisterAccount extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new LoginFragment()).commit();
-                
+
             }
         });
 
@@ -44,7 +44,7 @@ public class FragmentRegisterAccount extends Fragment {
             @Override
             public void onClick(View view) {
                 if(fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().length() == 0){
-                    fragmentRegisterAccountBinding.idEditTextRegisterEmail.setError("Email Tidak Boleh Kosong");
+                    fragmentRegisterAccountBinding.idEditTextRegisterEmail.setError("Email Tidak Boleh Kosong !");
                 }
                 if(fragmentRegisterAccountBinding.idEditTextRegisterNama.getText().length() == 0){
                     fragmentRegisterAccountBinding.idEditTextRegisterNama.setError("Nama Tidak Boleh Kosong !");

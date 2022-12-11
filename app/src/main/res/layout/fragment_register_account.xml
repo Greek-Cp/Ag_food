@@ -67,14 +67,14 @@
                 app:boxCornerRadiusTopStart="5dp"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
-                app:counterMaxLength="50"
+                app:counterMaxLength="10"
                 app:counterEnabled="true"
 
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
-                    android:maxLength="50"
+                    android:maxLength="10"
                     android:textSize="@dimen/_10ssp"
                     android:id="@+id/id_edit_text_register_nama"
 
@@ -100,9 +100,10 @@
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="wrap_content"
                     android:textSize="@dimen/_10ssp"
                     android:maxLength="50"
+                    android:inputType="textEmailAddress"
                     android:id="@+id/id_edit_text_register_email"
                     />
             </com.google.android.material.textfield.TextInputLayout>
@@ -124,7 +125,7 @@
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_height="wrap_content"
                     android:textSize="@dimen/_10ssp"
                     android:maxLength="50"
                    android:id="@+id/id_edit_text_register_password"

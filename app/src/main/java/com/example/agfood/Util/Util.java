@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.agfood.API.APIRequestData;
 import com.example.agfood.API.BaseServerApp;
+import com.example.agfood.Fragment.UtilPref;
 import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.Model.ModelBarang;
 import com.example.agfood.Model.ModelRetrieveAccount;
@@ -89,9 +90,22 @@ public class Util {
         ModelAccount account =gson.fromJson(sharedPreferences.getString(sharedPrefDetail.getNameKey(), ""),typeAccount);
         return account;
     }
+    public static void logoutCurrentAccount(SharedPrefDetail sharedPrefDetail,Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefDetail.getNameSharedPref(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(sharedPrefDetail.getNameKey(), "");
+        editor.commit();
+    }
     public static APIRequestData getApiRequetData(){
         APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
         return apiRequestData;
+    }
+    public static void resetButtonAdapter(Activity activity){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("PREF_BUTTON", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear().commit();
+
+
     }
     public static List<ModelBarang> getListMenuMakanDariPref(SharedPrefDetail sharedPrefDetail, Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPrefDetail.getNameSharedPref(), Context.MODE_PRIVATE);

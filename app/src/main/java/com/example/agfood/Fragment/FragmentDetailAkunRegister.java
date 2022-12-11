@@ -282,46 +282,75 @@ public class FragmentDetailAkunRegister extends Fragment implements OnMapReadyCa
                  modelAccount.setNamaLengkap(modelDetailAccount.getNamaLengkap());
                 modelAccount.setNoHp(modelDetailAccount.getNoHp());
                 modelAccount.setAlamat(modelDetailAccount.getAlamat());
-                String username = modelAccount.getUsername();
-                String password = modelAccount.getPassword();
-                String email = modelAccount.getEmail();
+                String username = modelAccount.getUsername().trim();
+                String password = modelAccount.getPassword().trim();
+                String email = modelAccount.getEmail().trim();
                 String kedudukan = "user";
-                String alamat = modelDetailAccount.getAlamat();
-                String namaUser = modelAccount.getNamaLengkap();
-                String noHp = modelAccount.getNoHp();
+                String alamat = modelDetailAccount.getAlamat().trim();
+                String namaUser = modelAccount.getNamaLengkap().trim();
+                String noHp = modelAccount.getNoHp().trim();
                 APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
                 Call<ModelResponseAccount> modelResponseAccountCall = apiRequestData.createAccount(username, password,
                         kedudukan, email,alamat,namaUser,noHp);
-                modelResponseAccountCall.enqueue(new Callback<ModelResponseAccount>() {
-                    @Override
-                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
-                        if(response.body().getKode() == 1){
-                            System.out.println("Succes = " + response.body().getKode() + response.body().getPesan());
-                            Util.getApiRequetData().getOtp(email).enqueue(new Callback<ModelResponseAccount>() {
-                                @Override
-                                public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
-                                    sendMessage(email, String.valueOf(response.body().getOtp()));
-                                    if(response.body().getKode() == 1){
-                                        modelAccount.setVerifyNumber(String.valueOf(response.body().getOtp()));
-                                        Util.switchFragment(getActivity().getSupportFragmentManager(),
-                                                new FragmentSendOtp(modelAccount,1), "");
+                if(fragmentDetailAkunBinding.idEditTextDetailRegisterAlamat.getText().length() == 0){
+                    fragmentDetailAkunBinding.idEditTextDetailRegisterAlamat.setError("Alamat Tidak Boleh Kosong !");
+                }
+                if(fragmentDetailAkunBinding.idEditTextDetailRegisterNamaLengkap.getText().length() == 0)
+                {
+                    fragmentDetailAkunBinding.idEditTextDetailRegisterNamaLengkap.setError("Nama Lengkap Tidak Boleh Kosong !");
+                }
+                if(fragmentDetailAkunBinding.idEditTextDetailRegisterNomorHandphone.getText().length() == 0){
+                    fragmentDetailAkunBinding.idEditTextDetailRegisterNomorHandphone.setError("Nomor Handphone Tidak Boleh Kosong !");
+                }
+
+                String noHpFromTxtField = fragmentDetailAkunBinding.idEditTextDetailRegisterNomorHandphone.getText().toString();
+                String namaLengkapFromTxtField = fragmentDetailAkunBinding.idEditTextDetailRegisterNamaLengkap.getText().toString();
+                String alamatFromTxtField = fragmentDetailAkunBinding.idEditTextDetailRegisterNamaLengkap.getText().toString();
+                int lenNoHp = noHpFromTxtField.length();
+                int lenNamaLengkap = namaLengkapFromTxtField.length();
+                int lenAlamat = alamatFromTxtField.length();
+                if((lenNoHp != 12)){
+                    fragmentDetailAkunBinding.idEditTextDetailRegisterNomorHandphone.setError("Nomor Handphone Tidak Valid !");
+                } else if(lenNamaLengkap < 4){
+                    fragmentDetailAkunBinding.idEditTextDetailRegisterAlamat.setError("Nama Lengkap Tidak Boleh Kosong !");
+                } else if(lenAlamat < 5){
+                    fragmentDetailAkunBinding.idEditTextDetailRegisterAlamat.setError("Alamat Tidak Boleh Kosong !");
+                } else if(lenNoHp == 0) {
+                    fragmentDetailAkunBinding.idEditTextDetailRegisterNomorHandphone.setError("Nomor Handphone Tidak Boleh Kosong !");
+                }else{
+                    modelResponseAccountCall.enqueue(new Callback<ModelResponseAccount>() {
+                        @Override
+                        public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                            if(response.body().getKode() == 1){
+                                System.out.println("Succes = " + response.body().getKode() + response.body().getPesan());
+                                Util.getApiRequetData().getOtp(email.trim()).enqueue(new Callback<ModelResponseAccount>() {
+                                    @Override
+                                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                                        sendMessage(email, String.valueOf(response.body().getOtp()));
+                                        if(response.body().getKode() == 1){
+                                            modelAccount.setVerifyNumber(String.valueOf(response.body().getOtp()));
+                                            Util.switchFragment(getActivity().getSupportFragmentManager(),
+                                                    new FragmentSendOtp(modelAccount,1), "");
+                                        }
                                     }
-                                }
-                                @Override
-                                public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+                                    @Override
+                                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
 
-                                }
-                            });
-                        }  else if(response.body().getKode() == 2){
-                            Toast.makeText(getActivity().getApplicationContext(), "Mohon Maaf Email Anda Telah Digunakan !", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }  else if(response.body().getKode() == 2){
+                                Toast.makeText(getActivity().getApplicationContext(), "Mohon Maaf Email Anda Telah Digunakan !", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
-                        System.out.println("Gagal = " + t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+                            System.out.println("Gagal = " + t.getMessage());
+                        }
+                    });
+                }
+
+
             }
         });
         Geocoder geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());

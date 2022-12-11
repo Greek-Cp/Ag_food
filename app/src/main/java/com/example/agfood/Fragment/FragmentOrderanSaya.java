@@ -2,13 +2,33 @@ package com.example.agfood.Fragment;
 
 import android.os.Bundle;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.agfood.Adapter.AdapterCartOrder;
+import com.example.agfood.Model.ModelAccount;
+import com.example.agfood.Model.ModelBarang;
+import com.example.agfood.Model.ModelIdKeranjang;
+import com.example.agfood.Model.ModelKeranjang;
+import com.example.agfood.Model.ModelOrderan;
+import com.example.agfood.Model.ModelResponseBarang;
+import com.example.agfood.Model.ModelResponseIdKeranjang;
 import com.example.agfood.R;
+import com.example.agfood.Util.SharedPrefDetail;
+import com.example.agfood.Util.Util;
+import com.example.agfood.databinding.FragmentOrderanSayaBinding;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +49,6 @@ public class FragmentOrderanSaya extends Fragment {
     public FragmentOrderanSaya() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -38,6 +57,9 @@ public class FragmentOrderanSaya extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment FragmentOrderanSaya.
      */
+    ModelAccount mdl;
+    UtilPref utilPref = new UtilPref();
+
     // TODO: Rename and change types and number of parameters
     public static FragmentOrderanSaya newInstance(String param1, String param2) {
         FragmentOrderanSaya fragment = new FragmentOrderanSaya();
@@ -56,11 +78,91 @@ public class FragmentOrderanSaya extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_orderan_saya, container, false);
+        FragmentOrderanSayaBinding fragmentOrderanSayaBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_orderan_saya,container,false);
+        SharedPrefDetail sharedPrefDetailAccount = utilPref.accountPrefences;
+        Util.hiddenNavBottom(getActivity());
+        mdl = Util.getCurrentAccount(sharedPrefDetailAccount, getActivity());
+        Util.getApiRequetData().getListIdKeranjang(mdl.getIdAkun()).enqueue(new Callback<ModelResponseIdKeranjang>() {
+            @Override
+            public void onResponse(Call<ModelResponseIdKeranjang> call,
+                                   Response<ModelResponseIdKeranjang> response) {
+                   response.body().getDataKeranjang();
+
+                List<ModelIdKeranjang> listModelOrderan = new ArrayList<>();
+                for(ModelIdKeranjang mdlIdKeranjang : response.body().getDataKeranjang()){
+                    listModelOrderan.add(new ModelIdKeranjang(mdlIdKeranjang.getId_keranjang()));
+                }
+                Util.getApiRequetData().getListOrderByAccount(mdl.getIdAkun()).enqueue(new Callback<ModelResponseBarang>() {
+                    @Override
+                    public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                        System.out.println(response.body().getPesan() + " PESAN");
+                        List<ModelOrderan> listModelOrderanDiPilih = new ArrayList<>();
+                        for(ModelIdKeranjang modelOrderan : listModelOrderan){
+                            List<ModelBarang> listBarangSesuaiKeranjang = new ArrayList<>();
+                            int totHarga = 0;
+                            for(ModelBarang mdlBarang : response.body().getDataBarang()){
+                                if(modelOrderan.getId_keranjang().equals(mdlBarang.getId_keranjang())){
+                                    totHarga += mdlBarang.getHarga();
+                                    listBarangSesuaiKeranjang.add(mdlBarang);
+                                }
+                            }
+                            ModelOrderan modelOrderan1 = new ModelOrderan(modelOrderan.getId_keranjang());
+                            modelOrderan1.setTotalHargaOrderan(totHarga);
+                            modelOrderan1.setListBarangYgDiOrder(listBarangSesuaiKeranjang);
+                            listModelOrderanDiPilih.add(modelOrderan1);
+                            totHarga = 0;
+                        }
+                        AdapterCartOrder.AdapterCardOrderListener adapterCardOrderListener = new AdapterCartOrder.AdapterCardOrderListener() {
+                            @Override
+                            public void clickOrderListener(int posisiItemYangDiKlik) {
+
+                            }
+                        };
+                        if(listModelOrderanDiPilih != null){
+                            AdapterCartOrder adapterCartOrder = new AdapterCartOrder(listModelOrderanDiPilih,adapterCardOrderListener);
+                            fragmentOrderanSayaBinding.idRecOrderanSaya.setAdapter(adapterCartOrder);
+                            System.out.println("Data Final = "  + new Gson().toJson(listModelOrderan));
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseIdKeranjang> call, Throwable t) {
+
+            }
+        });
+        return fragmentOrderanSayaBinding.getRoot();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

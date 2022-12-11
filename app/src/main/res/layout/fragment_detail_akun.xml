@@ -76,7 +76,7 @@
                     >
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="wrap_content"
                         android:textSize="@dimen/_10ssp"
                         android:id="@+id/id_edit_text_detail_register_nama_lengkap"
                         android:maxLength="50"
@@ -96,7 +96,7 @@
                     app:boxCornerRadiusTopStart="5dp"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
-                    app:counterMaxLength="50"
+                    app:counterMaxLength="12"
                     app:counterEnabled="true"
                     >
                     <com.google.android.material.textfield.TextInputEditText
@@ -104,7 +104,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:textSize="@dimen/_10ssp"
                         android:id="@+id/id_edit_text_detail_register_nomor_handphone"
-                        android:maxLength="50"
+                        android:maxLength="12"
 
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -131,7 +131,7 @@
                     >
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="wrap_content"
                         android:textSize="@dimen/_10ssp"
                         android:maxLength="100"
                         android:id="@+id/id_edit_text_detail_register_alamat"

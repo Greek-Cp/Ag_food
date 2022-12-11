@@ -241,6 +241,12 @@ public class FragmentResetPassword extends Fragment {
               System.out.println(verifiy);
             }
         });
+        fragmentResetPasswordBinding.imageView7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new LoginFragment(), "FRAGMENT_LOGIN");
+            }
+        });
         return fragmentResetPasswordBinding.getRoot();
     }
 }

@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CenterZoomLayoutManager extends LinearLayoutManager {
 
-    private final float mShrinkAmount = 0.15f;
-    private final float mShrinkDistance = 0.9f;
+    private final float mShrinkAmount = 0.18f;
+    private final float mShrinkDistance = 1.0f;
 
     public CenterZoomLayoutManager(Context context) {
         super(context);

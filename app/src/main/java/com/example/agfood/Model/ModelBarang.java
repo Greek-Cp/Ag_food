@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ModelBarang {
+    @SerializedName("id_keranjang")
+    private String id_keranjang;
     @SerializedName("id_barang")
     private String id_barang;
     @SerializedName("nama_barang")
@@ -172,6 +174,32 @@ public class ModelBarang {
 
     public void setGambar_barang(String gambar_barang) {
         this.gambar_barang = gambar_barang;
+    }
+
+    public ModelBarang(String id_keranjang, String id_barang, String nama_barang, int rating, String jenis_barang, int harga, int hargaOriginal, String gambar_barang, String deskripsi_barang, String imageType, int totalHarga, int totalItemKeranjang, int totalItem, boolean status, List<String> listIdKeranjang) {
+        this.id_keranjang = id_keranjang;
+        this.id_barang = id_barang;
+        this.nama_barang = nama_barang;
+        this.rating = rating;
+        this.jenis_barang = jenis_barang;
+        this.harga = harga;
+        this.hargaOriginal = hargaOriginal;
+        this.gambar_barang = gambar_barang;
+        this.deskripsi_barang = deskripsi_barang;
+        this.imageType = imageType;
+        this.totalHarga = totalHarga;
+        this.totalItemKeranjang = totalItemKeranjang;
+        this.totalItem = totalItem;
+        this.status = status;
+        this.listIdKeranjang = listIdKeranjang;
+    }
+
+    public String getId_keranjang() {
+        return id_keranjang;
+    }
+
+    public void setId_keranjang(String id_keranjang) {
+        this.id_keranjang = id_keranjang;
     }
 
     public String getDeskripsi_barang() {

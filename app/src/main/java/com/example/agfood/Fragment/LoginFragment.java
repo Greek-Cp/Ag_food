@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.agfood.API.APIRequestData;
 import com.example.agfood.API.BaseServerApp;
@@ -81,34 +82,45 @@ public class LoginFragment extends Fragment {
 
 
     void recolorTextView(){
-        Util.setCustomColorText(fragmentLoginBinding.idTvTittleApp,"AG", " FOOD","FFA724");
-        Util.setCustomColorText(fragmentLoginBinding.idTvDoesntHaveAcc, "Don't have an account?",  " Sign Up","FFA724");
+        Util.setCustomColorText(fragmentLoginBinding.idTvTittleApp,"AG", " FOOD","ff4552");
+        Util.setCustomColorText(fragmentLoginBinding.idTvDoesntHaveAcc, "Don't have an account?",  " Sign Up","ff4552");
     }
     void loginApp(){
         fragmentLoginBinding.idBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                retrieveData();
-                APIRequestData ardData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
-                Call<ModelResponseAccount> getLoginResponse = ardData.loginAccount(fragmentLoginBinding.idEditTextEmail.getText().toString(), fragmentLoginBinding.idEditTextPassword.getText().toString());
-                getLoginResponse.enqueue(new Callback<ModelResponseAccount>() {
-                    @Override
-                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
-                        System.out.println(response.body().kode + " kode");
-                        if(response.body().kode == 3){
-                            Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentSendOtp(response.body().getDetail_account().get(0),2),"" );
-                        } else if (response.body().kode == 1){
-                            MotionToast.Companion.createColorToast(getActivity(), "Login Berhasil",
-                                    "Login Telah Berhasl", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
-                                    ));
-                            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullLogin(response.body().getDetail_account().get(0))).commit();
+                if(fragmentLoginBinding.idEditTextEmail.getText().toString().isEmpty() && fragmentLoginBinding.idEditTextPassword.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity().getApplicationContext(),"Email Dan Password Tidak Boleh Kosong !",Toast.LENGTH_SHORT).show();
+                } else{
+                    APIRequestData ardData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+                    Call<ModelResponseAccount> getLoginResponse = ardData.loginAccount(fragmentLoginBinding.idEditTextEmail.getText().toString(), fragmentLoginBinding.idEditTextPassword.getText().toString());
+                    getLoginResponse.enqueue(new Callback<ModelResponseAccount>() {
+                        @Override
+                        public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                            System.out.println(response.body().kode + " kode pesan login");
+                            if(response.body().kode == 3){
+                                Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentSendOtp(response.body().getDetail_account().get(0),2),"" );
+                            } else if (response.body().kode == 1){
+                                MotionToast.Companion.createColorToast(getActivity(), "Login Berhasil",
+                                        "Login Telah Berhasl", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
+                                        ));
+                                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullLogin(response.body().getDetail_account().get(0))).commit();
+                            } else if(response.body().kode == 4){
+                                MotionToast.Companion.createColorToast(getActivity(),"Login Gagal","Akun Anda Sedang Login Di Device Lain ! Harap Log-Out Dari Device Tersebut",
+                                        MotionToastStyle.ERROR,MotionToast.GRAVITY_CENTER,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular));
+                            } else if(response.body().kode == 5){
+                                MotionToast.Companion.createColorToast(getActivity(),"Login Gagal","Akun Tidak Temukan ! Harap Daftar Terlebih Dahulu",
+                                        MotionToastStyle.ERROR,MotionToast.GRAVITY_CENTER,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular));
+                            }
                         }
-                    }
-                    @Override
-                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                }
+
+
                 /*
                   for(ModelRetrieveAccount modelAccount : listDataAccount){
                     System.out.println("Data = " + modelAccount.getEmail());

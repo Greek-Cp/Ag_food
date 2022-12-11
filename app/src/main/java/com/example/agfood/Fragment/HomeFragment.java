@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.agfood.API.APIRequestData;
 import com.example.agfood.API.BaseServerApp;
+import com.example.agfood.Activity.FragmentSearchMenuMakanan;
 import com.example.agfood.Adapter.AdapterButton;
 import com.example.agfood.Adapter.AdapterFoodPopular;
 import com.example.agfood.Model.ModelAccount;
@@ -150,7 +151,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void clickItemSelectedListener(int positionOfItemFoodSelected) {
                 ModelBarang foodSelected = listBarang.get(positionOfItemFoodSelected);
-                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(username,foodSelected,"HOME")).commit();
+                 getActivity().getSupportFragmentManager().beginTransaction()
+                         .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(username,foodSelected,"HOME")).commit();
             }
 
             @Override
@@ -217,7 +219,7 @@ public class HomeFragment extends Fragment {
         mFragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false);
         Gson gson = new Gson();
         System.out.println("gson response = " + gson.toJson(username));
-
+        Util.resetButtonAdapter(getActivity());
         if(username != null){
             SharedPrefDetail prefDetailUser = utilPref.accountPrefences;
              prefDetailUser.setSerializeDataList(gson.toJson(username));
@@ -229,6 +231,12 @@ public class HomeFragment extends Fragment {
             mFragmentHomeBinding.idTvNamaUser.setText("Hi " + username.getNamaLengkap());
         }
 
+        mFragmentHomeBinding.idEditTextSearchMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentSearchMenuMakanan(),"FRAGMENT_SEARCH_MAKANAN");
+            }
+        });
         listModelFavoritSelectedByUser = UtilFood.getListFoodLikeByUser(Integer.parseInt(username.getIdAkun()));
         //        Util.setCustomColorText(mFragmentHomeBinding.idTvGrettingHome, "Sedang", " ","Lapar" , "ffffff", "FFA724");
         Util.setCustomColorText(mFragmentHomeBinding.idTvGrettingHome, "Sedang ", "Lapar ?", "ff4552");

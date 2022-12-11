@@ -42,7 +42,7 @@
         List<ModelKeranjang> listDataKeranjang = new ArrayList<>();
         AdapterCart adapterCart;
         void testDataKeranjang(){
-    }
+     }
         ModelAccount mdl;
         public FragmentKeranjang(ModelAccount mdlAccount){
             this.mdl = mdlAccount;
@@ -62,35 +62,10 @@
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             fragmentKeranjangBinding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.fragment_keranjang, container, false);
-            SharedPrefDetail sharedPrefDetailAccount = utilPref.accountPrefences;
             Util.hiddenNavBottom(getActivity());
+            SharedPrefDetail sharedPrefDetailAccount = utilPref.accountPrefences;
+
             mdl = Util.getCurrentAccount(sharedPrefDetailAccount, getActivity());
-            fragmentKeranjangBinding.idFragmentKeranjangTabLayoutParent.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    switch (tab.getId()){
-                        case R.id.id_fragment_keranjang_tab_layout_item_keranjang_saya:
-                                Toast.makeText(getActivity().getApplicationContext(),"Keranjang Saya",Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.id_fragment_keranjang_tab_layout_item_orderan_saya:
-
-                            Toast.makeText(getActivity().getApplicationContext(),"Orderan Saya",Toast.LENGTH_SHORT).show();
-
-                            break;
-
-                    }
-                }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
             fragmentKeranjangBinding.idTextViewCheckoutTotalPembayaran.setText(String.valueOf(Util.convertToRupiah(0)));
             Util.getApiRequetData().getKeranjangUser(mdl.getIdAkun()).enqueue(new Callback<ModelResponseBarang>() {
                 @Override
@@ -148,13 +123,14 @@
                                 adapterCart.notifyDataSetChanged();
                             }
                         };
-                        fragmentKeranjangBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
+                        /*
+                          fragmentKeranjangBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Util.switchFragment(new HomeFragment(), getActivity());
                             }
                         });
-
+                         */
                         fragmentKeranjangBinding.idBtnBuatPesanan.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -215,7 +191,6 @@
                                         if(listDataKeranjang.get(x).isStatusCheckBoxChecked() == true){
                                             totalDipilih -= listDataKeranjang.get(x).getSelectedFood().getHarga();
 //                                        listDataKeranjang.get(x).setStatusCheckBoxChecked(false);
-
                                         }
                                         if(listDataKeranjang.get(x).isStatusCheckBoxChecked() == false){
                                             listDataKeranjang.get(x).setStatusCheckBoxChecked(true);
@@ -269,7 +244,6 @@
                     Toast.makeText(getActivity().getApplicationContext(),"ERROR " + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-
             return  fragmentKeranjangBinding.getRoot();
         }
 

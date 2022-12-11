@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.example.agfood.Fragment.FragmentBaseKeranjang;
 import com.example.agfood.Fragment.FragmentCheckoutBarang;
 import com.example.agfood.Fragment.FragmentDetailMakanan;
 import com.example.agfood.Fragment.FragmentKeranjang;
@@ -112,17 +113,17 @@ public class BaseActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.id_nav_keranjang:
-                        Util.switchFragment(getSupportFragmentManager(),new FragmentKeranjang(),"FRAGMENT_KERANJANG");
+                        Util.switchFragment(getSupportFragmentManager(),new FragmentBaseKeranjang(),"FRAGMENT_KERANJANG");
                         break;
                     case R.id.id_nav_home:
                         Util.switchFragment(getSupportFragmentManager() , new HomeFragment() ,"FRAGMENT_HOME");
-                        break;
+                         break;
                     case R.id.id_nav_informas:
                         Util.switchFragment(getSupportFragmentManager(),  new FragmentViewInformasi(),"FRAGMENT_INFORMASI");
                         break;
                     case R.id.id_nav_akunsaya:
                         Util.switchFragment(getSupportFragmentManager(), new FragmentViewProfileUser(),"FRAGMENT_VIEW");
-                        break;
+                            break;
                 }
                 return true;
 

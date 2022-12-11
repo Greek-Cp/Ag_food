@@ -7,6 +7,7 @@ import com.example.agfood.DataModel.ModelResponseAccount;
 import com.example.agfood.Model.ModelResponseBarang;
 import com.example.agfood.Model.ModelResponseFav;
 import com.example.agfood.Model.ModelResponseGetCurrentIdBarang;
+import com.example.agfood.Model.ModelResponseIdKeranjang;
 
 import java.util.List;
 
@@ -32,33 +33,26 @@ public interface APIRequestData {
     })
     @GET("retrieve.php")
     Call<ModelResponseAccount> ardRetriveDataAccount();
-
     @Headers({
             "Content-Type: application/json;charset=utf-8",
             "Accept: application/json"
     })
     @GET("retrieve_barang.php")
     Call<ModelResponseBarang> getResponseDataBarang();
-
     @GET("get_current_id_order.php")
     Call<ModelResponseGetCurrentIdBarang> getListIdKeranjang();
-
     @FormUrlEncoded
     @POST("verify_email.php")
     Call<ModelResponseAccount> validateEmail(@Field("email") String email);
-
     @FormUrlEncoded
     @POST("getotp.php")
     Call<ModelResponseAccount> getOtp(@Field("email") String email);
-
     @FormUrlEncoded
     @POST("update_verif.php")
     Call<ModelResponseAccount> verifyAccount(@Field("email") String email);
-
     @FormUrlEncoded
     @POST("update_password.php")
     Call<ModelResponseAccount> updatePassword(@Field("email") String email, @Field("password") String password);
-
     @FormUrlEncoded
     @POST("create.php")
     Call<ModelResponseAccount> createAccount(@Field("username") String username,
@@ -69,18 +63,15 @@ public interface APIRequestData {
                                       @Field("namaLengkap") String namaUser,
                                       @Field("noHp") String noHp
     );
-
     @FormUrlEncoded
     @POST("keranjang_user.php")
     Call<ModelResponseBarang> getKeranjangUser(@Field("id_akun") String id_akun);
-
     @FormUrlEncoded
     @POST("tambah_keranjang.php")
     Call<ModelResponseBarang> savePesananKeKeranjang(@Field("id_akun") String id_akun,
                                                      @Field("id_barang") String id_barang,
                                                      @Field("total_harga")  String totalHarga,
                                                      @Field("total_item") String total_item);
-
     @FormUrlEncoded
     @POST("hapus_keranjang.php")
     Call<ModelResponseBarang> pindahPesananKeOrderPending(@Field("id_akun") String id_akun,
@@ -88,15 +79,36 @@ public interface APIRequestData {
                                                            @Field("total_harga")  String totalHarga,
                                                           @Field("total_item") String total_item,
                                                           @Field("id_keranjang") String id_keranjang);
-    
+    @FormUrlEncoded
+    @POST("get_id_keranjang.php")
+    Call<ModelResponseIdKeranjang> getListIdKeranjang(
+            @Field("id_akun") String id_akun
+    );
+
+    @FormUrlEncoded
+    @POST("get_menu_spesifik.php")
+    Call<ModelResponseBarang> getMenuSpesifik(
+            @Field("menu_cari") String menu_cari
+    );
+
+    @FormUrlEncoded
+    @POST("cari_makanan.php")
+    Call<ModelResponseBarang> cariMakanan(
+            @Field("menu_cari") String menu_cari
+    );
+
+    @FormUrlEncoded
+    @POST("get_order_list_byuser.php")
+    Call<ModelResponseBarang> getListOrderByAccount(@Field("id_akun") String id_akun);
+
     @FormUrlEncoded
     @POST("login_account.php")
     Call<ModelResponseAccount> loginAccount(@Field("email") String email,
                                     @Field("password") String password);
-
+    @FormUrlEncoded
+    @POST("update_status_login.php")
+    Call<ModelResponseAccount> logoutSession(@Field("email") String email);
     @FormUrlEncoded
     @POST("likefav.php")
     Call<ModelFavorit> saveLikeData(@Field("id_akun") int id_akun,@Field("id_barang")String id_barang,@Field("status_fav") String status_fav);
-
-
 }

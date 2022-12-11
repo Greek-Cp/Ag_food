@@ -21,4 +21,12 @@
     <color name="text_color_metode_pesanan">#008FC2</color>
     <color name="color_background_metode_pesanan">#F0FBFF</color>
     <color name="color_stroke_metode_pesanan">#F0FBFF</color>
+    <color name="colorSuccess">#4BB543</color>
+    <color name="colorWarning">#FFCC00</color>
+    <color name="colorNeutral">#434343</color>
+    <color name="colorError">#CC0000</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="colorWhite">#FFFFFF</color>
+
 </resources>

@@ -2,6 +2,7 @@ package com.example.agfood.Fragment;
 
 import android.os.Bundle;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -11,12 +12,23 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.agfood.Adapter.AdapterMenuProfile;
+import com.example.agfood.DataModel.ModelResponseAccount;
+import com.example.agfood.Dialog.DialogHelper;
+import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.ModelAdapter.ModelAdapterViewProfile;
 import com.example.agfood.R;
+import com.example.agfood.Util.SharedPrefDetail;
+import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentViewProfileUserBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import www.sanju.motiontoast.MotionToast;
+import www.sanju.motiontoast.MotionToastStyle;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,17 +80,15 @@ public class FragmentViewProfileUser extends Fragment {
     List<ModelAdapterViewProfile> listMenuButtonTop = new ArrayList<>();
     List<ModelAdapterViewProfile> listMenuButtonBottom = new ArrayList<>();
     public void initializeItemButtonTop(){
-
         listMenuButtonTop.add(new ModelAdapterViewProfile("Akun Saya", R.drawable.ic_menu_profile));
-        listMenuButtonTop.add(new ModelAdapterViewProfile("Pengaturan", R.drawable.ic_menu_setting));
         listMenuButtonTop.add(new ModelAdapterViewProfile("Pesanan Saya", R.drawable.ic_menu_pesanan));
-        listMenuButtonTop.add(new ModelAdapterViewProfile("Favorit Saya", R.drawable.ic_menu_favorit_pesanan));
         listMenuButtonTop.add(new ModelAdapterViewProfile("Log-Out Akun", R.drawable.ic_menu_logout));
     }
     public void initializeItemButtonBottom(){
         listMenuButtonBottom.add(new ModelAdapterViewProfile("Tentang Aplikasi", R.drawable.ic_menu_about));
         listMenuButtonBottom.add(new ModelAdapterViewProfile("Hubungi Kami",R.drawable.ic_menu_direct_message));
     }
+    ModelAccount mdl;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,15 +97,55 @@ public class FragmentViewProfileUser extends Fragment {
         FragmentViewProfileUserBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_profile_user,container , false);
         initializeItemButtonTop();
         initializeItemButtonBottom();
+        UtilPref utilPref = new UtilPref();
+        SharedPrefDetail sharedPrefDetailAccount = utilPref.accountPrefences;
+        mdl = Util.getCurrentAccount(sharedPrefDetailAccount, getActivity());
+
+        binding.idTvnameProfile.setText(mdl.getNamaLengkap());
+        binding.idTvusernameProfile.setText(mdl.getUsername());
         AdapterMenuProfile.AdapterMenuProfileListener adapterMenuProfileListenerTop = new AdapterMenuProfile.AdapterMenuProfileListener() {
             @Override
             public void clickMenuItemListener(int position) {
                 switch (position){
                     case 0:
-                        Toast.makeText(getActivity().getApplicationContext(), "Click Item " + position,  Toast.LENGTH_LONG).show();
-                    break;
+                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentUserProfileSetting(),"PROFILE_SETTING");
+                        break;
                     case 1:
-                        Toast.makeText(getActivity().getApplicationContext(), "Click Item " + position,  Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        DialogHelper dialogHelper;
+                        DialogHelper.DialogListener dialogListener = new DialogHelper.DialogListener() {
+                            @Override
+                            public void clickIya() {
+                                UtilPref utilPref = new UtilPref();
+                                Util.getApiRequetData().logoutSession(mdl.getEmail()).enqueue(new Callback<ModelResponseAccount>() {
+                                    @Override
+                                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                                        System.out.println("RESPONSE == " + response.body().pesan + ":" + response.body().kode);
+                                        if(response.body().kode == 1){
+                                            MotionToast.Companion.createColorToast(getActivity(), "Logout ",
+                                                    "Log-Out Berhasil", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION, ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
+                                                    ));
+                                            Util.logoutCurrentAccount(utilPref.accountPrefences,getActivity());
+                                            Util.switchFragment(getActivity().getSupportFragmentManager(),new LoginFragment(),"FRAGMENT_LOGIN");
+                                        } else {
+                                            MotionToast.Companion.createColorToast(getActivity(),"Logout","Log-out Account Gagal",
+                                                    MotionToastStyle.ERROR,MotionToast.GRAVITY_CENTER,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+                                    }
+                                });
+                            }
+                            @Override
+                            public void clickTidak() {
+                           }
+                        };
+                        dialogHelper = new DialogHelper(dialogListener);
+                        dialogHelper.show(getParentFragmentManager(),"Test");
                         break;
 
                 }

@@ -30,7 +30,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:elevation="30dp"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="30dp"
+                android:translationY="@dimen/_30sdp"
                 >
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -73,10 +74,10 @@
                             android:layout_marginTop="@dimen/_30sdp"
                             android:layout_marginRight="20dp"
                             android:hint="Email"
-                            app:boxCornerRadiusBottomEnd="20dp"
-                            app:boxCornerRadiusBottomStart="20dp"
-                            app:boxCornerRadiusTopEnd="20dp"
-                            app:boxCornerRadiusTopStart="20dp"
+                            app:boxCornerRadiusBottomEnd="5dp"
+                            app:boxCornerRadiusBottomStart="5dp"
+                            app:boxCornerRadiusTopEnd="5dp"
+                            app:boxCornerRadiusTopStart="5dp"
                             app:boxStrokeWidth="0dp"
                             app:boxStrokeWidthFocused="0dp">
                             <com.google.android.material.textfield.TextInputEditText
@@ -93,10 +94,10 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="20dp"
                             android:hint="Password"
-                            app:boxCornerRadiusBottomEnd="20dp"
-                            app:boxCornerRadiusBottomStart="20dp"
-                            app:boxCornerRadiusTopEnd="20dp"
-                            app:boxCornerRadiusTopStart="20dp"
+                            app:boxCornerRadiusBottomEnd="5dp"
+                            app:boxCornerRadiusBottomStart="5dp"
+                            app:boxCornerRadiusTopEnd="5dp"
+                            app:boxCornerRadiusTopStart="5dp"
                             app:boxStrokeWidth="0dp"
                             app:boxStrokeWidthFocused="0dp">
 
@@ -116,7 +117,7 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginRight="20dp"
                             android:text="Lupa Password ?"
-                            android:textColor="@color/color_gray" />
+                            android:textColor="@color/color_gray_verification" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/id_btn_login"
@@ -129,7 +130,7 @@
                             android:text="Login"
                             android:textAllCaps="false"
                             android:textSize="@dimen/_12ssp"
-                            app:cornerRadius="20dp" />
+                            app:cornerRadius="10dp" />
 
                         <TextView
                             android:id="@+id/id_tv_doesnt_have_acc"

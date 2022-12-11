@@ -42,6 +42,11 @@ public class AdapterFoodPopular extends RecyclerView.Adapter {
         this.context = context;
         this.mAdapterFoodPopularInterface = adapterFoodInterface;
     }
+    public AdapterFoodPopular(List<ModelBarang> listModelFood, Context context,AdapterFoodPopular.AdapterFoodInterface adapterFoodInterface) {
+        this.listModelFood = listModelFood;
+        this.context = context;
+        this.mAdapterFoodPopularInterface = adapterFoodInterface;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -81,7 +86,7 @@ public class AdapterFoodPopular extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return listModelFood.size();
+        return listModelFood == null ? 0 : listModelFood.size();
     }
     public class AdapterFoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public ItemFoodLayoutAdapterBinding itemFoodLayoutAdapterBinding;

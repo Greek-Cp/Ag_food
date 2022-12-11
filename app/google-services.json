@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "853625086960",
+    "project_id": "ag-food-bca24",
+    "storage_bucket": "ag-food-bca24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853625086960:android:b5ccc43670a6d667dfb335",
+        "android_client_info": {
+          "package_name": "com.example.agfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853625086960-tq6sjoe9jkt1bvnm8qv8kfqgeiplurat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9EPY_NIjGboBFDFqB53r0SAUoMV4bCs0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853625086960-tq6sjoe9jkt1bvnm8qv8kfqgeiplurat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

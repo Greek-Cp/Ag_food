@@ -88,7 +88,7 @@ public class FragmentSendOtp extends Fragment {
 
     public void sendMessage(String receiveEmail,String otpKode){
         try {
-            String stringSenderEmail = "agfoodserviceemail@gmail.com";
+            String stringSenderEmail = "e41210753@student.polije.ac.id";
             String stringPasswordSenderEmail = "Riyan_Islam_2003";
             String stringHost = "smtp.gmail.com";
             Properties properties = System.getProperties();
@@ -106,7 +106,6 @@ public class FragmentSendOtp extends Fragment {
             MimeMessage mimeMessage = new MimeMessage(session);
             mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(receiveEmail));
             mimeMessage.setSubject("Verifikasi Akun");
-
             mimeMessage.setContent ("\n" +
                     "<!doctype html>\n" +
                     "<html lang=\"en-US\">\n" +
