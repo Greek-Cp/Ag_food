@@ -36,6 +36,7 @@ public class ModelAccount {
     @SerializedName("noHp")
     @Expose
     public String noHp;
+
     public ModelAccount() {
     }
     public ModelAccount(String username, String email, String password, String kedudukan) {

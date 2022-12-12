@@ -9,6 +9,8 @@ import java.util.List;
 public class ModelResponseAccount {
     public int kode;
     public String pesan;
+    public String gambar_profile;
+    public String nama_lengkap;
     public int otp;
     @SerializedName("detail_account")
     List<ModelAccount> detail_account;
@@ -50,7 +52,13 @@ public class ModelResponseAccount {
         this.pesan = pesan;
     }
 
+    public String getGambar_profile() {
+        return gambar_profile;
+    }
 
+    public void setGambar_profile(String gambar_profile) {
+        this.gambar_profile = gambar_profile;
+    }
 
     public int getKode() {
         return kode;

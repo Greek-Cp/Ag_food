@@ -104,12 +104,54 @@ public class FragmentViewMenuSelected extends Fragment {
     SharedPreferences sharedPreferences;
     List<ModelFav> listModelFavoritSelectedByUser;
     AdapterButton adapterButtonMakanan;
+    AdapterButton adapterButtonMinuman;
     public void initializeKategoryAdapter(){
         sharedPreferences = getActivity().getSharedPreferences("PREF_BUTTON", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         listModelFavoritSelectedByUser = UtilFood.getListFoodLikeByUser(Integer.parseInt(mdl.getIdAkun()));
         switch (this.categoryName){
             case "Makanan":
+                Util.getApiRequetData().getMenuSpesifik("Menu Reguler").enqueue(
+                        new Callback<ModelResponseBarang>() {
+                            @Override
+                            public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                                List<ModelBarang> listBarang = response.body().getDataBarang();
+                                AdapterFoodPopular.AdapterFoodInterface mAdapterFoodInterface = new AdapterFoodPopular.AdapterFoodInterface() {
+                                    @Override
+                                    public void clickItemSelectedListener(int positionOfItemFoodSelected) {
+                                        ModelBarang foodSelected = listBarang.get(positionOfItemFoodSelected);
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(mdl,foodSelected,"HOME")).commit();
+                                    }
+
+                                    @Override
+                                    public void clickLoveListener(int positionOfItemLikeByUser) {
+                                        ModelFavorit modelFavorit = new ModelFavorit(Integer.parseInt(mdl.getIdAkun()),listBarang.get(positionOfItemLikeByUser).getId_barang(),"T");
+                                        APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+                                        Call<ModelFavorit> callModelFavorit = apiRequestData.saveLikeData(modelFavorit.getId_akun(),modelFavorit.getId_barang(),modelFavorit.getStatus_fav());
+                                        callModelFavorit.enqueue(new Callback<ModelFavorit>() {
+                                            @Override
+                                            public void onResponse(Call<ModelFavorit> call, Response<ModelFavorit> response) {
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ModelFavorit> call, Throwable t) {
+                                                System.out.println("response error = " + t.getLocalizedMessage());
+                                            }
+                                        });
+                                    }
+                                };
+                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
+                            }
+
+                            @Override
+                            public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+
+                            }
+                        }
+                );
               List<ModelButton> listKategoryButtonMakanan = new ArrayList<>();
                 listKategoryButtonMakanan.add(new ModelButton("Menu Reguler", true,R.drawable.ic_menu_reguler));
                 listKategoryButtonMakanan.add(new ModelButton("Menu Medium", false,R.drawable.ic_medium));
@@ -403,22 +445,117 @@ public class FragmentViewMenuSelected extends Fragment {
 
                 break;
             case "Minuman":
+                Util.getApiRequetData().getMenuSpesifik("Menu Minum").enqueue(
+                        new Callback<ModelResponseBarang>() {
+                            @Override
+                            public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                                List<ModelBarang> listBarang = response.body().getDataBarang();
+                                AdapterFoodPopular.AdapterFoodInterface mAdapterFoodInterface = new AdapterFoodPopular.AdapterFoodInterface() {
+                                    @Override
+                                    public void clickItemSelectedListener(int positionOfItemFoodSelected) {
+                                        ModelBarang foodSelected = listBarang.get(positionOfItemFoodSelected);
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(mdl,foodSelected,"HOME")).commit();
+                                    }
+
+                                    @Override
+                                    public void clickLoveListener(int positionOfItemLikeByUser) {
+                                        ModelFavorit modelFavorit = new ModelFavorit(Integer.parseInt(mdl.getIdAkun()),listBarang.get(positionOfItemLikeByUser).getId_barang(),"T");
+                                        APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+                                        Call<ModelFavorit> callModelFavorit = apiRequestData.saveLikeData(modelFavorit.getId_akun(),modelFavorit.getId_barang(),modelFavorit.getStatus_fav());
+                                        callModelFavorit.enqueue(new Callback<ModelFavorit>() {
+                                            @Override
+                                            public void onResponse(Call<ModelFavorit> call, Response<ModelFavorit> response) {
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ModelFavorit> call, Throwable t) {
+                                                System.out.println("response error = " + t.getLocalizedMessage());
+                                            }
+                                        });
+                                    }
+                                };
+                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
+                            }
+
+                            @Override
+                            public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+
+                            }
+                        }
+                );
                 sharedPreferences = getActivity().getSharedPreferences("PREF_BUTTON_MINUMAN",Context.MODE_PRIVATE);
                 List<ModelButton> listKategoryButtonMinuman = new ArrayList<>();
-                listKategoryButtonMinuman.add(new ModelButton("Dingin", false));
-                listKategoryButtonMinuman.add(new ModelButton("Panas", false));
+                listKategoryButtonMinuman.add(new ModelButton("Dingin/Panas" , true,R.drawable.juice));
                 AdapterButton.AdapterButtonClickListener listenerClickItemMinuman = new AdapterButton.AdapterButtonClickListener() {
                     @Override
                     public void clickButtonListener(int positionOfButton) {
+                        if(listKategoryButtonMinuman.get(positionOfButton).isClicked()){
+                            listKategoryButtonMinuman.get(positionOfButton).setClicked(true);
+                            editor.putInt("CURRENT_POST_MENU",  positionOfButton);
+                            editor.commit();
+                        } else if(!listKategoryButtonMinuman.get(positionOfButton).isClicked()){
+                            int getCurrentVal = sharedPreferences.getInt("CURRENT_POST_MENU",0);
+                            listKategoryButtonMinuman.get(getCurrentVal).setClicked(false);
+                            listKategoryButtonMinuman.get(positionOfButton).setClicked(true);
+                            editor.putInt("CURRENT_POST_MENU", positionOfButton);
+                            editor.commit();
+                        }
+                        adapterButtonMinuman.notifyDataSetChanged();
                         switch (listKategoryButtonMinuman.get(positionOfButton).getNameButton()){
-                            case "Dingin":
+                            case "Dingin/Panas":
+                                Util.getApiRequetData().getMenuSpesifik("Menu Minum").enqueue(
+                                        new Callback<ModelResponseBarang>() {
+                                            @Override
+                                            public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                                                List<ModelBarang> listBarang = response.body().getDataBarang();
+                                                AdapterFoodPopular.AdapterFoodInterface mAdapterFoodInterface = new AdapterFoodPopular.AdapterFoodInterface() {
+                                                    @Override
+                                                    public void clickItemSelectedListener(int positionOfItemFoodSelected) {
+                                                        ModelBarang foodSelected = listBarang.get(positionOfItemFoodSelected);
+                                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                                .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(mdl,foodSelected,"HOME")).commit();
+                                                    }
+
+                                                    @Override
+                                                    public void clickLoveListener(int positionOfItemLikeByUser) {
+                                                        ModelFavorit modelFavorit = new ModelFavorit(Integer.parseInt(mdl.getIdAkun()),listBarang.get(positionOfItemLikeByUser).getId_barang(),"T");
+                                                        APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
+                                                        Call<ModelFavorit> callModelFavorit = apiRequestData.saveLikeData(modelFavorit.getId_akun(),modelFavorit.getId_barang(),modelFavorit.getStatus_fav());
+                                                        callModelFavorit.enqueue(new Callback<ModelFavorit>() {
+                                                            @Override
+                                                            public void onResponse(Call<ModelFavorit> call, Response<ModelFavorit> response) {
+
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(Call<ModelFavorit> call, Throwable t) {
+                                                                System.out.println("response error = " + t.getLocalizedMessage());
+                                                            }
+                                                        });
+                                                    }
+                                                };
+                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                                fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
+                                                // fragmentViewMenuSelectedBinding.idRecMenuSelected.setLayoutManager(new CenterZoomLayoutManager(getActivity().getApplicationContext(), RecyclerView.HORIZONTAL,false));
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+
+                                            }
+                                        }
+                                );
                                 break;
-                            case "Panas":
-                                break;
+
+
+
                         }
                     }
                 };
-                AdapterButton adapterButtonMinuman = new AdapterButton(listKategoryButtonMinuman,listenerClickItemMinuman);
+                 adapterButtonMinuman = new AdapterButton(listKategoryButtonMinuman,listenerClickItemMinuman);
                 fragmentViewMenuSelectedBinding.idRecKategoryFood.setAdapter(adapterButtonMinuman);
                 break;
         }
@@ -452,47 +589,7 @@ public class FragmentViewMenuSelected extends Fragment {
 
             }
         };
-        Util.getApiRequetData().getMenuSpesifik("Menu Reguler").enqueue(
-                new Callback<ModelResponseBarang>() {
-                    @Override
-                    public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
-                        List<ModelBarang> listBarang = response.body().getDataBarang();
-                        AdapterFoodPopular.AdapterFoodInterface mAdapterFoodInterface = new AdapterFoodPopular.AdapterFoodInterface() {
-                            @Override
-                            public void clickItemSelectedListener(int positionOfItemFoodSelected) {
-                                ModelBarang foodSelected = listBarang.get(positionOfItemFoodSelected);
-                                getActivity().getSupportFragmentManager().beginTransaction()
-                                        .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(mdl,foodSelected,"HOME")).commit();
-                            }
 
-                            @Override
-                            public void clickLoveListener(int positionOfItemLikeByUser) {
-                                ModelFavorit modelFavorit = new ModelFavorit(Integer.parseInt(mdl.getIdAkun()),listBarang.get(positionOfItemLikeByUser).getId_barang(),"T");
-                                APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
-                                Call<ModelFavorit> callModelFavorit = apiRequestData.saveLikeData(modelFavorit.getId_akun(),modelFavorit.getId_barang(),modelFavorit.getStatus_fav());
-                                callModelFavorit.enqueue(new Callback<ModelFavorit>() {
-                                    @Override
-                                    public void onResponse(Call<ModelFavorit> call, Response<ModelFavorit> response) {
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<ModelFavorit> call, Throwable t) {
-                                        System.out.println("response error = " + t.getLocalizedMessage());
-                                    }
-                                });
-                            }
-                        };
-                        adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
-                        fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
-                                          }
-
-                    @Override
-                    public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
-
-                    }
-                }
-        );
         initializeKategoryAdapter();
         //adapterFoodPopular = new AdapterFoodPopular(mListModelFood,getActivity().getApplicationContext(),mAdapterFoodInterface);
         // mFragmentHomeBinding.idRecPopularFood.setLayoutManager(new CenterZoomLayoutManager(getActivity().getApplicationContext(), RecyclerView.HORIZONTAL,false));

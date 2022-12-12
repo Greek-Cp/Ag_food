@@ -2,24 +2,34 @@ package com.example.agfood.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.example.agfood.API.APIRequestData;
@@ -27,9 +37,11 @@ import com.example.agfood.API.BaseServerApp;
 import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.Model.ModelDetailAccount;
 import com.example.agfood.DataModel.ModelResponseAccount;
+import com.example.agfood.Model.ModelResponseUpload;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentDetailAkunBinding;
+import com.example.agfood.databinding.FragmentUserProfileSettingBinding;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,9 +51,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -54,6 +70,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -251,6 +270,76 @@ public class FragmentDetailAkunRegister extends Fragment implements OnMapReadyCa
         }
         return strAdd;
     }
+
+
+    ModelAccount mdl;
+    // StorageReference mStorageRef;
+    // private StorageTask mUploadTask;
+    String part_image;
+    FragmentUserProfileSettingBinding fragmentUserProfileSettingBinding;
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    // doSomeOperations();
+                    Intent data = result.getData();
+                    Uri selectedImage = Objects.requireNonNull(data).getData();
+                    String[] imageProjection = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getActivity().getContentResolver().query(selectedImage, imageProjection, null, null, null);
+                    if(cursor != null) {
+                        cursor.moveToFirst();
+                        int indexImage = cursor.getColumnIndex(imageProjection[0]);
+                        part_image = cursor.getString(indexImage);
+                        System.out.println("Part Image = " + part_image);
+                    }
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    // StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+                    //         + "." + getFileExtension(selectedImage));
+                    BitmapFactory.decodeStream(imageStream);
+                    System.out.println(selectedImage + " PATH ");
+                    //Util.getApiRequetData().uploadImage()
+
+                    fragmentUserProfileSettingBinding.idCircularImageViewProfile.setImageURI(selectedImage);
+                }
+            });
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getActivity().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+    public void uploadImage(String emails) {
+        File imageFile = new File(part_image);
+        RequestBody reqBody = RequestBody.create(MediaType.parse("multipart/form-file"), imageFile);
+        MultipartBody.Part partImage = MultipartBody.Part.createFormData("file", imageFile.getName(), reqBody);
+        RequestBody  filename = RequestBody.create(MediaType.parse("text/plain"), "profile_" + mdl.getUsername());
+        Util.getApiRequetData().uploadImage(partImage,filename).enqueue(new Callback<ModelResponseUpload>() {
+            @Override
+            public void onResponse(Call<ModelResponseUpload> call, Response<ModelResponseUpload> response) {
+                System.out.println(response.body().getLink() + " MESSAGE");
+                Util.getApiRequetData().updateProfilePicture(emails,response.body().getLink()).enqueue(new Callback<ModelResponseAccount>() {
+                    @Override
+                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                        System.out.println(response.body().getPesan());
+                    }
+                    @Override
+                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseUpload> call, Throwable t) {
+                System.out.println(t.getMessage() + "error ");
+            }
+        });
+    }
     private GoogleMap mMap;
     private boolean oke = false;
     String id_user,alamatGet;
@@ -329,6 +418,7 @@ public class FragmentDetailAkunRegister extends Fragment implements OnMapReadyCa
                                         sendMessage(email, String.valueOf(response.body().getOtp()));
                                         if(response.body().getKode() == 1){
                                             modelAccount.setVerifyNumber(String.valueOf(response.body().getOtp()));
+
                                             Util.switchFragment(getActivity().getSupportFragmentManager(),
                                                     new FragmentSendOtp(modelAccount,1), "");
                                         }

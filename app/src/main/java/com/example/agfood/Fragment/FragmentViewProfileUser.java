@@ -20,6 +20,7 @@ import com.example.agfood.R;
 import com.example.agfood.Util.SharedPrefDetail;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentViewProfileUserBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,16 +94,48 @@ public class FragmentViewProfileUser extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         FragmentViewProfileUserBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_profile_user,container , false);
         initializeItemButtonTop();
         initializeItemButtonBottom();
         UtilPref utilPref = new UtilPref();
         SharedPrefDetail sharedPrefDetailAccount = utilPref.accountPrefences;
         mdl = Util.getCurrentAccount(sharedPrefDetailAccount, getActivity());
-
         binding.idTvnameProfile.setText(mdl.getNamaLengkap());
         binding.idTvusernameProfile.setText(mdl.getUsername());
+        Util.getApiRequetData().getNamaLengkap(mdl.getIdAkun()).enqueue(new Callback<ModelResponseAccount>() {
+            @Override
+            public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+
+                    binding.idTvnameProfile.setText(response.body().nama_lengkap);
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+            }
+        });
+        Util.getApiRequetData().getImageProfile(
+                mdl.getEmail()
+        ).enqueue(new Callback<ModelResponseAccount>() {
+            @Override
+            public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                if(response.body().gambar_profile == null){
+                    System.out.println("Profile Belum Di Set !");
+                    binding.idImgProfile.setImageResource(R.drawable.ic_profile_saya);
+
+                } else{
+                    Picasso.get()
+                            .load(response.body().getGambar_profile()).resize(512,512).centerCrop()
+                            .into(binding.idImgProfile);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+            }
+        });
         AdapterMenuProfile.AdapterMenuProfileListener adapterMenuProfileListenerTop = new AdapterMenuProfile.AdapterMenuProfileListener() {
             @Override
             public void clickMenuItemListener(int position) {
@@ -111,6 +144,7 @@ public class FragmentViewProfileUser extends Fragment {
                         Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentUserProfileSetting(),"PROFILE_SETTING");
                         break;
                     case 1:
+                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentBaseKeranjang(),"FRAGMENT_BASE_KERANJANG");
                         break;
                     case 2:
                         DialogHelper dialogHelper;

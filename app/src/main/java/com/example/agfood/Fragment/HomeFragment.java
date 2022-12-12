@@ -18,6 +18,7 @@ import com.example.agfood.API.BaseServerApp;
 import com.example.agfood.Activity.FragmentSearchMenuMakanan;
 import com.example.agfood.Adapter.AdapterButton;
 import com.example.agfood.Adapter.AdapterFoodPopular;
+import com.example.agfood.DataModel.ModelResponseAccount;
 import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.Model.ModelBarang;
 import com.example.agfood.Model.ModelButton;
@@ -32,6 +33,7 @@ import com.example.agfood.Util.SharedPrefDetail;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentHomeBinding;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -230,7 +232,45 @@ public class HomeFragment extends Fragment {
             username = Util.getCurrentAccount(sharedPrefDetailAccount, getActivity());
             mFragmentHomeBinding.idTvNamaUser.setText("Hi " + username.getNamaLengkap());
         }
+        Util.getApiRequetData().getNamaLengkap(username.getIdAkun()).enqueue(new Callback<ModelResponseAccount>() {
+            @Override
+            public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
 
+                    mFragmentHomeBinding.idTvNamaUser.setText("Hi " + response.body().nama_lengkap);
+                    username.setNamaLengkap(response.body().nama_lengkap);
+                SharedPrefDetail prefDetailUser = utilPref.accountPrefences;
+                prefDetailUser.setSerializeDataList(gson.toJson(username));
+                Util.saveDataListPrefences(prefDetailUser,getActivity().getApplicationContext());
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+            }
+        });
+        Util.getApiRequetData().getImageProfile(
+                username.getEmail()
+        ).enqueue(new Callback<ModelResponseAccount>() {
+            @Override
+            public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                if(response.body().gambar_profile == null){
+                    mFragmentHomeBinding.idImgProfile.setImageResource(R.drawable.ic_profile_saya);
+
+                    System.out.println("Profile Belum Di Set !");
+                } else{
+                    Picasso.get()
+                            .load(response.body().getGambar_profile()).resize(512,512).centerCrop()
+                            .into(mFragmentHomeBinding.idImgProfile);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+            }
+        });
         mFragmentHomeBinding.idEditTextSearchMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

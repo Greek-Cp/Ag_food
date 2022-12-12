@@ -107,6 +107,7 @@ public class FragmentCheckoutBarang extends Fragment implements View.OnClickList
                 Util.switchFragment(getActivity().getSupportFragmentManager(),new HomeFragment(),"FRAGMENT_HOME");
             }
         });
+        fragmentCheckoutBarangBinding.idTextViewCheckoutTotalPembayaran.setText(Util.convertToRupiah(hargaTotal));
         fragmentCheckoutBarangBinding.idTextViewCheckoutRightHargaTotalPesanan.setText(Util.convertToRupiah(hargaTotal));
         fragmentCheckoutBarangBinding.idTextViewCheckoutMetodePembayaran.setText(metodePesanan.get("KEY_PEMBAYARAN"));
         fragmentCheckoutBarangBinding.idTextViewCheckoutHeaderMetodePesanan.setText(metodePesanan.get("KEY_JUDUL_PESANAN"));

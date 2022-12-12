@@ -8,15 +8,21 @@ import com.example.agfood.Model.ModelResponseBarang;
 import com.example.agfood.Model.ModelResponseFav;
 import com.example.agfood.Model.ModelResponseGetCurrentIdBarang;
 import com.example.agfood.Model.ModelResponseIdKeranjang;
+import com.example.agfood.Model.ModelResponseUpload;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface APIRequestData {
@@ -91,6 +97,7 @@ public interface APIRequestData {
             @Field("menu_cari") String menu_cari
     );
 
+
     @FormUrlEncoded
     @POST("cari_makanan.php")
     Call<ModelResponseBarang> cariMakanan(
@@ -108,6 +115,28 @@ public interface APIRequestData {
     @FormUrlEncoded
     @POST("update_status_login.php")
     Call<ModelResponseAccount> logoutSession(@Field("email") String email);
+
+    @FormUrlEncoded
+    @POST("update_image_profile_user.php")
+    Call<ModelResponseAccount> updateProfilePicture(@Field("email") String email , @Field("image_profile") String imageLink);
+
+    @FormUrlEncoded
+    @POST("update_nama_lengkap_user.php")
+    Call<ModelResponseAccount> updateNamaLengkap(@Field("id_akun") String email , @Field("nama_lengkap") String namaLengkap);
+
+    @FormUrlEncoded
+    @POST("get_image_profile_user_by_email.php")
+    Call<ModelResponseAccount> getImageProfile(@Field("email") String email);
+
+
+    @FormUrlEncoded
+    @POST("get_nama_lengkap.php")
+    Call<ModelResponseAccount> getNamaLengkap(@Field("id_akun") String id_akun);
+
+    @Multipart
+    @POST("upload_image.php")
+    Call<ModelResponseUpload> uploadImage(@Part MultipartBody.Part image , @Part("file") RequestBody name);
+
     @FormUrlEncoded
     @POST("likefav.php")
     Call<ModelFavorit> saveLikeData(@Field("id_akun") int id_akun,@Field("id_barang")String id_barang,@Field("status_fav") String status_fav);

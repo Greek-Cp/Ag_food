@@ -22,7 +22,7 @@
     <item
         android:title="Saya"
         android:id="@+id/id_nav_akunsaya"
-        android:icon="@drawable/ic_menu_profile">
+        android:icon="@drawable/ic_baseline_account_circle_24">
     </item>
 
 
