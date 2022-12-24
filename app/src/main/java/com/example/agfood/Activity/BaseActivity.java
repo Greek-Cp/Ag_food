@@ -99,12 +99,14 @@ public class BaseActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_base);
+
         permission();
         requestPermission();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         hiddenActionBar();
         getSupportFragmentManager().beginTransaction().replace(R.id.id_base_frame_layout, new SplashScreenFragment(),"FRAGMENT_SPLASH_SCREEN").commit();
         bottomNavigationView = findViewById(R.id.id_nav_bar);
+        bottomNavigationView.setSelectedItemId(R.id.id_nav_home);
         bottomNavigationSelected();
     }
     void bottomNavigationSelected(){
@@ -114,6 +116,7 @@ public class BaseActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.id_nav_keranjang:
                         Util.switchFragment(getSupportFragmentManager(),new FragmentBaseKeranjang(),"FRAGMENT_KERANJANG");
+
                         break;
                     case R.id.id_nav_home:
                         Util.switchFragment(getSupportFragmentManager() , new HomeFragment() ,"FRAGMENT_HOME");
@@ -130,6 +133,13 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
     void hiddenActionBar(){
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();

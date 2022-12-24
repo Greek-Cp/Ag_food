@@ -85,6 +85,7 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:boxStrokeColor="@color/red_color"
                             app:hintTextColor="@color/red_color"
+
                             app:layout_constraintTop_toBottomOf="@+id/id_tv_gretting_home">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -93,7 +94,6 @@
                                 android:layout_height="@dimen/_40sdp"
                                 android:drawableEnd="@drawable/ic_baseline_search_24"
                                 android:textSize="@dimen/_10ssp"
-
                                 />
                         </com.google.android.material.textfield.TextInputLayout>
 

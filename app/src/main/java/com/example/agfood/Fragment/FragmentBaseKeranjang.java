@@ -61,8 +61,13 @@ public class FragmentBaseKeranjang extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FragmentBaseKeranjang() {
+    String state;
+    public FragmentBaseKeranjang(){
+
+    }
+    public FragmentBaseKeranjang(String state) {
         // Required empty public constructor
+        this.state =state;
     }
 
     /**
@@ -110,7 +115,9 @@ public class FragmentBaseKeranjang extends Fragment {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Util.switchFragment(getActivity().getSupportFragmentManager(),new HomeFragment(),"FRAGMENT_HOME");
+                HomeFragment homeFragment = new HomeFragment();
+                homeFragment.setState("STATE_KERANJANG");
+                Util.switchFragment(getActivity().getSupportFragmentManager(),homeFragment,"FRAGMENT_HOME");
             }
         });
         adapter = new ViewPagerFragmentAdapter(getActivity());
@@ -122,7 +129,11 @@ public class FragmentBaseKeranjang extends Fragment {
         }).attach();
 
         // set default position to 1 instead of default 0
-        viewPager2.setCurrentItem(0, false);
+        if(state == "KRJ"){
+            viewPager2.setCurrentItem(1, false);
+        }else{
+            viewPager2.setCurrentItem(0, false);
+        }
 
 
     }

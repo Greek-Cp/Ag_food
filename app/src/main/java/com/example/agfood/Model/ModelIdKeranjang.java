@@ -10,7 +10,6 @@ public class ModelIdKeranjang {
     public void setId_keranjang(String id_keranjang) {
         this.id_keranjang = id_keranjang;
     }
-
     public ModelIdKeranjang(String id_keranjang) {
         this.id_keranjang = id_keranjang;
 

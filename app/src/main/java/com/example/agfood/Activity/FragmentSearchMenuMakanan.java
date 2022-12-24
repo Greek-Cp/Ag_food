@@ -125,7 +125,7 @@ public class FragmentSearchMenuMakanan extends Fragment {
 
                             }
                         };
-                        adapterFoodPopular = new AdapterFoodPopular(response.body().getDataBarang(),getActivity().getApplicationContext(),mAdapterFoodInterface);
+                        adapterFoodPopular = new AdapterFoodPopular(response.body().getDataBarang(),mAdapterFoodInterface);
                         // mFragmentHomeBinding.idRecPopularFood.setLayoutManager(new CenterZoomLayoutManager(getActivity().getApplicationContext(), RecyclerView.HORIZONTAL,false));
                         fragmentSearchMenuMakananBinding.idRecPopularFood.setAdapter(adapterFoodPopular);
                         adapterFoodPopular.notifyDataSetChanged();
@@ -164,7 +164,7 @@ public class FragmentSearchMenuMakanan extends Fragment {
 
                             }
                         };
-                        adapterFoodPopular = new AdapterFoodPopular(response.body().getDataBarang(),getActivity().getApplicationContext(),mAdapterFoodInterface);
+                        adapterFoodPopular = new AdapterFoodPopular(response.body().getDataBarang(),mAdapterFoodInterface);
                         // mFragmentHomeBinding.idRecPopularFood.setLayoutManager(new CenterZoomLayoutManager(getActivity().getApplicationContext(), RecyclerView.HORIZONTAL,false));
                         fragmentSearchMenuMakananBinding.idRecPopularFood.setAdapter(adapterFoodPopular);
                         adapterFoodPopular.notifyDataSetChanged();

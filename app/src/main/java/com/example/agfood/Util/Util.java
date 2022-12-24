@@ -53,7 +53,7 @@ public class Util {
     }
     public static void switchFragment(FragmentManager fragmentManager, Fragment fragment ,String TAG){
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.id_base_frame_layout,fragment).commit();
+        fragmentTransaction.replace(R.id.id_base_frame_layout,fragment).addToBackStack(null).commit();
     }
     public static void setCustomColorText(TextView mTextViewTarget ,String oldText , String coloredText , String coloredHex){
         mTextViewTarget.setText(Html.fromHtml(oldText + "<font color=\"#" +  coloredHex + "\">" + coloredText));

@@ -12,11 +12,29 @@ public class ModelResponseAccount {
     public String gambar_profile;
     public String nama_lengkap;
     public int otp;
+    @SerializedName("link")
+    public String imagelink;
     @SerializedName("detail_account")
     List<ModelAccount> detail_account;
 
     public List<ModelAccount> getDetail_account() {
         return detail_account;
+    }
+
+    public String getNama_lengkap() {
+        return nama_lengkap;
+    }
+
+    public void setNama_lengkap(String nama_lengkap) {
+        this.nama_lengkap = nama_lengkap;
+    }
+
+    public String getImagelink() {
+        return imagelink;
+    }
+
+    public void setImagelink(String imagelink) {
+        this.imagelink = imagelink;
     }
 
     public void setDetail_account(List<ModelAccount> detail_account) {

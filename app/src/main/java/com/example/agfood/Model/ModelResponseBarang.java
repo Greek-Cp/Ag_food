@@ -15,6 +15,19 @@ public class ModelResponseBarang {
     private String pesan;
     @SerializedName("dataBarang")
     private List<ModelBarang> dataBarang;
+    @SerializedName("metode_pembayaran")
+    private String metodePembayaran;
+    @SerializedName("no_akun")
+    private String akunPembayaran;
+    @SerializedName("alamat_pengiriman")
+    private String alamatPengiriman;
+    public String getAlamatPengiriman() {
+        return alamatPengiriman;
+    }
+
+    public void setAlamatPengiriman(String alamatPengiriman) {
+        this.alamatPengiriman = alamatPengiriman;
+    }
 
     public ModelResponseBarang(Integer kode, String pesan, List<ModelBarang> listBarang) {
         this.kode = kode;
@@ -49,6 +62,23 @@ public class ModelResponseBarang {
     public List<ModelBarang> getDataBarang() {
         return dataBarang;
     }
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getAkunPembayaran() {
+        return akunPembayaran;
+    }
+
+    public void setAkunPembayaran(String akunPembayaran) {
+        this.akunPembayaran = akunPembayaran;
+    }
+
     public void setDataBarang(List<ModelBarang> dataBarang) {
         this.dataBarang = dataBarang;
     }

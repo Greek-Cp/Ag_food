@@ -83,6 +83,7 @@ public class FragmentViewProfileUser extends Fragment {
     public void initializeItemButtonTop(){
         listMenuButtonTop.add(new ModelAdapterViewProfile("Akun Saya", R.drawable.ic_menu_profile));
         listMenuButtonTop.add(new ModelAdapterViewProfile("Pesanan Saya", R.drawable.ic_menu_pesanan));
+        listMenuButtonTop.add(new ModelAdapterViewProfile("Alamat Saya", R.drawable.ic_location));
         listMenuButtonTop.add(new ModelAdapterViewProfile("Log-Out Akun", R.drawable.ic_menu_logout));
     }
     public void initializeItemButtonBottom(){
@@ -105,9 +106,7 @@ public class FragmentViewProfileUser extends Fragment {
         Util.getApiRequetData().getNamaLengkap(mdl.getIdAkun()).enqueue(new Callback<ModelResponseAccount>() {
             @Override
             public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
-
                     binding.idTvnameProfile.setText(response.body().nama_lengkap);
-
             }
 
             @Override
@@ -123,14 +122,13 @@ public class FragmentViewProfileUser extends Fragment {
                 if(response.body().gambar_profile == null){
                     System.out.println("Profile Belum Di Set !");
                     binding.idImgProfile.setImageResource(R.drawable.ic_profile_saya);
-
                 } else{
                     Picasso.get()
                             .load(response.body().getGambar_profile()).resize(512,512).centerCrop()
                             .into(binding.idImgProfile);
+
                 }
             }
-
             @Override
             public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
 
@@ -147,6 +145,9 @@ public class FragmentViewProfileUser extends Fragment {
                         Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentBaseKeranjang(),"FRAGMENT_BASE_KERANJANG");
                         break;
                     case 2:
+                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentAturAlamatSaya("PROFILE_USER"),"FRAGMENT_ATUR_ALAMAT");
+                        break;
+                    case 3:
                         DialogHelper dialogHelper;
                         DialogHelper.DialogListener dialogListener = new DialogHelper.DialogListener() {
                             @Override
@@ -176,12 +177,11 @@ public class FragmentViewProfileUser extends Fragment {
                             }
                             @Override
                             public void clickTidak() {
-                           }
+                            }
                         };
                         dialogHelper = new DialogHelper(dialogListener);
                         dialogHelper.show(getParentFragmentManager(),"Test");
                         break;
-
                 }
             }
         };

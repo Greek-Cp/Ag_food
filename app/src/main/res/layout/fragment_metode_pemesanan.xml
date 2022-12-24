@@ -33,7 +33,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pilih Metode Pesanan"
+                    android:text="Pilih Metode Pengiriman"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -91,7 +91,7 @@
                         android:marqueeRepeatLimit="marquee_forever"
                         android:scrollHorizontally="true"
                         android:singleLine="true"
-                        android:text="Metode Pemesanan"
+                        android:text="Metode Pengiriman"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_20ssp"
                         app:layout_constraintBottom_toBottomOf="parent"

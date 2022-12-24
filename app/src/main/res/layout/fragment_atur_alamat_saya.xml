@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.cardview.widget.CardView
-            android:id="@+id/id_card_pilih_metode_pesanan"
+            android:id="@+id/id_card_pilih_alamat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="30dp"
@@ -65,8 +65,8 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:gravity="center"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     >
                     <ImageView
                         android:layout_width="@dimen/_30sdp"
@@ -104,11 +104,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                   android:orientation="vertical"
+                    android:orientation="vertical"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                     >
+                    >
 
 
                     <TextView
@@ -121,44 +121,49 @@
                         android:textColor="@color/color_gray_verification"
                         android:textSize="@dimen/_10ssp" />
 
-                        <EditText
-                            android:id="@+id/editText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:background="@null"
-                            android:text="asdsaasdsaddasdsadsaddasddsada"
-                            android:textSize="@dimen/_15ssp"
-                            app:layout_constraintEnd_toStartOf="@+id/button"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <EditText
+                        android:id="@+id/AlamatSaya"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:background="@null"
+                        android:hint="Alamat Saya"
 
-                        <Button
-                            android:id="@+id/button"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
+                        android:textSize="@dimen/_15ssp"
+                        app:layout_constraintEnd_toStartOf="@+id/button"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
 
-                            android:text="Tambah Alamat"
-                            android:textAllCaps="false"
-                            android:textSize="@dimen/_10ssp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="parent" />
+                    <fragment
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_200sdp"
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment" />
+                    <Button
+                        android:id="@+id/button_tambah_alamat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
 
+                        android:text="Tambah Alamat"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent" />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_metode_pemesanan_adapter"
+                        tools:itemCount="2"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:id="@+id/id_rec_metode_pesanan"
+                        android:layout_marginBottom="@dimen/_100sdp"
+                        />
 
                 </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:listitem="@layout/item_metode_pemesanan_adapter"
-                    tools:itemCount="2"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
-                    android:id="@+id/id_rec_metode_pesanan"
-                    />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

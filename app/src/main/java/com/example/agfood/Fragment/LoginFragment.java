@@ -95,12 +95,12 @@ public class LoginFragment extends Fragment {
                     APIRequestData ardData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
                     Call<ModelResponseAccount> getLoginResponse = ardData.loginAccount(fragmentLoginBinding.idEditTextEmail.getText().toString(), fragmentLoginBinding.idEditTextPassword.getText().toString());
                     getLoginResponse.enqueue(new Callback<ModelResponseAccount>() {
-                        @Override
-                        public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
-                            System.out.println(response.body().kode + " kode pesan login");
-                            if(response.body().kode == 3){
-                                Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentSendOtp(response.body().getDetail_account().get(0),2),"" );
-                            } else if (response.body().kode == 1){
+                            @Override
+                            public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                                System.out.println(response.body().kode + " kode pesan login");
+                                if(response.body().kode == 3){
+                                    Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentSendOtp(response.body().getDetail_account().get(0),2),"" );
+                                } else if (response.body().kode == 1){
                                 MotionToast.Companion.createColorToast(getActivity(), "Login Berhasil",
                                         "Login Telah Berhasl", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
                                         ));
@@ -111,6 +111,10 @@ public class LoginFragment extends Fragment {
                             } else if(response.body().kode == 5){
                                 MotionToast.Companion.createColorToast(getActivity(),"Login Gagal","Akun Tidak Temukan ! Harap Daftar Terlebih Dahulu",
                                         MotionToastStyle.ERROR,MotionToast.GRAVITY_CENTER,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular));
+                            } else if(response.body().kode == 0){
+                                MotionToast.Companion.createColorToast(getActivity(),"Login Gagal","Mohon Periksa Password Anda !",
+                                        MotionToastStyle.ERROR,MotionToast.GRAVITY_CENTER,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular));
+
                             }
                         }
                         @Override

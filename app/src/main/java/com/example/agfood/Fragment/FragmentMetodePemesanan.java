@@ -18,7 +18,6 @@ import com.example.agfood.ModelAdapter.ModelAdapterMetodePesanan;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
 import com.example.agfood.databinding.FragmentMetodePemesananBinding;
-import com.example.agfood.databinding.FragmentMetodePemesananBindingImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,9 +45,11 @@ public class FragmentMetodePemesanan extends Fragment {
     }
 
     List<ModelKeranjang> barangList;
-
-    public FragmentMetodePemesanan(List<ModelKeranjang> barangYangAkanDiOrderList) {
+    String idKeranjang;
+    public FragmentMetodePemesanan(List<ModelKeranjang> barangYangAkanDiOrderList
+    , String idKeranjang) {
     this.barangList = barangYangAkanDiOrderList;
+    this.idKeranjang = idKeranjang;
     }
 
     /**
@@ -82,6 +83,7 @@ public class FragmentMetodePemesanan extends Fragment {
     FragmentMetodePemesananBinding bindingMetodeFragment;
     SharedPreferences sharedPreferences;
     AdapterMetodePemesanan adapterMetodePemesanan;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,10 +92,11 @@ public class FragmentMetodePemesanan extends Fragment {
         bindingMetodeFragment.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(barangList),"FRAGMNT_CHECKOUTBARANG");
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(barangList,idKeranjang),"FRAGMNT_CHECKOUTBARANG");
             }
         });
         List<ModelAdapterMetodePesanan> listMetodePesanan = new ArrayList<>();
+        listMetodePesanan.add(new ModelAdapterMetodePesanan("Cod",false,"Pesananmu akan dihantarkan sesuai lokasi tujuan kamu "));
         listMetodePesanan.add(new ModelAdapterMetodePesanan("Jasa Kirim",false,"Pesananmu akan dihantarkan sesuai lokasi tujuan kamu "));
         listMetodePesanan.add(new ModelAdapterMetodePesanan("Ambil Di Toko",false,"Pesanamu dapat di ambil di toko kami"));
         sharedPreferences = getActivity().getSharedPreferences("PREF_BUTTON_PESANAN", Context.MODE_PRIVATE);
@@ -129,7 +132,7 @@ public class FragmentMetodePemesanan extends Fragment {
                         sharedPreferencesEditors.putString("PREF_JUDUL_PESANAN",opsi);
                         sharedPreferencesEditors.putString("PREF_CONTENT_PESANAN",contentMetodePesanan);
                         sharedPreferencesEditors.commit();
-                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(barangList),"FRAMGENT_CHECKOUT");
+                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(barangList,idKeranjang),"FRAMGENT_CHECKOUT");
                     }
             }
         });

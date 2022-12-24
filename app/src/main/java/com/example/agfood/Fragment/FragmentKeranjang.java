@@ -58,6 +58,7 @@
         int totalDipilih = 0;
         int state = 0;
         String idKeranjang = "";
+        int totalItemYangDipilih = 0;
         List<ModelKeranjang> listKeranjangDipilihUser = new ArrayList<>();
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,7 +89,6 @@
                                 listDataKeranjang.get(positionPesanan).getSelectedFood().setHarga(hargaTotalTambahs);
                                 //  updateHargaPesanan(hargaTotalTambahs);
                                 adapterCart.notifyDataSetChanged();
-
                             }
                             @Override
                             public void kurangPesanan(int positionPesanan) {
@@ -112,15 +112,51 @@
                                     totalDipilih += listDataKeranjang.get(position).getSelectedFood().getHarga();
                                     updateHargaPesanan(totalDipilih);
                                     listKeranjangDipilihUser.add(listDataKeranjang.get(position));
+                                    totalItemYangDipilih += 1;
                                     updateTotalPesanan();
                                 } else{
                                     totalDipilih -= listDataKeranjang.get(position).getSelectedFood().getHarga();
                                     System.out.print("Tidak Di Pilih");
                                     updateHargaPesanan(totalDipilih);
                                     listKeranjangDipilihUser.remove(listDataKeranjang.get(position));
+                                    totalItemYangDipilih -= 1;
                                     updateTotalPesanan();
                                 }
+                                //add
+                                if(totalItemYangDipilih == listDataKeranjang.size()){
+                                    fragmentKeranjangBinding.idCheckBoxSemuaKeranjang.setChecked(true);
+                                    fragmentKeranjangBinding.idCheckBoxSemuaKeranjang.setEnabled(false);
+                                } else {
+                                  fragmentKeranjangBinding.idCheckBoxSemuaKeranjang.setChecked(false);
+                                  fragmentKeranjangBinding.idCheckBoxSemuaKeranjang.setEnabled(true);
+                                }
+                                System.out.println(totalItemYangDipilih + " TOT DIPILIH");
+
                                 adapterCart.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void hapusPesananYangDipilih(int posisiPesanan,boolean statusChecked) {
+                                Util.getApiRequetData().hapusKeranjangYangDipilih(mdl.getIdAkun(),listDataKeranjang.get(posisiPesanan).getSelectedFood().getId_barang()).enqueue(new Callback<ModelResponseAccount>() {
+                                    @Override
+                                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                                        System.out.println(response.body().getPesan() + " Messg");
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+                                    }
+                                });
+                                if(statusChecked == true){
+                                    totalDipilih -= listDataKeranjang.get(posisiPesanan).getSelectedFood().getHarga();
+                                }
+                                listKeranjangDipilihUser.remove(listDataKeranjang.get(posisiPesanan));
+                                listDataKeranjang.remove(posisiPesanan);
+                                adapterCart.notifyDataSetChanged();
+                                updateHargaPesanan(totalDipilih);
+                                updateTotalPesanan();
+
                             }
                         };
                         /*
@@ -138,51 +174,16 @@
                                 if(listKeranjangDipilihUser.size() == 0){
                                     Toast.makeText(getActivity().getApplicationContext(),"Mohon Pilih Barang Yang Akan Di Checkout !",Toast.LENGTH_LONG).show();
                                 } else{
-                                    Util.getApiRequetData().getListIdKeranjang().enqueue(new Callback<ModelResponseGetCurrentIdBarang>() {
-                                        @Override
-                                        public void onResponse(Call<ModelResponseGetCurrentIdBarang> call, Response<ModelResponseGetCurrentIdBarang> response) {
-                                            System.out.println("Response Id Keranjang = " + response.body().getIdKeranjang() + " data");
-                                            if(response.body().getKode() == 0){
-                                                idKeranjang = "KRJ" + response.body().getIdKeranjang();
-                                            } else if(response.body().getKode() == 1){
-                                                idKeranjang = "KRJ" + response.body().getIdKeranjang();
-                                            }
-                                            for(ModelKeranjang mSelectedFoodModel : listKeranjangDipilihUser){
-                                                Util.getApiRequetData().pindahPesananKeOrderPending(
-                                                                mdl.idAkun,
-                                                                mSelectedFoodModel.getSelectedFood().getId_barang(),
-                                                                String.valueOf(mSelectedFoodModel.getSelectedFood().getHarga()),
-                                                                String.valueOf(mSelectedFoodModel.getSelectedFood().getTotalItemKeranjang()),idKeranjang
-                                                        ).enqueue(
-                                                                new Callback<ModelResponseBarang>() {
-                                                                    @Override
-                                                                    public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
-                                                                        int kode = response.body().getKode();
-                                                                        System.out.println(response.body().getPesan() + " PESAN ");
-                                                                        if(kode == 1){
-                                                                        } else{
-                                                                            Toast.makeText(getActivity().getApplicationContext(),"Masukan Keranjang Gagal",Toast.LENGTH_LONG).show();
-                                                                        }
-                                                                    }
-                                                                    @Override
-                                                                    public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
-                                                                        System.out.println(t.getCause() + ":" + t.getMessage() + " ERROR");
-                                                                    }
-                                                                });
-                                            }
-                                        }
-                                        @Override
-                                        public void onFailure(Call<ModelResponseGetCurrentIdBarang> call, Throwable t) {
-                                        }
-                                    });
 
-                                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(listKeranjangDipilihUser),"FRAGMENT_CHECKOUT");
+
+                                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(listKeranjangDipilihUser,idKeranjang),"FRAGMENT_CHECKOUT");
                                 }
                             }
                         });
                         fragmentKeranjangBinding.idCheckBoxSemuaKeranjang.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+
                                 if(state == 0){
                                     for(int x = 0; x < listDataKeranjang.size(); x++){
                                         totalDipilih += listDataKeranjang.get(x).getSelectedFood().getHarga();
@@ -190,7 +191,7 @@
                                         listKeranjangDipilihUser.add(listDataKeranjang.get(x));
                                         if(listDataKeranjang.get(x).isStatusCheckBoxChecked() == true){
                                             totalDipilih -= listDataKeranjang.get(x).getSelectedFood().getHarga();
-//                                        listDataKeranjang.get(x).setStatusCheckBoxChecked(false);
+                                           listDataKeranjang.get(x).setStatusCheckBoxChecked(false);
                                         }
                                         if(listDataKeranjang.get(x).isStatusCheckBoxChecked() == false){
                                             listDataKeranjang.get(x).setStatusCheckBoxChecked(true);
@@ -220,10 +221,23 @@
                                             adapterCart.notifyDataSetChanged();
                                         }
                                     }
-
                                     Toast.makeText(getActivity().getApplicationContext(),"Total Keranjang After = " + listDataKeranjang.size() , Toast.LENGTH_LONG).show();
                                     state = 0;
+
                                     updateTotalPesanan(0);
+                                }
+                                if(!fragmentKeranjangBinding.idCheckBoxSemuaKeranjang.isChecked()){
+                                    for(int y = 0; y < listDataKeranjang.size(); y++){
+                                        if(listDataKeranjang.get(y).isStatusCheckBoxChecked() == false){
+                                            listDataKeranjang.get(y).setStatusCheckBoxChecked(false);
+                                            System.out.println(new Gson().toJson(listDataKeranjang.get(y)) + " sTTS");
+                                            adapterCart.notifyDataSetChanged();
+                                        } else if(listDataKeranjang.get(y).isStatusCheckBoxChecked() == true){
+                                            listDataKeranjang.get(y).setStatusCheckBoxChecked(false);
+                                            System.out.println(new Gson().toJson(listDataKeranjang.get(y)) + " sTTS");
+                                            adapterCart.notifyDataSetChanged();
+                                        }
+                                    }
                                 }
                                 adapterCart = new AdapterCart(listDataKeranjang,adapterCartInterface);
                                 fragmentKeranjangBinding.idRecKeranjang.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), RecyclerView.VERTICAL,false));

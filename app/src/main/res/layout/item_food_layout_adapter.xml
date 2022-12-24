@@ -32,30 +32,8 @@
                 android:layout_height="wrap_content"
 
                 >
-                <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/ic_heart"
-                    android:elevation="3dp"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/id_love_static"
-                    app:tint="@color/white" />
 
-                <com.airbnb.lottie.LottieAnimationView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:elevation="4dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/id_love_static"
-                    app:layout_constraintEnd_toEndOf="@+id/id_love_static"
-                    app:layout_constraintStart_toStartOf="@+id/id_love_static"
-                    app:layout_constraintTop_toTopOf="@+id/id_love_static"
-                    app:lottie_progress="2"
-                    android:id="@+id/id_love_anim"
-                    android:visibility="invisible"
-                    app:lottie_rawRes="@raw/heart_love" />
+
                 <ImageView
                     android:id="@+id/id_image_item_food"
                     android:layout_width="match_parent"
@@ -92,6 +70,7 @@
                             app:tint="#ff6937" />
 
                         <TextView
+                            android:id="@+id/id_adapter_food_popular_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sfprodisplaybold"

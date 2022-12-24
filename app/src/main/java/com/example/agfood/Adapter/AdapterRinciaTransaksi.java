@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.agfood.Model.ModelBarang;
 import com.example.agfood.Model.ModelKeranjang;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
@@ -16,9 +17,18 @@ import java.util.List;
 
 public class AdapterRinciaTransaksi extends RecyclerView.Adapter<AdapterRinciaTransaksi.ViewHolder> {
     List<ModelKeranjang> listModelKeranjang;
-
-    public AdapterRinciaTransaksi(List<ModelKeranjang> listModelKeranjang) {
+    List<ModelBarang> listModelBarang;
+    AdapterRincianTransaksiInterface adapterRincianTransaksiInterface;
+    public interface AdapterRincianTransaksiInterface{
+        void clickRincianTransaksi(int positionOfTransaksi);
+    }
+    public AdapterRinciaTransaksi(List<ModelKeranjang> listModelKeranjang , AdapterRincianTransaksiInterface adapterRincianTransaksiInterface) {
         this.listModelKeranjang = listModelKeranjang;
+        this.adapterRincianTransaksiInterface = adapterRincianTransaksiInterface;
+    }
+
+    public AdapterRinciaTransaksi(List<ModelBarang> listModelBarang) {
+        this.listModelBarang = listModelBarang;
     }
 
     @Override

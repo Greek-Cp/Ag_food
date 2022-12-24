@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class BaseServerApp {
-    private static final String baseURL = "http://172.20.10.5/AG-FOOD-REBORN/";
+    private static final String baseURL = "http://13.58.138.65/baru/";
     private static Retrofit retro;
     private static OkHttpClient.Builder builder = new OkHttpClient.Builder();
     private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

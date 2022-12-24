@@ -10,15 +10,12 @@ public class ModelKeranjang {
     public ModelBarang getSelectedFood() {
         return selectedFood;
     }   
-
     public boolean isStatusCheckBoxChecked() {
         return statusCheckBoxChecked;
     }
-
     public void setStatusCheckBoxChecked(boolean statusCheckBoxChecked) {
         this.statusCheckBoxChecked = statusCheckBoxChecked;
     }
-
     public void setSelectedFood(ModelBarang selectedFood) {
         this.selectedFood = selectedFood;
     }

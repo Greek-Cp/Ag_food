@@ -30,21 +30,19 @@ import java.util.List;
 public class AdapterFoodPopular extends RecyclerView.Adapter {
     List<ModelBarang> listModelFood;
     List<ModelFav> listFavFood;
-    Context context;
     AdapterFoodPopular.AdapterFoodInterface mAdapterFoodPopularInterface;
     public interface AdapterFoodInterface{
         void clickItemSelectedListener(int positionOfItemFoodSelected);
         void clickLoveListener(int positionOfItemLikeByUser);
     }
-    public AdapterFoodPopular(List<ModelBarang> listModelFood,List<ModelFav> listFavFood, Context context,AdapterFoodPopular.AdapterFoodInterface adapterFoodInterface) {
+    public AdapterFoodPopular(List<ModelBarang> listModelFood,List<ModelFav> listFavFood,AdapterFoodPopular.AdapterFoodInterface adapterFoodInterface) {
         this.listModelFood = listModelFood;
         this.listFavFood = listFavFood;
-        this.context = context;
+
         this.mAdapterFoodPopularInterface = adapterFoodInterface;
     }
-    public AdapterFoodPopular(List<ModelBarang> listModelFood, Context context,AdapterFoodPopular.AdapterFoodInterface adapterFoodInterface) {
+    public AdapterFoodPopular(List<ModelBarang> listModelFood,AdapterFoodPopular.AdapterFoodInterface adapterFoodInterface) {
         this.listModelFood = listModelFood;
-        this.context = context;
         this.mAdapterFoodPopularInterface = adapterFoodInterface;
     }
 
@@ -64,23 +62,9 @@ public class AdapterFoodPopular extends RecyclerView.Adapter {
         Picasso.get()
                 .load(listModelFood.get(position).getGambar_barang()).resize(512,512).centerCrop()
                 .into(adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idImageItemFood);
-        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveStatic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveStatic.setVisibility(View.INVISIBLE);
-                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveAnim.setVisibility(View.VISIBLE);
-                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveAnim.playAnimation();
-                mAdapterFoodPopularInterface.clickLoveListener(adapterFoodViewHolder.getAdapterPosition());
-            }
-        });
-        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveAnim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveStatic.setVisibility(View.VISIBLE);
-                adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idLoveAnim.setVisibility(View.INVISIBLE);
-                mAdapterFoodPopularInterface.clickLoveListener(adapterFoodViewHolder.getAdapterPosition());
-            }
-        });
+        adapterFoodViewHolder.itemFoodLayoutAdapterBinding.idAdapterFoodPopularRating.setText(String.valueOf((double) listModelFood.get(position).getRating()));
+
+
 
     }
 

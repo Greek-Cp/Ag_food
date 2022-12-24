@@ -26,6 +26,7 @@ import com.example.agfood.Model.ModelDetailAccount;
 import com.example.agfood.Model.ModelFav;
 import com.example.agfood.Model.ModelFavorit;
 import com.example.agfood.Model.ModelResponseBarang;
+import com.example.agfood.Model.ModelResponseFav;
 import com.example.agfood.Model.ModelRetrieveAccount;
 import com.example.agfood.Model.UtilFood;
 import com.example.agfood.R;
@@ -69,8 +70,17 @@ public class HomeFragment extends Fragment {
     UtilPref utilPref = new UtilPref();
     public HomeFragment(ModelAccount modelAccount){
         this.username = modelAccount;
-
     }
+    private String state;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -142,13 +152,7 @@ public class HomeFragment extends Fragment {
         }
     }
     void initalizeAdapter(List<ModelBarang> listBarang){
-        for(int i = 0; i < listBarang.size(); i++){
-            for(int y = 0; y < listModelFavoritSelectedByUser.size(); y++){
-                if(listBarang.get(i).getId_barang().equals(listModelFavoritSelectedByUser.get(y).getIdBarang())){
 
-                }
-            }
-        }
         AdapterFoodPopular.AdapterFoodInterface mAdapterFoodInterface = new AdapterFoodPopular.AdapterFoodInterface() {
             @Override
             public void clickItemSelectedListener(int positionOfItemFoodSelected) {
@@ -159,27 +163,13 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void clickLoveListener(int positionOfItemLikeByUser) {
-                ModelFavorit modelFavorit = new ModelFavorit(Integer.parseInt(username.getIdAkun()),listBarang.get(positionOfItemLikeByUser).getId_barang(),"T");
-                APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
-                Call<ModelFavorit> callModelFavorit = apiRequestData.saveLikeData(modelFavorit.getId_akun(),modelFavorit.getId_barang(),modelFavorit.getStatus_fav());
-                callModelFavorit.enqueue(new Callback<ModelFavorit>() {
-                    @Override
-                    public void onResponse(Call<ModelFavorit> call, Response<ModelFavorit> response) {
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<ModelFavorit> call, Throwable t) {
-                        System.out.println("response error = " + t.getLocalizedMessage());
-                    }
-                });
             }
         };
-        adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+        adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
        // mFragmentHomeBinding.idRecPopularFood.setLayoutManager(new CenterZoomLayoutManager(getActivity().getApplicationContext(), RecyclerView.HORIZONTAL,false));
         mFragmentHomeBinding.idRecPopularFood.setAdapter(adapterFoodPopular);
     }
-
      List<ModelBarang> listBarang = new ArrayList<>();
     public  List<ModelBarang> getListFoodAPI(){
         APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
@@ -188,10 +178,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
                 int kode = response.body().getKode().intValue();
-
                     // here you can what response you are getting.
-                    Log.d("JSON From Server", response.body().getDataBarang().toString());//convert reponse to string
-
+                Log.d("JSON From Server", response.body().getDataBarang().toString());//convert reponse to string
                 for(ModelBarang modelBarang:  response.body().getDataBarang()){
                     System.out.println("Id Barang = " + modelBarang.getId_barang());
                     System.out.println("Nama Barang = " + modelBarang.getNama_barang());
@@ -199,6 +187,7 @@ public class HomeFragment extends Fragment {
                     System.out.println("Deskripsi = " + modelBarang.getDeskripsi_barang());
                     listBarang.add(modelBarang);
                 }
+
                 initalizeAdapter(listBarang);
                 Gson gson = new Gson();
                 SharedPrefDetail sharedPrefDetailBarang = utilPref.barangPrefences;
@@ -235,7 +224,6 @@ public class HomeFragment extends Fragment {
         Util.getApiRequetData().getNamaLengkap(username.getIdAkun()).enqueue(new Callback<ModelResponseAccount>() {
             @Override
             public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
-
                     mFragmentHomeBinding.idTvNamaUser.setText("Hi " + response.body().nama_lengkap);
                     username.setNamaLengkap(response.body().nama_lengkap);
                 SharedPrefDetail prefDetailUser = utilPref.accountPrefences;
@@ -257,7 +245,6 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
                 if(response.body().gambar_profile == null){
                     mFragmentHomeBinding.idImgProfile.setImageResource(R.drawable.ic_profile_saya);
-
                     System.out.println("Profile Belum Di Set !");
                 } else{
                     Picasso.get()
@@ -265,7 +252,6 @@ public class HomeFragment extends Fragment {
                             .into(mFragmentHomeBinding.idImgProfile);
                 }
             }
-
             @Override
             public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
 
@@ -277,7 +263,7 @@ public class HomeFragment extends Fragment {
                 Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentSearchMenuMakanan(),"FRAGMENT_SEARCH_MAKANAN");
             }
         });
-        listModelFavoritSelectedByUser = UtilFood.getListFoodLikeByUser(Integer.parseInt(username.getIdAkun()));
+
         //        Util.setCustomColorText(mFragmentHomeBinding.idTvGrettingHome, "Sedang", " ","Lapar" , "ffffff", "FFA724");
         Util.setCustomColorText(mFragmentHomeBinding.idTvGrettingHome, "Sedang ", "Lapar ?", "ff4552");
         getActivity().findViewById(R.id.id_nav_bar).setVisibility(View.VISIBLE);
@@ -286,4 +272,5 @@ public class HomeFragment extends Fragment {
         Util.showNavBottom(getActivity());
         return mFragmentHomeBinding.getRoot();
     }
+
 }

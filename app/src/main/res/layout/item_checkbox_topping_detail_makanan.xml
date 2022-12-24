@@ -34,27 +34,28 @@
 
     <TextView
         android:id="@+id/id_tv_harga_topping"
-        android:layout_width="52dp"
-        android:layout_height="17dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/sfprodisplayregular"
         android:text="Rp.2000"
-
+        android:layout_marginRight="10dp"
         android:textColor="@color/black"
         android:textSize="@dimen/_10ssp"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/id_tv_nama_topping" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/id_card_container_add_min_topping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
         app:cardBackgroundColor="#f6f5f8"
         app:cardCornerRadius="10dp"
-        android:layout_marginRight="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/id_tv_harga_topping"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/id_tv_harga_topping"
-        app:layout_constraintTop_toTopOf="@+id/id_tv_harga_topping">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

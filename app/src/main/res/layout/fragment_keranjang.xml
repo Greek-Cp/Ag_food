@@ -16,7 +16,6 @@
             android:layout_height="match_parent"
             android:background="@color/color_gray"
             android:orientation="vertical">
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/id_rec_keranjang"
                 android:layout_width="match_parent"
@@ -68,8 +67,8 @@
                         android:id="@+id/id_tv_checkout_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:text="Checkout"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15ssp"
@@ -88,6 +87,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:text="Total Pembayaran"
+                android:textSize="@dimen/_11ssp"
                 app:layout_constraintEnd_toStartOf="@+id/id_btn_buat_pesanan"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,6 +97,8 @@
                 android:layout_height="wrap_content"
                 android:text="Rp.39.000"
                 android:textColor="@color/red_color"
+
+                android:textSize="@dimen/_11ssp"
                 app:layout_constraintEnd_toEndOf="@+id/id_tv_total_pembayaran_header"
                 app:layout_constraintTop_toBottomOf="@+id/id_tv_total_pembayaran_header" />
         </androidx.constraintlayout.widget.ConstraintLayout>

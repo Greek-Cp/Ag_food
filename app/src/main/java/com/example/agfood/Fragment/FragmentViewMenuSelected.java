@@ -57,6 +57,7 @@ public class FragmentViewMenuSelected extends Fragment {
 
     List<ModelFood> mListModelFood = UtilFood.getListFood();
     ModelAccount mdl;
+    private String fromMenu;
     public FragmentViewMenuSelected(){
 
     }
@@ -67,9 +68,11 @@ public class FragmentViewMenuSelected extends Fragment {
         switch (categoryName){
             case "Makanan":
                 mListModelFood = UtilFood.getListCemilan();
+                fromMenu = "Makanan";
                 break;
             case "Minuman":
                 mListModelFood = UtilFood.getListMinuman();
+                fromMenu = "Minuman";
                 break;
         }
         System.out.println("Category Name = " + categoryName);
@@ -108,7 +111,7 @@ public class FragmentViewMenuSelected extends Fragment {
     public void initializeKategoryAdapter(){
         sharedPreferences = getActivity().getSharedPreferences("PREF_BUTTON", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        listModelFavoritSelectedByUser = UtilFood.getListFoodLikeByUser(Integer.parseInt(mdl.getIdAkun()));
+        listModelFavoritSelectedByUser = UtilFood.getListFoodLikeByUser(mdl.getIdAkun());
         switch (this.categoryName){
             case "Makanan":
                 Util.getApiRequetData().getMenuSpesifik("Menu Reguler").enqueue(
@@ -121,7 +124,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                     public void clickItemSelectedListener(int positionOfItemFoodSelected) {
                                         ModelBarang foodSelected = listBarang.get(positionOfItemFoodSelected);
                                         getActivity().getSupportFragmentManager().beginTransaction()
-                                                .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(mdl,foodSelected,"HOME")).commit();
+                                                .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(mdl,foodSelected,"HOME")).addToBackStack(null).commit();
                                     }
 
                                     @Override
@@ -142,7 +145,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                         });
                                     }
                                 };
-                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                             }
 
@@ -173,7 +176,6 @@ public class FragmentViewMenuSelected extends Fragment {
                             editor.putInt("CURRENT_POST_MENU", positionOfButton);
                             editor.commit();
                         }
-
                         adapterButtonMakanan.notifyDataSetChanged();
                         switch (listKategoryButtonMakanan.get(positionOfButton).getNameButton()){
                             case "Menu Reguler":
@@ -187,7 +189,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                                     public void clickItemSelectedListener(int positionOfItemFoodSelected) {
                                                         ModelBarang foodSelected = listBarang.get(positionOfItemFoodSelected);
                                                         getActivity().getSupportFragmentManager().beginTransaction()
-                                                                .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(mdl,foodSelected,"HOME")).commit();
+                                                                .setCustomAnimations(R.anim.slide_in,R.anim.fade_in,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentDetailMakanan(mdl,foodSelected,fromMenu)).commit();
                                                     }
 
                                                     @Override
@@ -208,7 +210,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                                         });
                                                     }
                                                 };
-                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                                                 // fragmentViewMenuSelectedBinding.idRecMenuSelected.setLayoutManager(new CenterZoomLayoutManager(getActivity().getApplicationContext(), RecyclerView.HORIZONTAL,false));
                                             }
@@ -252,7 +254,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                                         });
                                                     }
                                                 };
-                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                                             }
 
@@ -295,7 +297,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                                         });
                                                     }
                                                 };
-                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                                             }
 
@@ -338,7 +340,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                                         });
                                                     }
                                                 };
-                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                                             }
 
@@ -381,7 +383,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                                         });
                                                     }
                                                 };
-                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                                             }
 
@@ -424,7 +426,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                                         });
                                                     }
                                                 };
-                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                                             }
 
@@ -476,7 +478,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                         });
                                     }
                                 };
-                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                             }
 
@@ -537,7 +539,7 @@ public class FragmentViewMenuSelected extends Fragment {
                                                         });
                                                     }
                                                 };
-                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,getActivity().getApplicationContext(),mAdapterFoodInterface);
+                                                adapterFoodPopular = new AdapterFoodPopular(listBarang,listModelFavoritSelectedByUser,mAdapterFoodInterface);
                                                 fragmentViewMenuSelectedBinding.idRecMenuSelected.setAdapter(adapterFoodPopular);
                                                 // fragmentViewMenuSelectedBinding.idRecMenuSelected.setLayoutManager(new CenterZoomLayoutManager(getActivity().getApplicationContext(), RecyclerView.HORIZONTAL,false));
                                             }

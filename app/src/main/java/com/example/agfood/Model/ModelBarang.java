@@ -34,8 +34,67 @@ public class ModelBarang {
     private boolean status;
     @SerializedName("listKeranjangId")
     private List<String> listIdKeranjang;
+    @SerializedName("metode_pembayaran")
+    private String metodePembayaran;
+    @SerializedName("no_akun")
+    private String akunPembayaran;
+    private boolean isFav = false;
+    @SerializedName("status_bayar")
+    private String status_bayar;
+    @SerializedName("pesan_dari_user")
+    private String pesanDariUser;
+    @SerializedName("alamat_pengiriman")
+    private String alamatPengiriman;
+    public String getPesanDariUser() {
+        return pesanDariUser;
+    }
+
+    public void setPesanDariUser(String pesanDariUser) {
+        this.pesanDariUser = pesanDariUser;
+    }
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public String getStatus_bayar() {
+        return status_bayar;
+    }
+
+    public void setStatus_bayar(String status_bayar) {
+        this.status_bayar = status_bayar;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getAkunPembayaran() {
+        return akunPembayaran;
+    }
+
+    public void setAkunPembayaran(String akunPembayaran) {
+        this.akunPembayaran = akunPembayaran;
+    }
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    public void setFav(boolean fav) {
+        isFav = fav;
+    }
+
     public ModelBarang(){
         
+    }
+
+    public String getAlamatPengiriman() {
+        return alamatPengiriman;
+    }
+
+    public void setAlamatPengiriman(String alamatPengiriman) {
+        this.alamatPengiriman = alamatPengiriman;
     }
 
     public List<String> getListIdKeranjang() {

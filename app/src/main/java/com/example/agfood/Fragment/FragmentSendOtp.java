@@ -88,8 +88,8 @@ public class FragmentSendOtp extends Fragment {
 
     public void sendMessage(String receiveEmail,String otpKode){
         try {
-            String stringSenderEmail = "e41210753@student.polije.ac.id";
-            String stringPasswordSenderEmail = "Riyan_Islam_2003";
+            String stringSenderEmail = "";
+            String stringPasswordSenderEmail = "";
             String stringHost = "smtp.gmail.com";
             Properties properties = System.getProperties();
             properties.put("mail.smtp.host", stringHost);

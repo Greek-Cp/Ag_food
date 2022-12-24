@@ -63,12 +63,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_card"
-        android:id="@+id/id_fragment_keranjang_tab_layout_parent"
-        />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/id_fragment_keranjang_tab_layout_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_card" />
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager2"
             android:layout_width="match_parent"

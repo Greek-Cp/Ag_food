@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agfood.Model.ModelKeranjang;
@@ -34,6 +35,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
         void tambahPesanan(int positionPesana);
         void kurangPesanan(int positionPesanan);
         void checkBoxItemSelected(int position , boolean statusCheckbox);
+        void hapusPesananYangDipilih(int posisiPesanan,boolean statusChecked);
     }
     @Override
     public AdapterCart.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -99,6 +101,12 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
                 listModelKeranjang.get(position).getSelectedFood().getHarga()))
         );
         holder.namaPesanan.setText(String.valueOf(listModelKeranjang.get(position).getSelectedFood().getNama_barang()));
+        holder.btnHapusKeranjang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapterCartInterface.hapusPesananYangDipilih(position,holder.selectedItemCheckBox.isChecked());
+            }
+        });
     }
 
     @Override
@@ -111,6 +119,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
         TextView hargaPesanan , jumlahPesanan, namaPesanan , tambah , kurang;
         CheckBox selectedItemCheckBox;
         LinearLayout linearLayoutContainerAddOrderItem;
+        CardView btnHapusKeranjang;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             selectedItemCheckBox = itemView.findViewById(R.id.id_check_box_keranjang_layout_adapter);
@@ -121,11 +130,11 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.ViewHolder>{
             kurang = itemView.findViewById(R.id.id_tv_kurang_item_keranjang);
             tambah = itemView.findViewById(R.id.id_tv_tambah_item_keranjang);
             linearLayoutContainerAddOrderItem = itemView.findViewById(R.id.id_container_button_add_topping);
+            btnHapusKeranjang = itemView.findViewById(R.id.id_btn_hapus_keranjang);
         }
 
         @Override
         public void onClick(View view) {
-
         }
     }
 }

@@ -58,6 +58,10 @@ public class FragmentRegisterAccount extends Fragment {
                             fragmentRegisterAccountBinding.idEditTextRegisterEmail.getText().toString(),
                             fragmentRegisterAccountBinding.idEditTextRegisterPassword.getText().toString(),"user");
                        Util.switchFragment(new FragmentDetailAkunRegister(modelAccount),getActivity());
+                } else{
+                    fragmentRegisterAccountBinding.idEditTextRegisterEmail.setError("Minimal Panjang Karakter Email 5 Karakter !");
+                    fragmentRegisterAccountBinding.idEditTextRegisterNama.setError("Minimal Panjang Nama 5 Karakter !");
+                    fragmentRegisterAccountBinding.idEditTextRegisterPassword.setError("Minimal Panjang Password 5 Karakter !");
                 }
 
                 }

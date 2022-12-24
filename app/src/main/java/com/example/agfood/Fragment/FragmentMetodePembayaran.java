@@ -44,8 +44,10 @@ public class FragmentMetodePembayaran extends Fragment {
     }
 
     List<ModelKeranjang> modelKeranjangList;
-    public FragmentMetodePembayaran(List<ModelKeranjang> barangYangAkanDiOrderList) {
+    String idKeranjang;
+    public FragmentMetodePembayaran(List<ModelKeranjang> barangYangAkanDiOrderList,String idKeranjang) {
         this.modelKeranjangList = barangYangAkanDiOrderList;
+        this.idKeranjang = idKeranjang;
     }
 
     /**
@@ -85,11 +87,13 @@ public class FragmentMetodePembayaran extends Fragment {
         // Inflate the layout for this fragment
         FragmentMetodePembayaranBinding fragmentMetodePembayaranBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_metode_pembayaran,container,false);
         List<ModelAdapterPembayaran> modelAdapterPembayaranList = new ArrayList<>();
+        modelAdapterPembayaranList.add(new ModelAdapterPembayaran("COD Ditempat",R.drawable.cod_ditempat,"Harap Membayarkan Secara Lansung",false));
         modelAdapterPembayaranList.add(new ModelAdapterPembayaran("Dana",R.drawable.ic_dana,"085608150983",false));
         modelAdapterPembayaranList.add(new ModelAdapterPembayaran("Shoppe Pay",R.drawable.ic_shoope,"085608150983",false));
         modelAdapterPembayaranList.add(new ModelAdapterPembayaran("BNI",R.drawable.ic_bni,"1153459155",false));
         sharedPreferencesPembayaran = getActivity().getSharedPreferences("PREF_BUTTON_PEMBAYARAN", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferencesPembayaran.edit();
+
         AdapterMetodePembayaran.AdapterMetodePembayaranListener adapterMetodePembayaranListener = new AdapterMetodePembayaran.AdapterMetodePembayaranListener() {
             @Override
             public void selectionItemPayment(int positionOfPayment){
@@ -115,7 +119,7 @@ public class FragmentMetodePembayaran extends Fragment {
                 fragmentMetodePembayaranBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(modelKeranjangList),"FRAGMNT_CHECKOUTBARANG");
+                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(modelKeranjangList,idKeranjang),"FRAGMNT_CHECKOUTBARANG");
                     }
                 });
                 adapterMetodePembayaran.notifyDataSetChanged();
@@ -134,7 +138,7 @@ public class FragmentMetodePembayaran extends Fragment {
                     sharedPreferencesEditors.putString("PREF_OPSI_PEMBAYARAN",opsiPembayaran);
                     sharedPreferencesEditors.putString("PREF_NO_REK_PEMBAYARAN",noRekPembayaran);
                     sharedPreferencesEditors.commit();
-                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(modelKeranjangList),"FRAGMENT_CHECKOUT ");
+                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(modelKeranjangList,idKeranjang),"FRAGMENT_CHECKOUT ");
                 }
             }
         });

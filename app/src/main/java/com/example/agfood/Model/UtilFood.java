@@ -3,6 +3,7 @@ package com.example.agfood.Model;
 import com.example.agfood.API.APIRequestData;
 import com.example.agfood.API.BaseServerApp;
 import com.example.agfood.R;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,21 +64,24 @@ public class UtilFood {
         return modelFoodList;
     }
     static List<ModelFav> modelFavorits = new ArrayList<>();
-    public static List<ModelFav> getListFoodLikeByUser(int idAkun){
+    static List<ModelFav> listFav;
+    public static List<ModelFav> getListFoodLikeByUser(String id_akun){
         APIRequestData apiRequestData = BaseServerApp.konekRetrofit().create(APIRequestData.class);
-        Call<ModelResponseFav> modelFavoritCall = apiRequestData.getListiFavoritAccount(idAkun);
+        Call<ModelResponseFav> modelFavoritCall = apiRequestData.getListiFavoritAccount(id_akun);
+         listFav = new ArrayList<>();
         modelFavoritCall.enqueue(new Callback<ModelResponseFav>() {
             @Override
             public void onResponse(Call<ModelResponseFav> call, Response<ModelResponseFav> response) {
-
+                listFav = response.body().getListFav();
+                System.out.println(new Gson().toJson(response.body()) + " GSON DATA");
             }
 
             @Override
             public void onFailure(Call<ModelResponseFav> call, Throwable t) {
-               
+               System.out.println(t.getMessage() + " ERRROR ");
             }
         });
-        return modelFavorits;
+        return listFav;
     }
  static List<ModelBarang> listBarang;
     public static List<ModelBarang> getListFoodAPI(){

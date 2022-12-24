@@ -91,50 +91,61 @@ public class FragmentOrderanSaya extends Fragment {
             public void onResponse(Call<ModelResponseIdKeranjang> call,
                                    Response<ModelResponseIdKeranjang> response) {
                    response.body().getDataKeranjang();
-
                 List<ModelIdKeranjang> listModelOrderan = new ArrayList<>();
-                for(ModelIdKeranjang mdlIdKeranjang : response.body().getDataKeranjang()){
-                    listModelOrderan.add(new ModelIdKeranjang(mdlIdKeranjang.getId_keranjang()));
-                }
-                Util.getApiRequetData().getListOrderByAccount(mdl.getIdAkun()).enqueue(new Callback<ModelResponseBarang>() {
-                    @Override
-                    public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
-                        System.out.println(response.body().getPesan() + " PESAN");
-                        List<ModelOrderan> listModelOrderanDiPilih = new ArrayList<>();
-                        for(ModelIdKeranjang modelOrderan : listModelOrderan){
-                            List<ModelBarang> listBarangSesuaiKeranjang = new ArrayList<>();
-                            int totHarga = 0;
-                            for(ModelBarang mdlBarang : response.body().getDataBarang()){
-                                if(modelOrderan.getId_keranjang().equals(mdlBarang.getId_keranjang())){
-                                    totHarga += mdlBarang.getHarga();
-                                    listBarangSesuaiKeranjang.add(mdlBarang);
+                if(response.body().getDataKeranjang() != null){
+                    for(ModelIdKeranjang mdlIdKeranjang : response.body().getDataKeranjang()){
+                        listModelOrderan.add(new ModelIdKeranjang(mdlIdKeranjang.getId_keranjang()));
+                    }
+                    Util.getApiRequetData().getListOrderByAccount(mdl.getIdAkun()).enqueue(new Callback<ModelResponseBarang>() {
+                        @Override
+                        public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                            System.out.println(response.body().getPesan() + " PESAN");
+                            List<ModelOrderan> listModelOrderanDiPilih = new ArrayList<>();
+                            List<ModelKeranjang> listModelKeranjang = new ArrayList<>();
+                            for(ModelIdKeranjang modelOrderan : listModelOrderan){
+                                List<ModelBarang> listBarangSesuaiKeranjang = new ArrayList<>();
+                                int totHarga = 0;
+                                for(ModelBarang mdlBarang : response.body().getDataBarang()){
+                                    if(modelOrderan.getId_keranjang().equals(mdlBarang.getId_keranjang())){
+                                        totHarga += mdlBarang.getHarga();
+                                        listBarangSesuaiKeranjang.add(mdlBarang);
+                                        listModelKeranjang.add(new ModelKeranjang(mdlBarang));
+                                    }
                                 }
+                                ModelOrderan modelOrderan1 = new ModelOrderan(modelOrderan.getId_keranjang());
+                                modelOrderan1.setTotalHargaOrderan(totHarga);
+                                modelOrderan1.setListBarangYgDiOrder(listBarangSesuaiKeranjang);
+                                listModelOrderanDiPilih.add(modelOrderan1);
+                                totHarga = 0;
                             }
-                            ModelOrderan modelOrderan1 = new ModelOrderan(modelOrderan.getId_keranjang());
-                            modelOrderan1.setTotalHargaOrderan(totHarga);
-                            modelOrderan1.setListBarangYgDiOrder(listBarangSesuaiKeranjang);
-                            listModelOrderanDiPilih.add(modelOrderan1);
-                            totHarga = 0;
-                        }
-                        AdapterCartOrder.AdapterCardOrderListener adapterCardOrderListener = new AdapterCartOrder.AdapterCardOrderListener() {
-                            @Override
-                            public void clickOrderListener(int posisiItemYangDiKlik) {
-
+                            AdapterCartOrder.AdapterCardOrderListener adapterCardOrderListener = new AdapterCartOrder.AdapterCardOrderListener() {
+                                @Override
+                                public void clickOrderListener(int posisiItemYangDiKlik) {
+                                    List<ModelKeranjang> listKeranjang = new ArrayList<>();
+                                    for(ModelBarang mdlBarangFromList : listModelOrderanDiPilih.get(posisiItemYangDiKlik).getListBarangYgDiOrder()){
+                                        listKeranjang.add(new ModelKeranjang(mdlBarangFromList));
+                                    }
+                                    System.out.println("data = " + listKeranjang.get(0).getSelectedFood().getStatus_bayar() + " STATUS");
+                                            System.out.println(listModelOrderanDiPilih.get(posisiItemYangDiKlik).getListBarangYgDiOrder());
+                                            Util.switchFragment(getActivity().getSupportFragmentManager(),
+                                                    new FragmentCekTransaksi(listKeranjang,listKeranjang.get(0).getSelectedFood().getMetodePembayaran(),listKeranjang.get(0).getSelectedFood().getAkunPembayaran(),"FROM_ORDERAN",
+                                                            listModelOrderan.get(posisiItemYangDiKlik).getId_keranjang(),listKeranjang.get(0).getSelectedFood().getAlamatPengiriman(),listKeranjang.get(0).getSelectedFood().getStatus_bayar()),"FRAGMENT_CEK_TRANSAKSI");
+                                }
+                            };
+                            if(listModelOrderanDiPilih != null){
+                                AdapterCartOrder adapterCartOrder = new AdapterCartOrder(listModelOrderanDiPilih,adapterCardOrderListener,getActivity().getApplicationContext());
+                                fragmentOrderanSayaBinding.idRecOrderanSaya.setAdapter(adapterCartOrder);
+                                System.out.println("Data Final = "  + new Gson().toJson(listModelOrderan));
                             }
-                        };
-                        if(listModelOrderanDiPilih != null){
-                            AdapterCartOrder adapterCartOrder = new AdapterCartOrder(listModelOrderanDiPilih,adapterCardOrderListener);
-                            fragmentOrderanSayaBinding.idRecOrderanSaya.setAdapter(adapterCartOrder);
-                            System.out.println("Data Final = "  + new Gson().toJson(listModelOrderan));
+                        }
+
+                        @Override
+                        public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
 
                         }
-                    }
+                    });
+                }
 
-                    @Override
-                    public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
-
-                    }
-                });
 
             }
 

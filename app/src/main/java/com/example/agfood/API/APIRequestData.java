@@ -1,5 +1,6 @@
 package com.example.agfood.API;
 
+import com.example.agfood.DataModel.ModelResponseAlamat;
 import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.Model.ModelBarang;
 import com.example.agfood.Model.ModelFavorit;
@@ -26,12 +27,9 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface APIRequestData {
-    @Headers({
-            "Content-Type: application/json;charset=utf-8",
-            "Accept: application/json"
-    })
-    @GET("retrive_lovelist.php?")
-    Call<ModelResponseFav> getListiFavoritAccount(@Query("id_akun") int idAkun);
+    @FormUrlEncoded
+    @POST("retrive_lovelist.php")
+    Call<ModelResponseFav> getListiFavoritAccount(@Field("id_akun") String id_akun);
 
     @Headers({
             "Content-Type: application/json;charset=utf-8",
@@ -43,7 +41,7 @@ public interface APIRequestData {
             "Content-Type: application/json;charset=utf-8",
             "Accept: application/json"
     })
-    @GET("retrieve_barang.php")
+    @GET("retrieve_barang_topping.php")
     Call<ModelResponseBarang> getResponseDataBarang();
     @GET("get_current_id_order.php")
     Call<ModelResponseGetCurrentIdBarang> getListIdKeranjang();
@@ -77,14 +75,36 @@ public interface APIRequestData {
     Call<ModelResponseBarang> savePesananKeKeranjang(@Field("id_akun") String id_akun,
                                                      @Field("id_barang") String id_barang,
                                                      @Field("total_harga")  String totalHarga,
-                                                     @Field("total_item") String total_item);
+                                                     @Field("total_item") String total_item,
+                                                     @Field("pesan_user") String pesan_user);
     @FormUrlEncoded
     @POST("hapus_keranjang.php")
     Call<ModelResponseBarang> pindahPesananKeOrderPending(@Field("id_akun") String id_akun,
                                                           @Field("id_barang") String id_barang,
                                                            @Field("total_harga")  String totalHarga,
                                                           @Field("total_item") String total_item,
-                                                          @Field("id_keranjang") String id_keranjang);
+                                                          @Field("id_keranjang") String id_keranjang,
+                                                          @Field("metode_pembayaran") String metode_pembayaran,
+                                                          @Field("no_akun") String no_akun,
+                                                          @Field("pesan_user") String pesan_user,
+                                                          @Field("alamat_user") String alamat_user
+    );
+
+
+    @FormUrlEncoded
+    @POST("tambah_alamat.php")
+    Call<ModelResponseAlamat> tambahAlamat(@Field("id_akun") String id_akun,
+                                           @Field("alamat") String alamat);
+
+    @FormUrlEncoded
+    @POST("hapus_alamat.php")
+    Call<ModelResponseAlamat> hapusAlamat(@Field("id_akun") String id_akun,
+                                           @Field("alamat") String alamat);
+
+    @FormUrlEncoded
+    @POST("get_alamat.php")
+    Call<ModelResponseAlamat> getAlamatList(@Field("id_akun") String id_akun);
+
     @FormUrlEncoded
     @POST("get_id_keranjang.php")
     Call<ModelResponseIdKeranjang> getListIdKeranjang(
@@ -128,7 +148,10 @@ public interface APIRequestData {
     @POST("get_image_profile_user_by_email.php")
     Call<ModelResponseAccount> getImageProfile(@Field("email") String email);
 
-
+    @FormUrlEncoded
+    @POST("hapus_keranjang_user.php")
+    Call<ModelResponseAccount> hapusKeranjangYangDipilih(@Field("id_akun") String id_akun,
+                                            @Field("id_barang") String id_barang);
     @FormUrlEncoded
     @POST("get_nama_lengkap.php")
     Call<ModelResponseAccount> getNamaLengkap(@Field("id_akun") String id_akun);
@@ -137,6 +160,13 @@ public interface APIRequestData {
     @POST("upload_image.php")
     Call<ModelResponseUpload> uploadImage(@Part MultipartBody.Part image , @Part("file") RequestBody name);
 
+    @Multipart
+     @POST("upload_image_transaksi.php")
+    Call<ModelResponseUpload> uploadImageTransaksi(@Part MultipartBody.Part image , @Part("file") RequestBody name) ;
+
+    @FormUrlEncoded
+    @POST("update_transaksi_image.php")
+    Call<ModelResponseAccount> updateImageTransaksi(@Field("id_transaksi") String id_transaksi , @Field("image_transaksi") String imageLink);
     @FormUrlEncoded
     @POST("likefav.php")
     Call<ModelFavorit> saveLikeData(@Field("id_akun") int id_akun,@Field("id_barang")String id_barang,@Field("status_fav") String status_fav);

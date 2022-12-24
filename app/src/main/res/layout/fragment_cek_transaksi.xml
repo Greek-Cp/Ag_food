@@ -27,7 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-
+z
                     <ImageView
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
@@ -36,7 +36,6 @@
                         android:layout_marginTop="40dp"
                         android:scaleType="fitXY"
                         android:id="@+id/id_btn_close"
-
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tint="@color/white"/>
@@ -135,6 +134,7 @@
                     android:layout_marginTop="30dp"
                     />
 
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -147,6 +147,34 @@
                     android:layout_marginTop="10dp"
                     android:id="@+id/id_cek_transaksi_nomr_rek"
                     />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Alamat Penerima"
+                    android:textSize="@dimen/_12ssp"
+                    android:id="@+id/id_text_view_alamat_penerima"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp"
+                    />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Florida California alaska dan jawa timur"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_20ssp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/id_text_view_value_alamat_penerima"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+
 
                 <View
                     android:id="@+id/view"
@@ -233,6 +261,7 @@
                     android:layout_marginRight="30dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp"
+                    android:id="@+id/id_cek_transaksi_btn_upload_foto_transaksi"
                     >
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -249,7 +278,7 @@
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
-
+                            android:id="@+id/id_cek_transaksi_text_view_kirim_bukti"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>

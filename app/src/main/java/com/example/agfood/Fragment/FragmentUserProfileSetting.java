@@ -135,7 +135,6 @@ public class FragmentUserProfileSetting extends Fragment {
                     BitmapFactory.decodeStream(imageStream);
                     System.out.println(selectedImage + " PATH ");
                     //Util.getApiRequetData().uploadImage()
-
                   fragmentUserProfileSettingBinding.idCircularImageViewProfile.setImageURI(selectedImage);
                 }
             });

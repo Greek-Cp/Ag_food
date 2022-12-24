@@ -26,6 +26,7 @@ public class AdapterCheckBoxTopping  extends RecyclerView.Adapter<AdapterCheckBo
     public AdapterCheckBoxTopping(List<ModelTopping> listTopping, AdapterToppingInteface adapterToppingInteface) {
         this.listTopping = listTopping;
         this.adapterToppingInteface = adapterToppingInteface;
+        System.out.println(listTopping.size() + " LIST TOPING SIZE");
     }
 
     public interface AdapterToppingInteface {

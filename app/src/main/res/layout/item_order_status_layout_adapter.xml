@@ -51,6 +51,35 @@
                 app:layout_constraintStart_toEndOf="@+id/id_card_wraped_layout_keranjang_adapter"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/bg_card_tersedia"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/id_card_container_status_orderan"
+                app:layout_constraintStart_toEndOf="@+id/id_card_wraped_layout_keranjang_adapter">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_4sdp"
+                        android:text="Transaksi Terkonfirmasi"
+                        android:textColor="@color/text_color_tersedia"
+                        android:textSize="@dimen/_7ssp"
+                        android:textStyle="bold"
+                        android:id="@+id/id_status_orderan"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
             <TextView
                 android:id="@+id/id_tv_jumlah_item_checkout_adapter"
                 android:layout_width="wrap_content"

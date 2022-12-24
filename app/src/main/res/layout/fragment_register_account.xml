@@ -121,6 +121,7 @@
                 app:boxStrokeWidthFocused="0dp"
                 app:counterMaxLength="50"
                 app:counterEnabled="true"
+                app:passwordToggleEnabled="true"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
