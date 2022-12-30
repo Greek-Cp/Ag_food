@@ -102,7 +102,7 @@ public class LoginFragment extends Fragment {
                                     Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentSendOtp(response.body().getDetail_account().get(0),2),"" );
                                 } else if (response.body().kode == 1){
                                 MotionToast.Companion.createColorToast(getActivity(), "Login Berhasil",
-                                        "Login Telah Berhasl", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
+                                        "Login Telah Berhasil", MotionToastStyle.SUCCESS,MotionToast.GRAVITY_TOP,MotionToast.LONG_DURATION,ResourcesCompat.getFont(getActivity().getApplicationContext(),R.font.sfprodisplayregular
                                         ));
                                         getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in,R.anim.fade_out,R.anim.fade_in,R.anim.slide_out).replace(R.id.id_base_frame_layout,new FragmentSuccesfullLogin(response.body().getDetail_account().get(0))).commit();
                             } else if(response.body().kode == 4){

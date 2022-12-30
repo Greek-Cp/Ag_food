@@ -123,7 +123,6 @@ public class FragmentMetodePembayaran extends Fragment {
                     }
                 });
                 adapterMetodePembayaran.notifyDataSetChanged();
-                Toast.makeText(getActivity().getApplicationContext(),"pemayaran = " + modelAdapterPembayaranList.get(positionOfPayment).getNamaServicePayment(), Toast.LENGTH_LONG).show();
 
             }
         };

@@ -50,7 +50,6 @@ public class AdapterCartOrder extends RecyclerView.Adapter<AdapterCartOrder.View
                                 listDataBarang.get(position).getTotalHargaOrderan()))
         );
         holder.namaPesanan.setText(String.valueOf(listDataBarang.get(position).getIdkeranjang()));
-
         switch (listDataBarang.get(position).getListBarangYgDiOrder().get(0).getStatus_bayar()){
             case "belum_bayar":
                 holder.textViewStatusOrder.setText("Transaksi Belum Terkonfirmasi");

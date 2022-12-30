@@ -9,6 +9,8 @@ import com.example.agfood.Model.ModelResponseBarang;
 import com.example.agfood.Model.ModelResponseFav;
 import com.example.agfood.Model.ModelResponseGetCurrentIdBarang;
 import com.example.agfood.Model.ModelResponseIdKeranjang;
+import com.example.agfood.Model.ModelResponseInformasi;
+import com.example.agfood.Model.ModelResponseOrder;
 import com.example.agfood.Model.ModelResponseUpload;
 
 import java.util.List;
@@ -82,7 +84,7 @@ public interface APIRequestData {
     Call<ModelResponseBarang> pindahPesananKeOrderPending(@Field("id_akun") String id_akun,
                                                           @Field("id_barang") String id_barang,
                                                            @Field("total_harga")  String totalHarga,
-                                                          @Field("total_item") String total_item,
+                                                             @Field("total_item") String total_item,
                                                           @Field("id_keranjang") String id_keranjang,
                                                           @Field("metode_pembayaran") String metode_pembayaran,
                                                           @Field("no_akun") String no_akun,
@@ -125,8 +127,16 @@ public interface APIRequestData {
     );
 
     @FormUrlEncoded
+    @POST("get_informasi.php")
+    Call<ModelResponseInformasi> getInformasi(@Field("inform") String inform);
+
+    @FormUrlEncoded
     @POST("get_order_list_byuser.php")
     Call<ModelResponseBarang> getListOrderByAccount(@Field("id_akun") String id_akun);
+
+    @FormUrlEncoded
+    @POST("get_status_order_konfirmasi.php")
+    Call<ModelResponseOrder> getStatusOrderPesanan(@Field("id_keranjang") String id_keranjang);
 
     @FormUrlEncoded
     @POST("login_account.php")

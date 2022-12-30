@@ -125,11 +125,20 @@ public class FragmentOrderanSaya extends Fragment {
                                     for(ModelBarang mdlBarangFromList : listModelOrderanDiPilih.get(posisiItemYangDiKlik).getListBarangYgDiOrder()){
                                         listKeranjang.add(new ModelKeranjang(mdlBarangFromList));
                                     }
+
+                                    System.out.println("PENGIRIMAN = " + listKeranjang.get(0).getSelectedFood().getAlamatPengiriman());
                                     System.out.println("data = " + listKeranjang.get(0).getSelectedFood().getStatus_bayar() + " STATUS");
                                             System.out.println(listModelOrderanDiPilih.get(posisiItemYangDiKlik).getListBarangYgDiOrder());
+
                                             Util.switchFragment(getActivity().getSupportFragmentManager(),
-                                                    new FragmentCekTransaksi(listKeranjang,listKeranjang.get(0).getSelectedFood().getMetodePembayaran(),listKeranjang.get(0).getSelectedFood().getAkunPembayaran(),"FROM_ORDERAN",
-                                                            listModelOrderan.get(posisiItemYangDiKlik).getId_keranjang(),listKeranjang.get(0).getSelectedFood().getAlamatPengiriman(),listKeranjang.get(0).getSelectedFood().getStatus_bayar()),"FRAGMENT_CEK_TRANSAKSI");
+                                                    new FragmentCekTransaksi(
+                                                            listKeranjang
+                                                            ,listKeranjang.get(0).getSelectedFood().getMetodePembayaran(),
+                                                            listKeranjang.get(0).getSelectedFood().getAkunPembayaran()
+                                                            ,listKeranjang.get(0).getSelectedFood().getAlamatPengiriman(),
+                                                            "FROM_ORODERAN",
+                                                            listModelOrderan.get(posisiItemYangDiKlik).getId_keranjang()
+                                                            ,listKeranjang.get(0).getSelectedFood().getStatus_bayar()),"FRAGMENT_CEK_TRANSAKSI");
                                 }
                             };
                             if(listModelOrderanDiPilih != null){

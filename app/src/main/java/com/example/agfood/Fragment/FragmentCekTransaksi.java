@@ -2,26 +2,31 @@ package com.example.agfood.Fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.agfood.Adapter.AdapterRinciaTransaksi;
 import com.example.agfood.DataModel.ModelResponseAccount;
 import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.Model.ModelKeranjang;
+import com.example.agfood.Model.ModelResponseOrder;
 import com.example.agfood.Model.ModelResponseUpload;
 import com.example.agfood.R;
 import com.example.agfood.Util.SharedPrefDetail;
@@ -72,7 +77,9 @@ public class FragmentCekTransaksi extends Fragment {
                                 String metodePembayaran ,
                                 String noRek,
                                 String alamatUser,
-                                String requestFragmentType,String idKeranjang,String statusBayar) {
+                                String requestFragmentType,
+                                String idKeranjang,
+                                String statusBayar) {
         this.modelKeranjangList = listKeranjang;
         this.metodePembayaran = metodePembayaran;
         this.noRek = noRek;
@@ -80,6 +87,8 @@ public class FragmentCekTransaksi extends Fragment {
         this.idKeranjang = idKeranjang;
         this.statusBayar = statusBayar;
         this.alamatUser = alamatUser;
+        System.out.println(listKeranjang.size() + " LIST KERANJANG SIZE LURRRR");
+        System.out.println(alamatUser + " ALAMAT TRANSAKSI");
         System.out.println(statusBayar + " Status Bayar : ");
         System.out.println(metodePembayaran + " metode pembayaran : ");
         System.out.println(noRek + " metode pembayaran : ");
@@ -192,6 +201,9 @@ public class FragmentCekTransaksi extends Fragment {
             });
     int totl = 0;
     int st = 0;
+    private Handler mRepeatHandler;
+    private Runnable mRepeatRunnable;
+    private static int UPDATE_INTERVAL = 3000;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -200,6 +212,48 @@ public class FragmentCekTransaksi extends Fragment {
         UtilPref utilPref = new UtilPref();
         SharedPrefDetail sharedPrefDetailAccount = utilPref.accountPrefences;
         mdl = Util.getCurrentAccount(sharedPrefDetailAccount, getActivity());
+        mRepeatHandler = new Handler();
+
+        mRepeatRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Util.getApiRequetData().getStatusOrderPesanan(idKeranjang).enqueue(new Callback<ModelResponseOrder>() {
+                    @Override
+                    public void onResponse(Call<ModelResponseOrder> call, Response<ModelResponseOrder> response) {
+                        statusBayar = response.body().getStatus_bayar();
+                        if(statusBayar.equals("sudah_bayar")){
+
+                                    fragmentCekTransaksiBinding.idCekTransaksiStatusOrder.setText("Pembayaran Terkonfirmasi ");
+                                    fragmentCekTransaksiBinding.idCekTransaksiIcon.setAnimation(R.raw.success_tick);
+                                    fragmentCekTransaksiBinding.idCekTransaksiIcon.playAnimation();
+                                    fragmentCekTransaksiBinding.idCekTransaksiIcon.loop(false);
+                                    fragmentCekTransaksiBinding.idCekTransaksiBtnUploadFotoTransaksi.setVisibility(View.INVISIBLE);
+                            UPDATE_INTERVAL = 1560000;
+                        } else if (statusBayar.equals("belum_bayar")){
+                            UPDATE_INTERVAL = 3000;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ModelResponseOrder> call, Throwable t) {
+
+                    }
+                });
+                mRepeatHandler.postDelayed(mRepeatRunnable, UPDATE_INTERVAL);
+            }
+        };
+        mRepeatHandler.postDelayed(mRepeatRunnable, UPDATE_INTERVAL);
+
+
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new HomeFragment(),"AAA");
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
         switch (statusBayar){
             case "sudah_bayar":
                 fragmentCekTransaksiBinding.idCekTransaksiStatusOrder.setText("Pembayaran Terkonfirmasi ");
@@ -261,8 +315,28 @@ public class FragmentCekTransaksi extends Fragment {
                 }
             }
         });
+        fragmentCekTransaksiBinding.idHubungiAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    onClickWhatsApp();
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         return fragmentCekTransaksiBinding.getRoot();
+    }
+    public void onClickWhatsApp() throws PackageManager.NameNotFoundException {
+        String url = "http://wa.me/+6285608150983";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 }

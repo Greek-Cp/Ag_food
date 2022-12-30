@@ -8,6 +8,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 
 import com.example.agfood.Model.ModelAccount;
 import com.example.agfood.Model.ModelRetrieveAccount;
@@ -52,7 +57,6 @@ public class SplashScreenFragment extends Fragment implements View.OnClickListen
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,15 +66,12 @@ public class SplashScreenFragment extends Fragment implements View.OnClickListen
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragmen
-        UtilPref utilPref = new UtilPref();
-        ModelAccount modelRetrieveAccount = Util.getCurrentAccount(utilPref.accountPrefences,getActivity().getApplicationContext() );
-        if(modelRetrieveAccount != null){
-            Util.switchFragment(getActivity().getSupportFragmentManager(), new HomeFragment(), "");
-        }
+
         FragmentSplashScreenBinding fragmentSplashScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash_screen,container,false);
         fragmentSplashScreenBinding.idBtnNext.setOnClickListener(this);
         Util.setCustomColorText(fragmentSplashScreenBinding.idTvIntro, "AG ", "FOOD", "e41277");

@@ -27,7 +27,7 @@ public class UtilFood {
         List<ModelTopping> listModelToppingBurgerBeef = new ArrayList<>();
         listModelToppingBurgerBeef.add(new ModelTopping("Burger Beef",9000,0,false,R.drawable.cemilan_burger_beef));
         listModelToppingBurgerBeef.add(new ModelTopping("Burger Beef Saus Fire",10000,0,false,R.drawable.cemilan_burger_beef));
-        modelFoodList.add(new ModelFood("Siomay", 0, 0, R.drawable.cemilan_somay_assetone,listModelToppingSomay));
+
         modelFoodList.add(new ModelFood("Burger Chicken", 0, 0, R.drawable.cemilan_burger_ayam,listModelToppingBurgerChicken));
         modelFoodList.add(new ModelFood("Burger Beef", 0, 0, R.drawable.cemilan_burger_beef,listModelToppingBurgerBeef));
         return modelFoodList;

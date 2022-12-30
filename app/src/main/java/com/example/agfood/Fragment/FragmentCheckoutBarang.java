@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -103,89 +104,102 @@ public class FragmentCheckoutBarang extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         ModelAccount mdl;
         UtilPref utilPref = new UtilPref();
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new HomeFragment(),"AAA");
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
         SharedPrefDetail sharedPrefDetailAccount = utilPref.accountPrefences;
         mdl = Util.getCurrentAccount(sharedPrefDetailAccount, getActivity());
         Util.hiddenNavBottom(getActivity());
         FragmentCheckoutBarangBinding fragmentCheckoutBarangBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_checkout_barang,container,false);
-        fragmentCheckoutBarangBinding.idCardContainerMetodePesananCheckoutBarang.setOnClickListener(this::onClick);
-        fragmentCheckoutBarangBinding.idCardContainerMetodePembayaranContaner.setOnClickListener(this::onClick);
-        Map<String,String> metodePesanan = getMetodePesanan();
-        fragmentCheckoutBarangBinding.idTextViewCheckoutLeftTotalPesanan.setText("Total Pesanan (" + barangYangAkanDiOrderList.size() + ")");
-        int hargaTotal = 0;
-        for(ModelKeranjang mdLKeranjang : barangYangAkanDiOrderList){
-            hargaTotal += mdLKeranjang.getSelectedFood().getHarga();
-        }
-        fragmentCheckoutBarangBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Util.switchFragment(getActivity().getSupportFragmentManager(),new HomeFragment(),"FRAGMENT_HOME");
+        if(barangYangAkanDiOrderList != null)
+        {
+             fragmentCheckoutBarangBinding.idCardContainerMetodePesananCheckoutBarang.setOnClickListener(this::onClick);
+            fragmentCheckoutBarangBinding.idCardContainerMetodePembayaranContaner.setOnClickListener(this::onClick);
+            Map<String,String> metodePesanan = getMetodePesanan();
+            fragmentCheckoutBarangBinding.idTextViewCheckoutLeftTotalPesanan.setText("Total Pesanan (" + barangYangAkanDiOrderList.size() + ")");
+            int hargaTotal = 0;
+            for(ModelKeranjang mdLKeranjang : barangYangAkanDiOrderList){
+                hargaTotal += mdLKeranjang.getSelectedFood().getHarga();
             }
-        });
-        fragmentCheckoutBarangBinding.idTextViewCheckoutTotalPembayaran.setText(Util.convertToRupiah(hargaTotal));
-        fragmentCheckoutBarangBinding.idTextViewCheckoutRightHargaTotalPesanan.setText(Util.convertToRupiah(hargaTotal));
-        fragmentCheckoutBarangBinding.idTextViewCheckoutMetodePembayaran.setText(metodePesanan.get("KEY_PEMBAYARAN"));
-        fragmentCheckoutBarangBinding.idTextViewCheckoutHeaderMetodePesanan.setText(metodePesanan.get("KEY_JUDUL_PESANAN"));
-        fragmentCheckoutBarangBinding.idTextViewCheckoutBodyMetodPesanan.setText(metodePesanan.get("KEY_CONTENT_PESANAN"));
-        fragmentCheckoutBarangBinding.idTextViewCheckoutBarangAlamat.setText(metodePesanan.get("KEY_ALAMAT"));
-        AdapterCheckoutItem adapterCheckoutItem = new AdapterCheckoutItem(barangYangAkanDiOrderList);
-        fragmentCheckoutBarangBinding.idRecCheckoutListBarang.setAdapter(adapterCheckoutItem);
+            fragmentCheckoutBarangBinding.idBtnDetailMakananBackButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Util.switchFragment(getActivity().getSupportFragmentManager(),new HomeFragment(),"FRAGMENT_HOME");
+                }
+            });
+            fragmentCheckoutBarangBinding.idTextViewCheckoutTotalPembayaran.setText(Util.convertToRupiah(hargaTotal));
+            fragmentCheckoutBarangBinding.idTextViewCheckoutRightHargaTotalPesanan.setText(Util.convertToRupiah(hargaTotal));
+            fragmentCheckoutBarangBinding.idTextViewCheckoutSubtotal.setText(Util.convertToRupiah(hargaTotal));
 
-        fragmentCheckoutBarangBinding.idBtnBuatPesanan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Util.getApiRequetData().getListIdKeranjang().enqueue(new Callback<ModelResponseGetCurrentIdBarang>() {
-                    @Override
-                    public void onResponse(Call<ModelResponseGetCurrentIdBarang> call, Response<ModelResponseGetCurrentIdBarang> response) {
-                        System.out.println("Response Id Keranjang = " + response.body().getIdKeranjang() + " data");
-                        if(response.body().getKode() == 0){
-                            idKeranjang = "KRJ" + response.body().getIdKeranjang();
-                        } else if(response.body().getKode() == 1){
-                            idKeranjang = "KRJ" + response.body().getIdKeranjang();
-                        }
+            fragmentCheckoutBarangBinding.idTextViewCheckoutMetodePembayaran.setText(metodePesanan.get("KEY_PEMBAYARAN"));
+            fragmentCheckoutBarangBinding.idTextViewCheckoutHeaderMetodePesanan.setText(metodePesanan.get("KEY_JUDUL_PESANAN"));
 
-                        for(ModelKeranjang mSelectedFoodModel : barangYangAkanDiOrderList){
-                                    Util.getApiRequetData().pindahPesananKeOrderPending(
-                                            mdl.idAkun,
-                                            mSelectedFoodModel.getSelectedFood().getId_barang(),
-                                            String.valueOf(mSelectedFoodModel.getSelectedFood().getHarga()),
-                                    String.valueOf(mSelectedFoodModel.getSelectedFood().getTotalItemKeranjang()),idKeranjang,
-                                    metodePesanan.get("KEY_PEMBAYARAN"),
-                                    metodePesanan.get("KEY_NOREK"),
-                                            String.valueOf(mSelectedFoodModel.getSelectedFood().getPesanDariUser()),
-                                            metodePesanan.get("KEY_ALAMAT")
-                            ).enqueue(
-                                    new Callback<ModelResponseBarang>() {
-                                        @Override
-                                        public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
-                                            int kode = response.body().getKode();
-                                            System.out.println(response.body().getPesan() + " PESAN ");
-                                            if(kode == 1){
-                                            } else{
-                                                Toast.makeText(getActivity().getApplicationContext(),"Masukan Keranjang Gagal",Toast.LENGTH_LONG).show();
+            fragmentCheckoutBarangBinding.idTextViewCheckoutBodyMetodPesanan.setText(metodePesanan.get("KEY_CONTENT_PESANAN"));
+            fragmentCheckoutBarangBinding.idTextViewCheckoutBarangAlamat.setText(metodePesanan.get("KEY_ALAMAT"));
+            AdapterCheckoutItem adapterCheckoutItem = new AdapterCheckoutItem(barangYangAkanDiOrderList);
+            fragmentCheckoutBarangBinding.idRecCheckoutListBarang.setAdapter(adapterCheckoutItem);
+            fragmentCheckoutBarangBinding.idBtnBuatPesanan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Util.getApiRequetData().getListIdKeranjang().enqueue(new Callback<ModelResponseGetCurrentIdBarang>() {
+                        @Override
+                        public void onResponse(Call<ModelResponseGetCurrentIdBarang> call, Response<ModelResponseGetCurrentIdBarang> response) {
+                            System.out.println("Response Id Keranjang = " + response.body().getIdKeranjang() + " data");
+                            if(response.body().getKode() == 0){
+                                idKeranjang = "KRJ" + response.body().getIdKeranjang();
+                            } else if(response.body().getKode() == 1){
+                                idKeranjang = "KRJ" + response.body().getIdKeranjang();
+                            }
+
+                            for(ModelKeranjang mSelectedFoodModel : barangYangAkanDiOrderList){
+                                Util.getApiRequetData().pindahPesananKeOrderPending(
+                                        mdl.idAkun,
+                                        mSelectedFoodModel.getSelectedFood().getId_barang(),
+                                        String.valueOf(mSelectedFoodModel.getSelectedFood().getHarga()),
+                                        String.valueOf(mSelectedFoodModel.getSelectedFood().getTotalItemKeranjang()),idKeranjang,
+                                        metodePesanan.get("KEY_PEMBAYARAN"),
+                                        metodePesanan.get("KEY_NOREK"),
+                                        String.valueOf(mSelectedFoodModel.getSelectedFood().getPesanDariUser()),
+                                        metodePesanan.get("KEY_ALAMAT")
+                                ).enqueue(
+                                        new Callback<ModelResponseBarang>() {
+                                            @Override
+                                            public void onResponse(Call<ModelResponseBarang> call, Response<ModelResponseBarang> response) {
+                                                int kode = response.body().getKode();
+                                                System.out.println(response.body().getPesan() + " PESAN ");
+                                                if(kode == 1){
+                                                } else{
+                                                    Toast.makeText(getActivity().getApplicationContext(),"Masukan Keranjang Gagal",Toast.LENGTH_LONG).show();
+                                                }
                                             }
-                                        }
-                                        @Override
-                                        public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
-                                            System.out.println(t.getCause() + ":" + t.getMessage() + " ERROR");
-                                        }
-                                    });
+                                            @Override
+                                            public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
+                                                System.out.println(t.getCause() + ":" + t.getMessage() + " ERROR");
+                                            }
+                                        });
+                            }
+                            Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCekTransaksi(barangYangAkanDiOrderList,
+                                    metodePesanan.get("KEY_PEMBAYARAN"),metodePesanan.get("KEY_NOREK"),metodePesanan.get("KEY_ALAMAT"),"REQUEST_CHECKOUT_ORDER",idKeranjang,"belum_bayar"),"FRAGMENT_TEST");
                         }
-                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCekTransaksi(barangYangAkanDiOrderList,
-                                metodePesanan.get("KEY_PEMBAYARAN"),metodePesanan.get("KEY_NOREK"),metodePesanan.get("KEY_ALAMAT"),"REQUEST_CHECKOUT_ORDER",idKeranjang,"belum_bayar"),"FRAGMENT_TEST");
-                    }
-                    @Override
-                    public void onFailure(Call<ModelResponseGetCurrentIdBarang> call, Throwable t) {
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ModelResponseGetCurrentIdBarang> call, Throwable t) {
+                        }
+                    });
 
-            }
-        });
-        fragmentCheckoutBarangBinding.idLayoutAlamatPengiriman.setOnClickListener(this);
+                }
+            });
+            fragmentCheckoutBarangBinding.idLayoutAlamatPengiriman.setOnClickListener(this);
+        }
+
         return fragmentCheckoutBarangBinding.getRoot();
     }
+
 
     @Override
     public void onClick(View view) {

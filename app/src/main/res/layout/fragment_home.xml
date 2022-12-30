@@ -9,6 +9,59 @@
         android:layout_height="match_parent"
         tools:context=".Fragment.HomeFragment"
         android:background="@color/color_card">
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="40dp"
+            app:cardElevation="30dp"
+            android:id="@+id/id_card_notification_refresh_berhasil"
+            android:visibility="invisible"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottieAnimationViewRefresh"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    app:lottie_progress="1"
+                    app:lottie_rawRes="@raw/verification_succes_animation" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sfprodisplaybold"
+                    android:text="Refresh Data Berhasil"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginRight="@dimen/_30sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/lottieAnimationViewRefresh"
+                    app:layout_constraintTop_toTopOf="parent"
+
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/id_refresh_container"
+            >
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -46,18 +99,20 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
                         <TextView
                             android:id="@+id/id_tv_nama_user"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:text="Hi Tsania Aww 3 "
+                            android:layout_marginTop="16dp"
+                            android:text=""
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_20ssp"
+                            android:textSize="@dimen/_25ssp"
                             android:textStyle="bold"
+
+                            app:layout_constraintEnd_toStartOf="@+id/id_img_profile"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
                         <TextView
                             android:id="@+id/id_tv_gretting_home"
                             android:layout_width="wrap_content"
@@ -66,7 +121,6 @@
                             android:text="Sedang Lapar ?"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_25ssp"
-                            android:layout_marginTop="15dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/id_tv_nama_user" />
 
@@ -94,16 +148,17 @@
                                 android:layout_height="@dimen/_40sdp"
                                 android:drawableEnd="@drawable/ic_baseline_search_24"
                                 android:textSize="@dimen/_10ssp"
+
                                 />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/id_img_profile"
                             android:layout_width="@dimen/_60sdp"
                             android:layout_height="@dimen/_60sdp"
-                            android:layout_marginRight="30dp"
 
-                            android:id="@+id/id_img_profile"
-                            app:layout_constraintBottom_toBottomOf="@+id/id_tv_gretting_home"
+                            android:layout_marginRight="30dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/id_tv_nama_user"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/id_tv_nama_user" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -150,11 +205,12 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/id_rec_popular_food"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     app:spanCount="2"
+                    android:layout_gravity="center"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     tools:listitem="@layout/item_food_layout_adapter" />
 
@@ -171,6 +227,6 @@
 
     </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

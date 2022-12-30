@@ -141,14 +141,11 @@ public class FragmentDetailAkunRegister extends Fragment implements OnMapReadyCa
             javax.mail.Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail);
-                }
+                    return new PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail);}
             });
-
             MimeMessage mimeMessage = new MimeMessage(session);
             mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(receiveEmail));
             mimeMessage.setSubject("Verifikasi Akun");
-
             mimeMessage.setContent ("\n" +
                     "<!doctype html>\n" +
                     "<html lang=\"en-US\">\n" +
@@ -270,8 +267,6 @@ public class FragmentDetailAkunRegister extends Fragment implements OnMapReadyCa
         }
         return strAdd;
     }
-
-
     ModelAccount mdl;
     // StorageReference mStorageRef;
     // private StorageTask mUploadTask;
@@ -418,14 +413,12 @@ public class FragmentDetailAkunRegister extends Fragment implements OnMapReadyCa
                                         sendMessage(email, String.valueOf(response.body().getOtp()));
                                         if(response.body().getKode() == 1){
                                             modelAccount.setVerifyNumber(String.valueOf(response.body().getOtp()));
-
                                             Util.switchFragment(getActivity().getSupportFragmentManager(),
                                                     new FragmentSendOtp(modelAccount,1), "");
                                         }
                                     }
                                     @Override
                                     public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
-
                                     }
                                 });
                             }  else if(response.body().getKode() == 2){

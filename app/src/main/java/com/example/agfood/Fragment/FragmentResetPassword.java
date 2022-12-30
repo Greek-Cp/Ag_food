@@ -230,12 +230,12 @@ public class FragmentResetPassword extends Fragment {
                           sendMessage(fragmentResetPasswordBinding.idEditTextInputEmailLupaPassword.getText().toString(), String.valueOf(verifiy));
                           Util.switchFragment(getActivity().getSupportFragmentManager(), new FragmentResetPasswordInputVerifyNumberOne(verifiy,fragmentResetPasswordBinding.idEditTextInputEmailLupaPassword.getText().toString().trim()), "FRAGMENT_RESET");
                       } else{
-                          Toast.makeText(getActivity().getApplicationContext(), "Maaf email anda tidak terdaftar", Toast.LENGTH_LONG).show();
+                          Toast.makeText(getActivity().getApplicationContext(), "Maaf Email Anda Tidak Terdaftar", Toast.LENGTH_LONG).show();
                       }
                   }
                   @Override
                   public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Maaf telah terjadi error" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), "Maaf Telah Terjadi Error" + t.getMessage(), Toast.LENGTH_SHORT).show();
                   }
               });
               System.out.println(verifiy);

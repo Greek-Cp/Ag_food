@@ -203,7 +203,6 @@
                                             adapterCart.notifyDataSetChanged();
                                         }
                                     }
-                                    Toast.makeText(getActivity().getApplicationContext(),"Total Keranjang Before = " + listDataKeranjang.size() , Toast.LENGTH_LONG).show();
                                     updateTotalPesanan(listDataKeranjang.size());
                                     state++;
                                 } else if(state == 1){
@@ -221,7 +220,6 @@
                                             adapterCart.notifyDataSetChanged();
                                         }
                                     }
-                                    Toast.makeText(getActivity().getApplicationContext(),"Total Keranjang After = " + listDataKeranjang.size() , Toast.LENGTH_LONG).show();
                                     state = 0;
 
                                     updateTotalPesanan(0);
@@ -255,8 +253,7 @@
 
                 @Override
                 public void onFailure(Call<ModelResponseBarang> call, Throwable t) {
-                    Toast.makeText(getActivity().getApplicationContext(),"ERROR " + t.getMessage(), Toast.LENGTH_LONG).show();
-                }
+                 }
             });
             return  fragmentKeranjangBinding.getRoot();
         }

@@ -1,5 +1,9 @@
 package com.example.agfood.Fragment;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -188,7 +192,18 @@ public class FragmentViewProfileUser extends Fragment {
         AdapterMenuProfile.AdapterMenuProfileListener adapterMenuProfileListenerBottom = new AdapterMenuProfile.AdapterMenuProfileListener() {
             @Override
             public void clickMenuItemListener(int position) {
-
+                switch (position) {
+                    case 0:
+                        Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentAboutUs(),"FRAGMENT_ABOUT_US");
+                        break;
+                    case 1:
+                        try {
+                            onClickWhatsApp();
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
             }
         };
         AdapterMenuProfile adapterMenuProfileTop = new AdapterMenuProfile(adapterMenuProfileListenerTop,listMenuButtonTop);
@@ -197,4 +212,12 @@ public class FragmentViewProfileUser extends Fragment {
         binding.idRecViewMenuBottom.setAdapter(adapterMenuProfileBottom);
         return binding.getRoot();
     }
+    public void onClickWhatsApp() throws PackageManager.NameNotFoundException {
+        String url = "http://wa.me/+6285608150983";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+
+    }
+
 }

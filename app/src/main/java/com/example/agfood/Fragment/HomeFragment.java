@@ -1,5 +1,6 @@
 package com.example.agfood.Fragment;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,7 +8,9 @@ import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,6 +108,7 @@ public class HomeFragment extends Fragment {
     AdapterButton adapterButton;
     AdapterFoodPopular adapterFoodPopular;
     SharedPreferences sharedPreferences;
+
     void initializeDataKategory(){
         if(listButtonName == null){
             listButtonName = new ArrayList<>();
@@ -142,6 +146,12 @@ public class HomeFragment extends Fragment {
         };
         adapterButton = new AdapterButton(listButtonName,adapterButtonClickListener);
         mFragmentHomeBinding.idRecKategoryFood.setAdapter(adapterButton);
+        mFragmentHomeBinding.idImgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentUserProfileSetting(),"PROFILE_SETTING");
+            }
+        });
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -187,7 +197,6 @@ public class HomeFragment extends Fragment {
                     System.out.println("Deskripsi = " + modelBarang.getDeskripsi_barang());
                     listBarang.add(modelBarang);
                 }
-
                 initalizeAdapter(listBarang);
                 Gson gson = new Gson();
                 SharedPrefDetail sharedPrefDetailBarang = utilPref.barangPrefences;
@@ -229,8 +238,6 @@ public class HomeFragment extends Fragment {
                 SharedPrefDetail prefDetailUser = utilPref.accountPrefences;
                 prefDetailUser.setSerializeDataList(gson.toJson(username));
                 Util.saveDataListPrefences(prefDetailUser,getActivity().getApplicationContext());
-
-
             }
 
             @Override
@@ -254,7 +261,6 @@ public class HomeFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
-
             }
         });
         mFragmentHomeBinding.idEditTextSearchMenu.setOnClickListener(new View.OnClickListener() {
@@ -270,6 +276,83 @@ public class HomeFragment extends Fragment {
         initializeDataKategory();
         System.out.println(getListFoodAPI() + " SIZE");
         Util.showNavBottom(getActivity());
+        mFragmentHomeBinding.idRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initializeDataKategory();
+                Util.getApiRequetData().getImageProfile(
+                        username.getEmail()
+                ).enqueue(new Callback<ModelResponseAccount>() {
+                    @Override
+                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                        if(response.body().gambar_profile == null){
+                            mFragmentHomeBinding.idImgProfile.setImageResource(R.drawable.ic_profile_saya);
+                            System.out.println("Profile Belum Di Set !");
+                        } else{
+                            Picasso.get()
+                                    .load(response.body().getGambar_profile()).resize(512,512).centerCrop()
+                                    .into(mFragmentHomeBinding.idImgProfile);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+                    }
+                });
+                Util.getApiRequetData().getNamaLengkap(username.getIdAkun()).enqueue(new Callback<ModelResponseAccount>() {
+                    @Override
+                    public void onResponse(Call<ModelResponseAccount> call, Response<ModelResponseAccount> response) {
+                        mFragmentHomeBinding.idTvNamaUser.setText("Hi " + response.body().nama_lengkap);
+                        username.setNamaLengkap(response.body().nama_lengkap);
+                        SharedPrefDetail prefDetailUser = utilPref.accountPrefences;
+                        prefDetailUser.setSerializeDataList(gson.toJson(username));
+                        Util.saveDataListPrefences(prefDetailUser,getActivity().getApplicationContext());
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ModelResponseAccount> call, Throwable t) {
+
+                    }
+                });
+                initalizeAdapter(listBarang);
+                adapterFoodPopular.notifyDataSetChanged();
+
+                Handler handler  = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFragmentHomeBinding.idRefreshContainer.setRefreshing(false);
+                        mFragmentHomeBinding.idCardNotificationRefreshBerhasil.setVisibility(View.VISIBLE);
+                        mFragmentHomeBinding.lottieAnimationViewRefresh.playAnimation();
+                        mFragmentHomeBinding.lottieAnimationViewRefresh.addAnimatorListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animator) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                mFragmentHomeBinding.idCardNotificationRefreshBerhasil.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animator) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animator) {
+
+                            }
+                        });
+                    }
+                },1000);
+                mFragmentHomeBinding.idRefreshContainer.setRefreshing(false);
+            }
+        });
+        initalizeAdapter(listBarang);
+        adapterFoodPopular.notifyDataSetChanged();
         return mFragmentHomeBinding.getRoot();
     }
 

@@ -27,6 +27,7 @@ import com.example.agfood.Fragment.FragmentViewInformasi;
 import com.example.agfood.Fragment.FragmentViewProfileUser;
 import com.example.agfood.Fragment.HomeFragment;
 import com.example.agfood.Fragment.LoginFragment;
+import com.example.agfood.Fragment.SplashScreen;
 import com.example.agfood.Fragment.SplashScreenFragment;
 import com.example.agfood.R;
 import com.example.agfood.Util.Util;
@@ -99,12 +100,11 @@ public class BaseActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_base);
-
         permission();
         requestPermission();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         hiddenActionBar();
-        getSupportFragmentManager().beginTransaction().replace(R.id.id_base_frame_layout, new SplashScreenFragment(),"FRAGMENT_SPLASH_SCREEN").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.id_base_frame_layout, new SplashScreen(),"FRAGMENT_SPLASH_SCREEN").commit();
         bottomNavigationView = findViewById(R.id.id_nav_bar);
         bottomNavigationView.setSelectedItemId(R.id.id_nav_home);
         bottomNavigationSelected();

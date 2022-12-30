@@ -77,6 +77,7 @@ public class FragmentAturAlamatSaya extends Fragment  implements OnMapReadyCallb
     public FragmentAturAlamatSaya(String fromView) {
         // Required empty public constructor
         this.fromView = fromView;
+        System.out.println("From View = " + fromView);
     }
     public FragmentAturAlamatSaya(List<ModelKeranjang> listKeranjangDariUser, String idKeranjang,
                                   String fromView){
@@ -117,6 +118,7 @@ public class FragmentAturAlamatSaya extends Fragment  implements OnMapReadyCallb
     ModelAccount mdl;
     AdapterAlamatSaya adapterAlamatSaya;
     String alamatYangDipilih;
+    LocationManager locationManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,7 +131,7 @@ public class FragmentAturAlamatSaya extends Fragment  implements OnMapReadyCallb
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
         Geocoder geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         switch (fromView){
             case "PROFILE_USER":
                 fragmentAturAlamatSayaBinding.idCardPilihAlamat.setVisibility(View.INVISIBLE);
@@ -252,8 +254,11 @@ public class FragmentAturAlamatSaya extends Fragment  implements OnMapReadyCallb
                             if(response.body().getKode() == 1){
                                 Toast.makeText(getActivity().getApplicationContext(),"Berhasil Menambahkan Alamat",Toast.LENGTH_SHORT).show();
                                 adapterAlamatSaya.notifyDataSetChanged();
-                                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentAturAlamatSaya(fromView) , "FRAGMENT_ATUR");
-
+                                if(fromView.equals("PROFILE_USER")){
+                                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentAturAlamatSaya(modelKeranjangList,idKeranjang,"PROFILE_USER") , "FRAGMENT_ATUR");
+                                } else{
+                                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentAturAlamatSaya(modelKeranjangList,idKeranjang,"CHECKOUT") , "FRAGMENT_ATUR");
+                                }
                                 //Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentAturAlamatSaya(),"ATUR_ALAMAT");
                             } else{
                                 Toast.makeText(getActivity().getApplicationContext(),"Gagal Menambahkan Alamat",Toast.LENGTH_SHORT).show();
@@ -283,7 +288,14 @@ public class FragmentAturAlamatSaya extends Fragment  implements OnMapReadyCallb
                 SharedPreferences.Editor sharedPreferencesEditors = sharedPreferences.edit();
                 sharedPreferencesEditors.putString("PREF_ALAMAT",alamatYangDipilih);
                 sharedPreferencesEditors.commit();
-                Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(modelKeranjangList,idKeranjang),"FRAGMENT_CHECKOUT ");
+                System.out.println("FROM VIEW = " + fromView);
+                if(fromView.equals("PROFILE_USER")){
+                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentAturAlamatSaya("PROFILE_USER"),"FRAGMENT_ATUR_ALAMAT");
+                } else{
+                    Util.switchFragment(getActivity().getSupportFragmentManager(),new FragmentCheckoutBarang(modelKeranjangList,idKeranjang),"FRAGMENT_CHECKOUT ");
+
+                }
+                locationManager = null;
             }
         });
         return fragmentAturAlamatSayaBinding.getRoot();
