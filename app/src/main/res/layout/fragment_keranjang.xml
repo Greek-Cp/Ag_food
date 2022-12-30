@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -32,6 +31,7 @@
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent">
             <CheckBox
+                android:visibility="gone"
                 android:id="@+id/id_check_box_semua_keranjang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,6 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Semua"

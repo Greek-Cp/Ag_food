@@ -9,6 +9,7 @@ import com.example.agfood.Model.ModelResponseBarang;
 import com.example.agfood.Model.ModelResponseFav;
 import com.example.agfood.Model.ModelResponseGetCurrentIdBarang;
 import com.example.agfood.Model.ModelResponseIdKeranjang;
+import com.example.agfood.Model.ModelResponseInformasi;
 import com.example.agfood.Model.ModelResponseUpload;
 
 import java.util.List;
@@ -123,6 +124,10 @@ public interface APIRequestData {
     Call<ModelResponseBarang> cariMakanan(
             @Field("menu_cari") String menu_cari
     );
+
+    @FormUrlEncoded
+    @POST("get_informasi.php")
+    Call<ModelResponseInformasi> getInformasi(@Field("inform") String inform);
 
     @FormUrlEncoded
     @POST("get_order_list_byuser.php")

@@ -6,7 +6,7 @@
 
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Fragment.FragmentDetailMakanan">
@@ -90,9 +90,10 @@
                     android:id="@+id/id_rec_kategory_food"
                     />
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:layout_gravity="center"
                     android:id="@+id/id_rec_menu_selected"
                     app:spanCount="2"
                     android:layout_marginTop="5dp"
@@ -101,5 +102,5 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

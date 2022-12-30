@@ -150,11 +150,12 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/id_rec_popular_food"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     app:spanCount="2"
+                    android:layout_gravity="center"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     tools:listitem="@layout/item_food_layout_adapter" />
 

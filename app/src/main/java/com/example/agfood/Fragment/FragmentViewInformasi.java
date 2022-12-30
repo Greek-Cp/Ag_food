@@ -2,13 +2,22 @@ package com.example.agfood.Fragment;
 
 import android.os.Bundle;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.agfood.Model.ModelResponseInformasi;
 import com.example.agfood.R;
+import com.example.agfood.Util.Util;
+import com.example.agfood.databinding.FragmentOrderanSayaBinding;
+import com.example.agfood.databinding.FragmentViewInformasiBinding;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +69,24 @@ public class FragmentViewInformasi extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_informasi, container, false);
+        // Inflate the layout for this fragmen
+       FragmentViewInformasiBinding fragmentViewInformasiBinding = DataBindingUtil.inflate(inflater,
+               R.layout.fragment_view_informasi,container,false);
+        Util.getApiRequetData().getInformasi("test").enqueue(new Callback<ModelResponseInformasi>() {
+            @Override
+            public void onResponse(Call<ModelResponseInformasi> call, Response<ModelResponseInformasi> response) {
+                if(response.body().getKode() == 1){
+                    System.out.println("inform " + response.body().getInformasi());
+                    fragmentViewInformasiBinding.idTvTextInformasi.setText(response.body().getInformasi());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelResponseInformasi> call, Throwable t) {
+
+            }
+        });
+        return fragmentViewInformasiBinding.getRoot();
+
     }
 }

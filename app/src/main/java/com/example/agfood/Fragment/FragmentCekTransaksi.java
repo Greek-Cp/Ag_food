@@ -72,7 +72,9 @@ public class FragmentCekTransaksi extends Fragment {
                                 String metodePembayaran ,
                                 String noRek,
                                 String alamatUser,
-                                String requestFragmentType,String idKeranjang,String statusBayar) {
+                                String requestFragmentType,
+                                String idKeranjang,
+                                String statusBayar) {
         this.modelKeranjangList = listKeranjang;
         this.metodePembayaran = metodePembayaran;
         this.noRek = noRek;
@@ -80,6 +82,8 @@ public class FragmentCekTransaksi extends Fragment {
         this.idKeranjang = idKeranjang;
         this.statusBayar = statusBayar;
         this.alamatUser = alamatUser;
+        System.out.println(listKeranjang.size() + " LIST KERANJANG SIZE LURRRR");
+        System.out.println(alamatUser + " ALAMAT TRANSAKSI");
         System.out.println(statusBayar + " Status Bayar : ");
         System.out.println(metodePembayaran + " metode pembayaran : ");
         System.out.println(noRek + " metode pembayaran : ");
@@ -262,7 +266,6 @@ public class FragmentCekTransaksi extends Fragment {
             }
         });
         return fragmentCekTransaksiBinding.getRoot();
-
 
     }
 }
